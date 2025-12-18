@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strength Training – Calm Hub</title>
+  <style>
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box; 
+      font-family:'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; 
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 12px;
+      background-image: url("image.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(15,23,42,0.15);
+      backdrop-filter: blur(4px);
+      z-index: 1;
+    }
+
+    .shell {
+      width:100%;
+      max-width:1000px;
+      border-radius:28px;
+      padding:48px 40px;
+      background:rgba(15,23,42,0.96);
+      color:#e5e7eb;
+      border:1px solid rgba(255,255,255,0.28);
+      box-shadow: 
+        0 32px 80px rgba(15,23,42,0.92),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      backdrop-filter:blur(28px);
+      -webkit-backdrop-filter:blur(28px);
+      position:relative;
+      z-index:2;
+      text-align:center;
+    }
+
+    .shell::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(59,130,246,0.8), rgba(37,99,235,0.8), transparent);
+    }
+
+    h1 {
+      font-size:36px;
+      font-weight:800;
+      background:linear-gradient(135deg, #93c5fd 0%, #3b82f6 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:12px;
+    }
+
+    .subtitle {
+      font-size:16px;
+      color:rgba(255,255,255,0.85);
+      margin-bottom:32px;
+      font-weight:500;
+    }
+
+    /* LEVEL SELECTOR */
+    .level-selector {
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      margin:24px 0;
+      flex-wrap:wrap;
+    }
+
+    .level-btn {
+      padding:12px 28px;
+      border-radius:20px;
+      border:2px solid rgba(255,255,255,0.2);
+      background:rgba(255,255,255,0.08);
+      color:rgba(255,255,255,0.8);
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.3s;
+    }
+
+    .level-btn:hover {
+      border-color:rgba(59,130,246,0.5);
+      background:rgba(59,130,246,0.15);
+    }
+
+    .level-btn.active {
+      border-color:#3b82f6;
+      background:linear-gradient(135deg, rgba(59,130,246,0.3), rgba(37,99,235,0.2));
+      color:#93c5fd;
+      box-shadow:0 8px 24px rgba(59,130,246,0.3);
+    }
+
+    /* EXERCISE SECTION */
+    .exercise-section {
+      background:linear-gradient(145deg, rgba(59,130,246,0.15), rgba(37,99,235,0.1));
+      border-radius:24px;
+      padding:48px 32px;
+      margin:32px 0;
+      border:1px solid rgba(59,130,246,0.3);
+      backdrop-filter:blur(20px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .exercise-section::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 50% 50%, rgba(59,130,246,0.2), transparent 70%);
+      animation:pulse-glow 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity:0.5; }
+      50% { opacity:1; }
+    }
+
+    .exercise-display {
+      position:relative;
+      z-index:1;
+    }
+
+    .status-badge {
+      display:inline-block;
+      padding:10px 24px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:20px;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      background:linear-gradient(135deg, #3b82f6, #2563eb);
+      color:#ffffff;
+      box-shadow:0 8px 24px rgba(59,130,246,0.4);
+    }
+
+    .status-badge.work {
+      background:linear-gradient(135deg, #ef4444, #dc2626);
+      animation:pulse-badge 1s ease-in-out infinite;
+    }
+
+    @keyframes pulse-badge {
+      0%, 100% { transform:scale(1); }
+      50% { transform:scale(1.05); }
+    }
+
+    .status-badge.rest {
+      background:linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .status-badge.prep {
+      background:linear-gradient(135deg, #fbbf24, #f59e0b);
+      color:#1e293b;
+    }
+
+    .exercise-icon {
+      font-size:120px;
+      margin-bottom:20px;
+      animation:pump 2s ease-in-out infinite;
+    }
+
+    @keyframes pump {
+      0%, 100% { transform:scale(1); }
+      50% { transform:scale(1.12); }
+    }
+
+    .exercise-icon.rest {
+      animation:none;
+      filter:grayscale(0.5);
+      opacity:0.7;
+    }
+
+    .exercise-icon.prep {
+      animation:rotate-slow 4s linear infinite;
+    }
+
+    @keyframes rotate-slow {
+      from { transform:rotate(0deg); }
+      to { transform:rotate(360deg); }
+    }
+
+    .exercise-name {
+      font-size:48px;
+      font-weight:800;
+      background:linear-gradient(135deg, #3b82f6, #2563eb);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:16px;
+      line-height:1.2;
+    }
+
+    .exercise-motto {
+      font-size:18px;
+      color:#93c5fd;
+      font-weight:700;
+      font-style:italic;
+      margin-bottom:24px;
+    }
+
+    .exercise-instruction {
+      font-size:18px;
+      color:rgba(255,255,255,0.9);
+      font-weight:600;
+      line-height:1.8;
+      margin-bottom:24px;
+      padding:20px 28px;
+      background:rgba(255,255,255,0.1);
+      border-radius:16px;
+      text-align:left;
+      max-width:700px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+
+    .muscle-group {
+      display:inline-block;
+      padding:12px 24px;
+      background:rgba(139,92,246,0.15);
+      border:1px solid rgba(139,92,246,0.3);
+      border-radius:16px;
+      margin-bottom:24px;
+    }
+
+    .muscle-group-label {
+      font-size:12px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      margin-bottom:6px;
+    }
+
+    .muscle-group-text {
+      font-size:14px;
+      font-weight:700;
+      color:#a78bfa;
+    }
+
+    .rep-display {
+      background:linear-gradient(145deg, rgba(239,68,68,0.2), rgba(220,38,38,0.15));
+      border:2px solid rgba(239,68,68,0.3);
+      border-radius:20px;
+      padding:24px 32px;
+      display:inline-block;
+      margin:24px 0;
+    }
+
+    .rep-count {
+      font-size:72px;
+      font-weight:800;
+      background:linear-gradient(135deg, #ef4444, #dc2626);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:8px;
+      line-height:1;
+    }
+
+    .rep-label {
+      font-size:16px;
+      color:rgba(255,255,255,0.8);
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+
+    .timer-display {
+      font-size:120px;
+      font-weight:800;
+      background:linear-gradient(135deg, #3b82f6, #2563eb);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin:32px 0;
+      font-variant-numeric:tabular-nums;
+      line-height:1;
+    }
+
+    .timer-display.ending {
+      animation:pulse-timer 0.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-timer {
+      0%, 100% { transform:scale(1); }
+      50% { transform:scale(1.1); }
+    }
+
+    .power-cue {
+      font-size:20px;
+      font-weight:700;
+      color:#3b82f6;
+      padding:12px 28px;
+      background:rgba(59,130,246,0.2);
+      border-radius:999px;
+      display:inline-block;
+      margin-top:16px;
+      animation:power-pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes power-pulse {
+      0%, 100% { opacity:0.8; transform:scale(1); }
+      50% { opacity:1; transform:scale(1.05); }
+    }
+
+    .next-exercise {
+      background:rgba(16,185,129,0.15);
+      border:1px solid rgba(16,185,129,0.3);
+      border-radius:16px;
+      padding:16px 24px;
+      margin-top:24px;
+      display:inline-block;
+    }
+
+    .next-exercise-label {
+      font-size:12px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      margin-bottom:6px;
+    }
+
+    .next-exercise-name {
+      font-size:18px;
+      font-weight:700;
+      color:#10b981;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      justify-content:center;
+    }
+
+    /* SET PROGRESS */
+    .set-progress {
+      margin:32px 0;
+    }
+
+    .progress-header {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:16px;
+      margin-bottom:16px;
+    }
+
+    .progress-header span {
+      font-size:16px;
+      font-weight:700;
+      color:rgba(255,255,255,0.9);
+    }
+
+    .set-num {
+      font-size:36px;
+      color:#3b82f6;
+      font-weight:800;
+    }
+
+    .set-dots {
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .set-dot {
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.1);
+      border:2px solid rgba(255,255,255,0.2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      font-weight:700;
+      color:rgba(255,255,255,0.5);
+      transition:all 0.3s;
+    }
+
+    .set-dot.completed {
+      background:linear-gradient(135deg, #10b981, #059669);
+      border-color:#10b981;
+      color:#ffffff;
+      box-shadow:0 4px 12px rgba(16,185,129,0.4);
+    }
+
+    .set-dot.active {
+      background:linear-gradient(135deg, #3b82f6, #2563eb);
+      border-color:#3b82f6;
+      color:#ffffff;
+      box-shadow:0 4px 12px rgba(59,130,246,0.4);
+      animation:pulse-dot 1s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { transform:scale(1); }
+      50% { transform:scale(1.15); }
+    }
+
+    .progress-bar {
+      width:100%;
+      height:10px;
+      background:rgba(255,255,255,0.1);
+      border-radius:999px;
+      overflow:hidden;
+      margin-top:20px;
+      border:1px solid rgba(255,255,255,0.15);
+    }
+
+    .progress-fill {
+      height:100%;
+      background:linear-gradient(90deg, #3b82f6, #2563eb);
+      border-radius:999px;
+      transition:width 0.5s ease;
+      box-shadow:0 0 20px rgba(59,130,246,0.6);
+    }
+
+    /* STRENGTH METER */
+    .strength-meter {
+      background:linear-gradient(145deg, rgba(251,191,36,0.15), rgba(245,158,11,0.1));
+      border:1px solid rgba(251,191,36,0.3);
+      border-radius:20px;
+      padding:20px 28px;
+      display:inline-block;
+      margin-top:20px;
+    }
+
+    .strength-value {
+      font-size:40px;
+      font-weight:800;
+      background:linear-gradient(135deg, #fbbf24, #f59e0b);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:4px;
+    }
+
+    .strength-label {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+
+    /* CONTROLS */
+    .controls {
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      margin-top:40px;
+      flex-wrap:wrap;
+    }
+
+    .btn {
+      padding:16px 36px;
+      border-radius:28px;
+      border:none;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .btn-primary {
+      background:linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color:#ffffff;
+      box-shadow:0 12px 32px rgba(59,130,246,0.4);
+    }
+
+    .btn-primary::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition:left 0.5s;
+    }
+
+    .btn-primary:hover::before {
+      left:100%;
+    }
+
+    .btn-primary:hover {
+      transform:translateY(-3px);
+      box-shadow:0 20px 50px rgba(59,130,246,0.5);
+    }
+
+    .btn-secondary {
+      background:rgba(255,255,255,0.12);
+      color:#ffffff;
+      border:1px solid rgba(255,255,255,0.28);
+    }
+
+    .btn-secondary:hover {
+      background:rgba(255,255,255,0.2);
+      transform:translateY(-2px);
+    }
+
+    .btn-rep {
+      background:linear-gradient(135deg, #10b981, #059669);
+      color:#ffffff;
+      padding:20px 40px;
+      font-size:18px;
+      box-shadow:0 12px 32px rgba(16,185,129,0.4);
+    }
+
+    .btn-rep:hover {
+      transform:translateY(-3px);
+      box-shadow:0 20px 50px rgba(16,185,129,0.5);
+    }
+
+    /* STATS */
+    .stats-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+      gap:16px;
+      margin-top:40px;
+      padding-top:40px;
+      border-top:1px solid rgba(255,255,255,0.15);
+    }
+
+    .stat-card {
+      background:linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border-radius:20px;
+      padding:24px 16px;
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter:blur(20px);
+      transition:all 0.3s;
+    }
+
+    .stat-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(59,130,246,0.2);
+    }
+
+    .stat-value {
+      font-size:40px;
+      font-weight:800;
+      background:linear-gradient(135deg, #3b82f6, #2563eb);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      display:block;
+      margin-bottom:8px;
+    }
+
+    .stat-label {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+
+    /* BENEFITS */
+    .benefits-section {
+      margin-top:40px;
+    }
+
+    .benefits-section h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:20px;
+    }
+
+    .benefits-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:16px;
+    }
+
+    .benefit-card {
+      padding:24px 20px;
+      background:linear-gradient(145deg, rgba(59,130,246,0.15), rgba(37,99,235,0.1));
+      border-radius:20px;
+      border:1px solid rgba(59,130,246,0.25);
+      backdrop-filter:blur(10px);
+      transition:all 0.3s;
+      text-align:center;
+    }
+
+    .benefit-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(59,130,246,0.3);
+      border-color:rgba(59,130,246,0.4);
+    }
+
+    .benefit-icon {
+      font-size:40px;
+      margin-bottom:12px;
+      display:block;
+    }
+
+    .benefit-card h4 {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:6px;
+    }
+
+    .benefit-card p {
+      font-size:13px;
+      color:rgba(255,255,255,0.8);
+      line-height:1.5;
+    }
+
+    /* EXERCISES PREVIEW */
+    .exercises-preview {
+      background:linear-gradient(145deg, rgba(139,92,246,0.15), rgba(99,102,241,0.1));
+      border-radius:24px;
+      padding:32px;
+      margin-top:40px;
+      border:1px solid rgba(139,92,246,0.25);
+    }
+
+    .exercises-preview h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:20px;
+      text-align:center;
+    }
+
+    .exercises-list {
+      display:grid;
+      gap:12px;
+      max-width:700px;
+      margin:0 auto;
+    }
+
+    .exercise-preview-item {
+      padding:16px 20px;
+      background:rgba(255,255,255,0.08);
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.12);
+      display:flex;
+      align-items:center;
+      gap:16px;
+      transition:all 0.3s;
+    }
+
+    .exercise-preview-item:hover {
+      background:rgba(255,255,255,0.12);
+      transform:translateX(4px);
+    }
+
+    .exercise-preview-icon {
+      font-size:32px;
+      flex-shrink:0;
+    }
+
+    .exercise-preview-content {
+      flex:1;
+      text-align:left;
+    }
+
+    .exercise-preview-name {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:4px;
+    }
+
+    .exercise-preview-detail {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+    }
+
+    .back-link {
+      margin-top:40px;
+    }
+
+    .back-link a {
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:14px 28px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(255,255,255,0.15);
+      color:#ffffff;
+      font-size:14px;
+      font-weight:600;
+      text-decoration:none;
+      backdrop-filter:blur(24px);
+      transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .back-link a:hover {
+      background:rgba(255,255,255,0.28);
+      transform:translateY(-2px);
+      box-shadow:0 16px 40px rgba(255,255,255,0.18);
+    }
+
+    @media (max-width: 768px) {
+      .shell { padding:32px 24px; }
+      h1 { font-size:28px; }
+      .timer-display { font-size:90px; }
+      .rep-count { font-size:56px; }
+      .exercise-name { font-size:36px; }
+      .exercise-icon { font-size:80px; }
+      .stats-grid { grid-template-columns:1fr 1fr; }
+      .level-selector { flex-direction:column; }
+      .level-btn { width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <h1>💪 Strength Training</h1>
+    <p class="subtitle">Build muscle & power • Transform your body • Become stronger every day!</p>
+
+    <!-- LEVEL SELECTOR -->
+    <div class="level-selector">
+      <button class="level-btn" onclick="selectLevel('beginner')" data-level="beginner">
+        🟢 Beginner (3 sets • 12 reps)
+      </button>
+      <button class="level-btn active" onclick="selectLevel('intermediate')" data-level="intermediate">
+        🟡 Intermediate (4 sets • 15 reps)
+      </button>
+      <button class="level-btn" onclick="selectLevel('advanced')" data-level="advanced">
+        🔴 Advanced (5 sets • 20 reps)
+      </button>
+    </div>
+
+    <!-- EXERCISE SECTION -->
+    <div class="exercise-section">
+      <div class="exercise-display">
+        <div class="status-badge prep" id="statusBadge">Get Ready</div>
+        <div class="exercise-icon prep" id="exerciseIcon">💪</div>
+        <div class="exercise-name" id="exerciseName">Strength Builder</div>
+        <div class="exercise-motto" id="exerciseMotto">"Stronger every single day!"</div>
+        
+        <div class="exercise-instruction" id="exerciseInstruction">
+          • Find your workout space<br>
+          • This program builds real strength<br>
+          • Focus on proper form over speed<br>
+          • You're about to get POWERFUL!
+        </div>
+
+        <div class="muscle-group" id="muscleGroup" style="display:none;">
+          <div class="muscle-group-label">Targets:</div>
+          <div class="muscle-group-text" id="muscleGroupText">Full Body</div>
+        </div>
+
+        <div id="repSection" style="display:none;">
+          <div class="rep-display">
+            <div class="rep-count" id="repCount">0</div>
+            <div class="rep-label">REPS COMPLETED</div>
+          </div>
+          <button class="btn btn-rep" onclick="addRep()">✓ Complete Rep</button>
+        </div>
+
+        <div id="timerSection">
+          <div class="timer-display" id="timer">5</div>
+          <div class="power-cue" id="powerCue">Prepare to lift! 💪</div>
+        </div>
+        
+        <div class="next-exercise" id="nextExercise" style="display:none;">
+          <div class="next-exercise-label">Next Exercise:</div>
+          <div class="next-exercise-name">
+            <span id="nextExerciseIcon">🦵</span>
+            <span id="nextExerciseText">Squats</span>
+          </div>
+        </div>
+
+        <div class="strength-meter">
+          <div class="strength-value" id="strengthGain">0%</div>
+          <div class="strength-label">Strength Gained 💪</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SET PROGRESS -->
+    <div class="set-progress">
+      <div class="progress-header">
+        <span>Set</span>
+        <span class="set-num" id="setNum">0</span>
+        <span>of <span id="totalSets">4</span></span>
+      </div>
+      
+      <div class="set-dots" id="setDots">
+        <!-- Generated by JS -->
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <button class="btn btn-primary" id="startBtn" onclick="startWorkout()">▶ Start Workout</button>
+      <button class="btn btn-secondary" id="pauseBtn" onclick="pauseWorkout()" style="display:none;">⏸ Pause</button>
+      <button class="btn btn-secondary" onclick="stopWorkout()">⏹ Stop</button>
+      <button class="btn btn-secondary" onclick="skipSet()">⏭ Skip Set</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-value" id="totalWorkouts">0</span>
+        <span class="stat-label">Workouts Done</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="totalSets">0</span>
+        <span class="stat-label">Total Sets</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="totalReps">0</span>
+        <span class="stat-label">Total Reps</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="currentStreak">0</span>
+        <span class="stat-label">Day Streak</span>
+      </div>
+    </div>
+
+    <!-- EXERCISES PREVIEW -->
+    <div class="exercises-preview">
+      <h3>💪 Today's Exercises</h3>
+      <div class="exercises-list" id="exercisesList">
+        <!-- Generated by JS -->
+      </div>
+    </div>
+
+    <!-- BENEFITS -->
+    <div class="benefits-section">
+      <h3>✨ Strength Training Benefits</h3>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <span class="benefit-icon">💪</span>
+          <h4>Builds Muscle</h4>
+          <p>Increases lean muscle mass for a stronger, toned physique</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">🔥</span>
+          <h4>Burns Fat</h4>
+          <p>Muscle burns more calories at rest, boosting metabolism 24/7</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">🦴</span>
+          <h4>Stronger Bones</h4>
+          <p>Increases bone density, reducing risk of osteoporosis</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">⚡</span>
+          <h4>More Energy</h4>
+          <p>Improves stamina and reduces fatigue in daily activities</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">🧠</span>
+          <h4>Mental Toughness</h4>
+          <p>Builds confidence, discipline, and psychological resilience</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">❤️</span>
+          <h4>Heart Health</h4>
+          <p>Lowers blood pressure and improves cardiovascular fitness</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="back-link">
+      <a href="meditation.html">← Back to Wellness Hub</a>
+    </div>
+  </div>
+
+  <script>
+    const workoutLevels = {
+      beginner: {
+        exercises: [
+          { 
+            name: 'Push-Ups', 
+            icon: '🦾', 
+            motto: '"Build that upper body!"',
+            instruction: '• Start in plank position, hands under shoulders<br>• Lower chest to ground with control<br>• Push back up powerfully<br>• Knees down is perfectly fine!',
+            reps: 12,
+            rest: 45,
+            muscle: 'Chest, Triceps, Shoulders'
+          },
+          { 
+            name: 'Bodyweight Squats', 
+            icon: '🦵', 
+            motto: '"Leg day = best day!"',
+            instruction: '• Feet shoulder-width apart, toes slightly out<br>• Lower hips back and down<br>• Keep chest up, weight in heels<br>• Drive through heels to stand',
+            reps: 12,
+            rest: 45,
+            muscle: 'Quads, Glutes, Hamstrings'
+          },
+          { 
+            name: 'Plank Hold', 
+            icon: '🏋️', 
+            motto: '"Core of steel!"',
+            instruction: '• Forearms on ground, body in straight line<br>• Engage abs, glutes, and quads<br>• Don\'t let hips sag or pike up<br>• Hold position with power',
+            reps: 30,
+            rest: 45,
+            muscle: 'Core, Abs, Lower Back'
+          },
+          { 
+            name: 'Lunges', 
+            icon: '🚶', 
+            motto: '"Balance and power!"',
+            instruction: '• Step forward into lunge position<br>• Lower back knee toward ground<br>• Front knee stays over ankle<br>• Push back to standing',
+            reps: 12,
+            rest: 45,
+            muscle: 'Legs, Glutes, Core'
+          },
+          { 
+            name: 'Mountain Climbers', 
+            icon: '⛰️', 
+            motto: '"Cardio meets strength!"',
+            instruction: '• Start in plank position<br>• Drive one knee to chest<br>• Quickly switch legs<br>• Keep core tight throughout',
+            reps: 12,
+            rest: 45,
+            muscle: 'Core, Shoulders, Cardio'
+          }
+        ],
+        sets: 3,
+        totalTime: 15,
+        strengthGainRate: 20
+      },
+      intermediate: {
+        exercises: [
+          { 
+            name: 'Diamond Push-Ups', 
+            icon: '💎', 
+            motto: '"Triceps on fire!"',
+            instruction: '• Hands close together forming diamond<br>• Lower chest to hands<br>• Keep elbows close to body<br>• Push up with control and power',
+            reps: 15,
+            rest: 40,
+            muscle: 'Triceps, Chest, Shoulders'
+          },
+          { 
+            name: 'Jump Squats', 
+            icon: '🦘', 
+            motto: '"Explosive leg power!"',
+            instruction: '• Squat down deep<br>• Explode up into jump<br>• Land softly, absorb impact<br>• Immediately go into next rep',
+            reps: 15,
+            rest: 40,
+            muscle: 'Quads, Glutes, Power'
+          },
+          { 
+            name: 'Side Plank', 
+            icon: '🏋️', 
+            motto: '"Obliques activated!"',
+            instruction: '• Lie on side, forearm down<br>• Stack feet, lift hips up<br>• Body in straight line<br>• Hold strong, then switch sides',
+            reps: 30,
+            rest: 40,
+            muscle: 'Obliques, Core, Shoulders'
+          },
+          { 
+            name: 'Walking Lunges', 
+            icon: '🚶', 
+            motto: '"Functional strength!"',
+            instruction: '• Step forward into deep lunge<br>• Push off to step into next lunge<br>• Keep chest up and core tight<br>• Walk forward with power',
+            reps: 15,
+            rest: 40,
+            muscle: 'Legs, Glutes, Balance'
+          },
+          { 
+            name: 'Burpees', 
+            icon: '💥', 
+            motto: '"Ultimate exercise!"',
+            instruction: '• Squat down, hands to ground<br>• Jump feet back to plank<br>• Jump feet forward<br>• Explode up with jump',
+            reps: 15,
+            rest: 40,
+            muscle: 'Full Body, Cardio'
+          },
+          { 
+            name: 'Pike Push-Ups', 
+            icon: '🔺', 
+            motto: '"Shoulder power!"',
+            instruction: '• Start in downward dog position<br>• Lower head toward ground<br>• Push back up<br>• Targets shoulders intensely',
+            reps: 15,
+            rest: 40,
+            muscle: 'Shoulders, Upper Chest'
+          }
+        ],
+        sets: 4,
+        totalTime: 20,
+        strengthGainRate: 16.67
+      },
+      advanced: {
+        exercises: [
+          { 
+            name: 'One-Arm Push-Ups', 
+            icon: '🦾', 
+            motto: '"Beast mode activated!"',
+            instruction: '• One hand behind back<br>• Lower chest to ground slowly<br>• Push up with maximum effort<br>• Switch arms each set',
+            reps: 20,
+            rest: 35,
+            muscle: 'Chest, Triceps, Core'
+          },
+          { 
+            name: 'Pistol Squats', 
+            icon: '🦵', 
+            motto: '"Single leg domination!"',
+            instruction: '• Stand on one leg<br>• Extend other leg forward<br>• Squat down on single leg<br>• Extreme balance and strength',
+            reps: 20,
+            rest: 35,
+            muscle: 'Quads, Glutes, Balance'
+          },
+          { 
+            name: 'Dragon Flag', 
+            icon: '🐉', 
+            motto: '"Core of champions!"',
+            instruction: '• Lie on bench, grab behind head<br>• Lift entire body up<br>• Lower slowly with control<br>• Ultimate core exercise',
+            reps: 20,
+            rest: 35,
+            muscle: 'Abs, Core, Hip Flexors'
+          },
+          { 
+            name: 'Bulgarian Split Squats', 
+            icon: '🏋️', 
+            motto: '"Leg growth guaranteed!"',
+            instruction: '• Back foot elevated on chair<br>• Lower into deep lunge<br>• Front leg does all the work<br>• Switch legs each set',
+            reps: 20,
+            rest: 35,
+            muscle: 'Quads, Glutes, Hamstrings'
+          },
+          { 
+            name: 'Burpee Tuck Jumps', 
+            icon: '💥', 
+            motto: '"Explosive beast!"',
+            instruction: '• Full burpee to plank<br>• Jump feet forward<br>• Explode up bringing knees to chest<br>• Maximum intensity',
+            reps: 20,
+            rest: 35,
+            muscle: 'Full Body, Power, Cardio'
+          },
+          { 
+            name: 'Handstand Push-Ups', 
+            icon: '🤸', 
+            motto: '"Shoulder destroyer!"',
+            instruction: '• Kick up to handstand against wall<br>• Lower head toward ground<br>• Push back up with power<br>• Advanced shoulder strength',
+            reps: 20,
+            rest: 35,
+            muscle: 'Shoulders, Triceps, Core'
+          },
+          { 
+            name: 'Archer Push-Ups', 
+            icon: '🏹', 
+            motto: '"Unilateral power!"',
+            instruction: '• Wide hand position<br>• Lower to one side<br>• Other arm stays straight<br>• Alternate sides each rep',
+            reps: 20,
+            rest: 35,
+            muscle: 'Chest, Shoulders, Arms'
+          }
+        ],
+        sets: 5,
+        totalTime: 25,
+        strengthGainRate: 14.29
+      }
+    };
+
+    let currentLevel = 'intermediate';
+    let currentExercise = 0;
+    let currentSet = 0;
+    let currentReps = 0;
+    let isWorking = false;
+    let isResting = false;
+    let isPreparing = true;
+    let timeLeft = 5;
+    let isRunning = false;
+    let interval;
+    let strengthGain = 0;
+    let totalWorkouts = parseInt(localStorage.getItem('strengthWorkouts') || '0');
+    let totalSetsCompleted = parseInt(localStorage.getItem('strengthSets') || '0');
+    let totalRepsCompleted = parseInt(localStorage.getItem('strengthReps') || '0');
+
+    document.getElementById('totalWorkouts').textContent = totalWorkouts;
+    document.getElementById('totalSets').textContent = totalSetsCompleted;
+    document.getElementById('totalReps').textContent = totalRepsCompleted;
+
+    const lastDate = localStorage.getItem('strengthLastDate');
+    const today = new Date().toDateString();
+    let streak = parseInt(localStorage.getItem('strengthStreak') || '0');
+    if (lastDate === today) {
+      document.getElementById('currentStreak').textContent = streak;
+    } else {
+      document.getElementById('currentStreak').textContent = 0;
+    }
+
+    // Initialize
+    updateExercisesList();
+    updateSetDots();
+
+    function selectLevel(level) {
+      if (isRunning) {
+        alert('Stop the current workout first!');
+        return;
+      }
+      
+      currentLevel = level;
+      document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`[data-level="${level}"]`).classList.add('active');
+      
+      updateExercisesList();
+      updateSetDots();
+      document.getElementById('totalSets').textContent = workoutLevels[currentLevel].sets;
+    }
+
+    function updateExercisesList() {
+      const level = workoutLevels[currentLevel];
+      const html = level.exercises.map((ex, i) => `
+        <div class="exercise-preview-item">
+          <div class="exercise-preview-icon">${ex.icon}</div>
+          <div class="exercise-preview-content">
+            <div class="exercise-preview-name">${i + 1}. ${ex.name}</div>
+            <div class="exercise-preview-detail">${level.sets} sets × ${ex.reps} reps • ${ex.muscle}</div>
+          </div>
+        </div>
+      `).join('');
+      document.getElementById('exercisesList').innerHTML = html;
+    }
+
+    function updateSetDots() {
+      const level = workoutLevels[currentLevel];
+      const totalDots = level.sets * level.exercises.length;
+      const html = Array(totalDots).fill(0).map((_, i) => {
+        const completed = i < (currentExercise * level.sets + currentSet);
+        const active = i === (currentExercise * level.sets + currentSet) && currentSet > 0;
+        return `<div class="set-dot ${completed ? 'completed' : ''} ${active ? 'active' : ''}">${i + 1}</div>`;
+      }).join('');
+      document.getElementById('setDots').innerHTML = html;
+    }
+
+    function startWorkout() {
+      if (isRunning) return;
+      isRunning = true;
+      document.getElementById('startBtn').style.display = 'none';
+      document.getElementById('pauseBtn').style.display = 'inline-block';
+      
+      if (isPreparing && currentSet === 0) {
+        runPreparation();
+      } else {
+        if (isWorking) {
+          // Resume working
+        } else if (isResting) {
+          runRest();
+        } else {
+          currentSet = 1;
+          document.getElementById('setNum').textContent = currentSet;
+          loadExercise();
+        }
+      }
+    }
+
+    function pauseWorkout() {
+      isRunning = false;
+      clearInterval(interval);
+      document.getElementById('startBtn').style.display = 'inline-block';
+      document.getElementById('pauseBtn').style.display = 'none';
+    }
+
+    function stopWorkout() {
+      isRunning = false;
+      clearInterval(interval);
+      currentExercise = 0;
+      currentSet = 0;
+      currentReps = 0;
+      isWorking = false;
+      isResting = false;
+      isPreparing = true;
+      timeLeft = 5;
+      strengthGain = 0;
+      
+      document.getElementById('startBtn').style.display = 'inline-block';
+      document.getElementById('pauseBtn').style.display = 'none';
+      document.getElementById('statusBadge').className = 'status-badge prep';
+      document.getElementById('statusBadge').textContent = 'Get Ready';
+      document.getElementById('exerciseIcon').className = 'exercise-icon prep';
+      document.getElementById('exerciseIcon').textContent = '💪';
+      document.getElementById('exerciseName').textContent = 'Strength Builder';
+      document.getElementById('exerciseMotto').textContent = '"Stronger every single day!"';
+      document.getElementById('exerciseInstruction').innerHTML = '• Find your workout space<br>• This program builds real strength<br>• Focus on proper form over speed<br>• You\'re about to get POWERFUL!';
+      document.getElementById('muscleGroup').style.display = 'none';
+      document.getElementById('repSection').style.display = 'none';
+      document.getElementById('timerSection').style.display = 'block';
+      document.getElementById('timer').className = 'timer-display';
+      document.getElementById('timer').textContent = '5';
+      document.getElementById('powerCue').textContent = 'Prepare to lift! 💪';
+      document.getElementById('setNum').textContent = '0';
+      document.getElementById('strengthGain').textContent = '0%';
+      document.getElementById('progress').style.width = '0%';
+      document.getElementById('nextExercise').style.display = 'none';
+      updateSetDots();
+    }
+
+    function runPreparation() {
+      isPreparing = true;
+      timeLeft = 5;
+      
+      document.getElementById('statusBadge').className = 'status-badge prep';
+      document.getElementById('statusBadge').textContent = 'Starting Soon!';
+      document.getElementById('exerciseIcon').className = 'exercise-icon prep';
+      document.getElementById('exerciseIcon').textContent = '⚡';
+      document.getElementById('exerciseName').textContent = 'Get Ready!';
+      document.getElementById('exerciseMotto').textContent = '"Time to get STRONG!"';
+      document.getElementById('powerCue').textContent = 'Workout starting! 🔥';
+      document.getElementById('timerSection').style.display = 'block';
+      document.getElementById('repSection').style.display = 'none';
+      
+      interval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+        
+        if (timeLeft <= 3) {
+          document.getElementById('timer').classList.add('ending');
+        }
+
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          document.getElementById('timer').classList.remove('ending');
+          isPreparing = false;
+          currentExercise = 0;
+          currentSet = 1;
+          document.getElementById('setNum').textContent = currentSet;
+          loadExercise();
+        }
+      }, 1000);
+    }
+
+    function loadExercise() {
+      const level = workoutLevels[currentLevel];
+      const exercise = level.exercises[currentExercise];
+      currentReps = 0;
+      isWorking = true;
+      isResting = false;
+      
+      document.getElementById('statusBadge').className = 'status-badge work';
+      document.getElementById('statusBadge').textContent = `Set ${currentSet}/${level.sets} - GO!`;
+      document.getElementById('exerciseIcon').className = 'exercise-icon';
+      document.getElementById('exerciseIcon').textContent = exercise.icon;
+      document.getElementById('exerciseName').textContent = exercise.name;
+      document.getElementById('exerciseMotto').textContent = exercise.motto;
+      document.getElementById('exerciseInstruction').innerHTML = exercise.instruction;
+      document.getElementById('muscleGroup').style.display = 'inline-block';
+      document.getElementById('muscleGroupText').textContent = exercise.muscle;
+      document.getElementById('repCount').textContent = `0/${exercise.reps}`;
+      document.getElementById('powerCue').textContent = 'Complete all reps! 💪';
+      
+      document.getElementById('timerSection').style.display = 'none';
+      document.getElementById('repSection').style.display = 'block';
+      
+      // Show next exercise
+      if (currentExercise + 1 < level.exercises.length || currentSet < level.sets) {
+        let nextEx;
+        if (currentSet < level.sets) {
+          nextEx = exercise;
+        } else {
+          nextEx = level.exercises[currentExercise + 1];
+        }
+        document.getElementById('nextExercise').style.display = 'inline-block';
+        document.getElementById('nextExerciseIcon').textContent = nextEx.icon;
+        document.getElementById('nextExerciseText').textContent = nextEx.name;
+      } else {
+        document.getElementById('nextExercise').style.display = 'none';
+      }
+      
+      updateSetDots();
+      updateProgress();
+    }
+
+    function addRep() {
+      if (!isWorking || !isRunning) return;
+      
+      const level = workoutLevels[currentLevel];
+      const exercise = level.exercises[currentExercise];
+      currentReps++;
+      
+      document.getElementById('repCount').textContent = `${currentReps}/${exercise.reps}`;
+      
+      totalRepsCompleted++;
+      localStorage.setItem('strengthReps', totalRepsCompleted);
+      document.getElementById('totalReps').textContent = totalRepsCompleted;
+      
+      if (currentReps >= exercise.reps) {
+        completeSet();
+      }
+    }
+
+    function completeSet() {
+      const level = workoutLevels[currentLevel];
+      
+      totalSetsCompleted++;
+      strengthGain = Math.min(100, strengthGain + level.strengthGainRate);
+      localStorage.setItem('strengthSets', totalSetsCompleted);
+      document.getElementById('totalSets').textContent = totalSetsCompleted;
+      document.getElementById('strengthGain').textContent = Math.round(strengthGain) + '%';
+      
+      currentSet++;
+      
+      if (currentSet > level.sets) {
+        // Move to next exercise
+        currentSet = 1;
+        currentExercise++;
+        
+        if (currentExercise >= level.exercises.length) {
+          completeWorkout();
+          return;
+        }
+      }
+      
+      document.getElementById('setNum').textContent = currentSet;
+      updateSetDots();
+      
+      // Start rest period
+      isWorking = false;
+      isResting = true;
+      runRest();
+    }
+
+    function runRest() {
+      const level = workoutLevels[currentLevel];
+      const exercise = level.exercises[currentExercise];
+      timeLeft = exercise.rest;
+      
+      document.getElementById('statusBadge').className = 'status-badge rest';
+      document.getElementById('statusBadge').textContent = 'Rest & Recover';
+      document.getElementById('exerciseIcon').className = 'exercise-icon rest';
+      document.getElementById('powerCue').textContent = 'Breathe & prepare for next set! 💧';
+      document.getElementById('timerSection').style.display = 'block';
+      document.getElementById('repSection').style.display = 'none';
+      document.getElementById('timer').textContent = timeLeft;
+      
+      interval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+        
+        if (timeLeft <= 5 && timeLeft > 0) {
+          document.getElementById('timer').classList.add('ending');
+        } else {
+          document.getElementById('timer').classList.remove('ending');
+        }
+
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          document.getElementById('timer').classList.remove('ending');
+          loadExercise();
+        }
+      }, 1000);
+    }
+
+    function skipSet() {
+      if (!isRunning) return;
+      if (isWorking) {
+        completeSet();
+      } else if (isResting) {
+        clearInterval(interval);
+        loadExercise();
+      }
+    }
+
+    function updateProgress() {
+      const level = workoutLevels[currentLevel];
+      const totalSets = level.sets * level.exercises.length;
+      const completedSets = (currentExercise * level.sets) + (currentSet - 1);
+      const progress = (completedSets / totalSets) * 100;
+      document.getElementById('progress').style.width = progress + '%';
+    }
+
+    function completeWorkout() {
+      isRunning = false;
+      clearInterval(interval);
+      
+      const level = workoutLevels[currentLevel];
+      
+      totalWorkouts++;
+      localStorage.setItem('strengthWorkouts', totalWorkouts);
+      
+      const lastDate = localStorage.getItem('strengthLastDate');
+      const today = new Date().toDateString();
+      let streak = parseInt(localStorage.getItem('strengthStreak') || '0');
+      
+      if (lastDate !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (lastDate === yesterday.toDateString()) {
+          streak++;
+        } else {
+          streak = 1;
+        }
+        
+        localStorage.setItem('strengthStreak', streak);
+        localStorage.setItem('strengthLastDate', today);
+      }
+      
+      document.getElementById('totalWorkouts').textContent = totalWorkouts;
+      document.getElementById('currentStreak').textContent = streak;
+      
+      document.getElementById('statusBadge').className = 'status-badge work';
+      document.getElementById('statusBadge').textContent = '🏆 BEAST MODE!';
+      document.getElementById('exerciseIcon').className = 'exercise-icon';
+      document.getElementById('exerciseIcon').textContent = '👑';
+      document.getElementById('exerciseName').textContent = 'WORKOUT COMPLETE!';
+      document.getElementById('exerciseMotto').textContent = '"You are UNSTOPPABLE!"';
+      document.getElementById('exerciseInstruction').innerHTML = '• Every rep made you STRONGER! 💪<br>• Your muscles are GROWING<br>• You earned this victory<br>• REST, RECOVER, REPEAT!';
+      document.getElementById('muscleGroup').style.display = 'none';
+      document.getElementById('repSection').style.display = 'none';
+      document.getElementById('timerSection').style.display = 'block';
+      document.getElementById('timer').textContent = '✨';
+      document.getElementById('powerCue').textContent = 'Strength MAXIMIZED! 🔥';
+      document.getElementById('progress').style.width = '100%';
+      document.getElementById('nextExercise').style.display = 'none';
+      document.getElementById('strengthGain').textContent = '100%';
+      
+      setTimeout(() => {
+        alert(`💪 Strength Training Complete!\n\n✅ ${level.totalTime} minutes completed\n🏋️ ${level.sets * level.exercises.length} total sets\n💪 Hundreds of reps crushed\n🔥 ${streak} day streak\n\nYou are getting STRONGER! 👑\nYour muscles are GROWING!`);
+        stopWorkout();
+      }, 500);
+    }
+  </script>
+</body>
+</html>

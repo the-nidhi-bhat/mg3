@@ -1,0 +1,2899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counselors – Calm Hub</title>
+  <style>
+    :root {
+      --bg-page: #e5f0ff;
+      --bg-shell-top: #fdfbff;
+      --bg-shell-mid: #f9fafb;
+      --bg-shell-bottom: #f8fafc;
+      --border-soft: #e2e8f0;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --accent-pink: #f472b6;
+      --accent-pink-soft: #fee2f2;
+      --accent-green: #16a34a;
+      --accent-red-soft: #fee2e2;
+
+      /* BG IMAGE (ADD YOUR IMAGE HERE) */
+      --page-bg-image: url('image.jpg');
+    }
+
+    * {
+      margin:0; padding:0; box-sizing:border-box;
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    body {
+      min-height:100vh;
+
+      /* ✅ BG IMAGE ADDED (gradient overlay + image) */
+      background-image:
+        linear-gradient(135deg, rgba(236,72,153,0.12), rgba(59,130,246,0.18)),
+        var(--page-bg-image);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+
+      padding:16px;
+      color:var(--text-main);
+    }
+    
+    body.dark-mode {
+      /* ✅ BG IMAGE ADDED (dark overlay + image) */
+      background-image:
+        linear-gradient(135deg, rgba(17,24,39,0.95), rgba(31,41,55,0.98)),
+        var(--page-bg-image);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+
+      color: #f9fafb;
+    }
+
+    .shell {
+      max-width:1200px;
+      margin:0 auto;
+      background:#fff;
+      border-radius:26px;
+      border:1px solid rgba(148,163,184,0.35);
+      box-shadow:0 22px 60px rgba(15,23,42,0.18);
+      overflow:hidden;
+    }
+    
+    body.dark-mode .shell {
+      background:#1f2937;
+      border-color:#374151;
+    }
+
+    /* HEADER */
+    .header {
+      padding:16px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      border-bottom:1px solid #e5e7eb;
+    }
+    body.dark-mode .header {
+      border-bottom-color:#374151;
+    }
+    .header-left{display:flex;align-items:center;gap:10px;}
+    .dot-logo{
+      width:20px;height:20px;border-radius:999px;
+      background:radial-gradient(circle at 30% 30%,#facc15,#f97316);
+      box-shadow:0 0 0 6px rgba(251,191,36,0.25);
+    }
+    .header-title{font-size:20px;font-weight:700;}
+    .header-subtitle{font-size:12px;color:var(--text-muted);}
+    .header-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+    .back-btn, .dark-toggle, .lang-toggle {
+      border-radius:999px;
+      border:1px solid #d1d5db;
+      background:#ffffff;
+      color:var(--text-main);
+      padding:8px 16px;
+      font-size:13px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      text-decoration:none;
+      transition:all .2s;
+    }
+    body.dark-mode .back-btn, body.dark-mode .dark-toggle, body.dark-mode .lang-toggle {
+      background:#374151;
+      border-color:#4b5563;
+      color:#f9fafb;
+    }
+    .back-btn:hover, .dark-toggle:hover, .lang-toggle:hover{background:#f3f4f6;}
+    body.dark-mode .back-btn:hover, body.dark-mode .dark-toggle:hover, body.dark-mode .lang-toggle:hover {
+      background:#4b5563;
+    }
+
+    /* CRISIS BANNER */
+    .crisis-banner{
+      background:#fef2f2;
+      padding:12px 24px;
+      border-bottom:1px solid #fecaca;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    body.dark-mode .crisis-banner {
+      background:#7f1d1d;
+      border-bottom-color:#991b1b;
+    }
+    .crisis-text{
+      font-size:13px;
+      color:#7f1d1d;
+      font-weight:600;
+    }
+    body.dark-mode .crisis-text {
+      color:#fef2f2;
+    }
+    .crisis-btn{
+      padding:6px 14px;
+      border-radius:999px;
+      background:#dc2626;
+      color:#fff;
+      font-size:13px;
+      font-weight:600;
+      border:none;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    /* FAVORITES BAR */
+    .favorites-bar {
+      padding:12px 24px;
+      background:#fef3c7;
+      border-bottom:1px solid #fbbf24;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+    body.dark-mode .favorites-bar {
+      background:#92400e;
+      border-bottom-color:#b45309;
+    }
+    .fav-text {
+      font-size:13px;
+      font-weight:600;
+      color:#92400e;
+    }
+    body.dark-mode .fav-text {
+      color:#fef3c7;
+    }
+    .view-fav-btn {
+      padding:6px 12px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid #f59e0b;
+      color:#92400e;
+      font-size:12px;
+      font-weight:600;
+      cursor:pointer;
+    }
+
+    /* EMERGENCY STRIP */
+    .emergency-section{
+      background:#fed7e2;
+      padding:16px 24px;
+      border-bottom:1px solid rgba(248,113,113,0.25);
+    }
+    body.dark-mode .emergency-section {
+      background:#881337;
+    }
+    .emergency-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:16px;
+    }
+    .emergency-card{
+      background:#fee2e2;
+      border-radius:18px;
+      padding:10px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      border:1px solid rgba(248,113,113,0.3);
+      cursor:pointer;
+      transition:all .15s;
+    }
+    body.dark-mode .emergency-card {
+      background:#7f1d1d;
+      border-color:#991b1b;
+    }
+    .emergency-card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 24px rgba(248,113,113,0.32);
+    }
+    .em-label{
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.07em;
+      color:#b91c1c;
+      text-transform:uppercase;
+    }
+    body.dark-mode .em-label {
+      color:#fecaca;
+    }
+    .em-value{
+      font-size:14px;
+      font-weight:600;
+      color:#7f1d1d;
+    }
+    body.dark-mode .em-value {
+      color:#fef2f2;
+    }
+
+    /* QUICK MATCH */
+    .quick-match{
+      padding:18px 24px;
+      background:linear-gradient(135deg,#fef3c7,#fde68a);
+      border-bottom:1px solid #fbbf24;
+    }
+    body.dark-mode .quick-match {
+      background:linear-gradient(135deg,#92400e,#b45309);
+    }
+    .qm-title{
+      font-size:16px;
+      font-weight:600;
+      margin-bottom:8px;
+      color:#92400e;
+    }
+    body.dark-mode .qm-title {
+      color:#fef3c7;
+    }
+    .qm-btn{
+      padding:8px 16px;
+      border-radius:999px;
+      background:#fff;
+      border:2px solid #f59e0b;
+      color:#92400e;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    /* STATS BAR */
+    .stats-bar {
+      padding:12px 24px;
+      background:#f9fafb;
+      border-bottom:1px solid #e5e7eb;
+      display:flex;
+      gap:24px;
+      flex-wrap:wrap;
+      font-size:12px;
+    }
+    body.dark-mode .stats-bar {
+      background:#111827;
+      border-bottom-color:#374151;
+      color:#d1d5db;
+    }
+    .stat-item {
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .stat-value {
+      font-weight:700;
+      color:#3b82f6;
+    }
+
+    /* MOOD SECTION */
+    .quiz-section{
+      padding:20px 24px;
+      background:#fff;
+      border-bottom:1px solid #e5e7eb;
+    }
+    body.dark-mode .quiz-section {
+      background:#1f2937;
+      border-bottom-color:#374151;
+    }
+    .quiz-title{
+      font-size:18px;
+      font-weight:600;
+      margin-bottom:14px;
+    }
+    .mood-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+      gap:12px;
+    }
+    .mood-card{
+      background:#ffffff;
+      border-radius:20px;
+      border:2px solid #e5e7eb;
+      padding:16px;
+      box-shadow:0 4px 12px rgba(148,163,184,0.1);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+      transition:all .15s;
+    }
+    body.dark-mode .mood-card {
+      background:#374151;
+      border-color:#4b5563;
+    }
+    .mood-card:hover,
+    .mood-card.active{
+      transform:translateY(-3px);
+      box-shadow:0 8px 20px rgba(148,163,184,0.2);
+      border-color:var(--accent-pink);
+    }
+    .mood-emoji{font-size:32px;}
+    .mood-label{font-size:16px;font-weight:500;}
+
+    .quiz-result{
+      margin-top:14px;
+      display:none;
+      font-size:13px;
+      background:var(--accent-pink-soft);
+      border-radius:14px;
+      padding:10px 14px;
+      border:1px solid rgba(244,114,182,0.35);
+      color:#9d174d;
+    }
+
+    /* SEARCH & FILTER */
+    .search-section{
+      padding:16px 24px;
+      background:#f9fafb;
+      border-bottom:1px solid #e5e7eb;
+    }
+    body.dark-mode .search-section {
+      background:#111827;
+      border-bottom-color:#374151;
+    }
+    .search-input{
+      width:100%;
+      padding:12px 16px 12px 40px;
+      border-radius:999px;
+      border:1px solid #d1d5db;
+      font-size:14px;
+      background:#fff url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%236b7280" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>') no-repeat 14px center;
+    }
+    body.dark-mode .search-input {
+      background-color:#374151;
+      border-color:#4b5563;
+      color:#f9fafb;
+    }
+
+    /* FILTER BAR */
+    .filter-bar{
+      padding:12px 24px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      background:#fff;
+      border-bottom:1px solid #e5e7eb;
+    }
+    body.dark-mode .filter-bar {
+      background:#1f2937;
+      border-bottom-color:#374151;
+    }
+    .filter-group{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+    }
+    .filter-label{
+      font-size:12px;
+      color:var(--text-muted);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+    .filter-chip{
+      font-size:12px;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      background:#ffffff;
+      color:var(--text-main);
+      cursor:pointer;
+      transition:all .15s;
+    }
+    body.dark-mode .filter-chip {
+      background:#374151;
+      border-color:#4b5563;
+      color:#f9fafb;
+    }
+    .filter-chip.active{
+      border-color:var(--accent-pink);
+      background:var(--accent-pink-soft);
+      color:#9d174d;
+    }
+    .filter-select{
+      padding:6px 10px;
+      font-size:12px;
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      background:#ffffff;
+      color:var(--text-main);
+    }
+    body.dark-mode .filter-select {
+      background:#374151;
+      border-color:#4b5563;
+      color:#f9fafb;
+    }
+
+    /* GROUP THERAPY BANNER */
+    .group-therapy-banner {
+      padding:16px 24px;
+      background:linear-gradient(135deg,#dbeafe,#bfdbfe);
+      border-bottom:1px solid #3b82f6;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    body.dark-mode .group-therapy-banner {
+      background:linear-gradient(135deg,#1e3a8a,#1e40af);
+    }
+    .gt-text {
+      font-size:14px;
+      font-weight:600;
+      color:#1e40af;
+    }
+    body.dark-mode .gt-text {
+      color:#dbeafe;
+    }
+    .gt-btn {
+      padding:8px 16px;
+      border-radius:999px;
+      background:#3b82f6;
+      color:#fff;
+      font-size:13px;
+      font-weight:600;
+      border:none;
+      cursor:pointer;
+    }
+
+    /* COUNSELOR CARDS */
+    .counselors-section{
+      padding:24px;
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+      gap:20px;
+      background:#f9fafb;
+    }
+    body.dark-mode .counselors-section {
+      background:#111827;
+    }
+    .counselor-card{
+      background:#ffffff;
+      border-radius:20px;
+      border:2px solid #e5e7eb;
+      padding:18px;
+      box-shadow:0 4px 12px rgba(148,163,184,0.1);
+      transition:all .2s;
+      position:relative;
+    }
+    body.dark-mode .counselor-card {
+      background:#1f2937;
+      border-color:#374151;
+    }
+    .counselor-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 12px 28px rgba(148,163,184,0.2);
+      border-color:var(--accent-pink);
+    }
+    .counselor-card.hidden-card {
+      display:none !important;
+    }
+    
+    .card-top {
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      margin-bottom:12px;
+    }
+    
+    .counselor-header{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex:1;
+    }
+    .avatar{
+      width:52px;height:52px;border-radius:999px;
+      background:radial-gradient(circle at 30% 30%,var(--accent-pink),#fb7185);
+      display:flex;align-items:center;justify-content:center;
+      color:white;font-weight:600;font-size:18px;
+      flex-shrink:0;
+    }
+    .counselor-info {
+      flex:1;
+      min-width:0;
+    }
+    .name{
+      font-size:16px;
+      font-weight:600;
+      cursor:pointer;
+      color:#1f2937;
+      margin-bottom:2px;
+    }
+    body.dark-mode .name {
+      color:#f9fafb;
+    }
+    .name:hover {
+      color:var(--accent-pink);
+    }
+    .role{font-size:12px;color:var(--text-muted);margin-bottom:4px;}
+    .verified-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      font-size:10px;
+      color:#16a34a;
+      font-weight:600;
+    }
+    
+    .favorite-heart {
+      font-size:24px;
+      cursor:pointer;
+      transition:all .2s;
+      user-select:none;
+    }
+    .favorite-heart.loved {
+      color:#dc2626;
+    }
+    .favorite-heart:not(.loved) {
+      color:#d1d5db;
+    }
+    .favorite-heart:hover {
+      transform:scale(1.2);
+    }
+
+    .status-dot{
+      position:absolute;
+      top:14px;
+      right:14px;
+      width:10px;height:10px;border-radius:999px;
+      border:2px solid #ffffff;
+      background:#22c55e;
+      box-shadow:0 0 0 4px rgba(22,163,74,0.25);
+    }
+    .status-busy{background:#f59e0b;box-shadow:0 0 0 4px rgba(245,158,11,0.25);}
+    .status-off{background:#ef4444;box-shadow:0 0 0 4px rgba(248,113,113,0.3);}
+
+    .meta-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:8px 0;
+      font-size:11px;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .availability{
+      display:flex;
+      align-items:center;
+      gap:4px;
+      font-weight:500;
+    }
+    .availability.online{color:#16a34a;}
+    .availability.busy{color:#f59e0b;}
+    .availability.offline{color:#ef4444;}
+    .rating{
+      font-size:11px;
+      color:#f59e0b;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .rating:hover {
+      text-decoration:underline;
+    }
+    
+    .badges-row {
+      display:flex;
+      gap:6px;
+      margin:8px 0;
+      flex-wrap:wrap;
+    }
+    .spec-badge {
+      padding:4px 8px;
+      border-radius:999px;
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      color:#1e40af;
+      font-size:10px;
+      font-weight:600;
+    }
+    body.dark-mode .spec-badge {
+      background:#1e3a8a;
+      border-color:#1e40af;
+      color:#dbeafe;
+    }
+    
+    .price-row {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:8px 0;
+    }
+    .price{
+      font-size:14px;
+      font-weight:700;
+      color:#16a34a;
+    }
+    .match-percent {
+      font-size:11px;
+      font-weight:600;
+      color:#8b5cf6;
+    }
+    
+    .experience{
+      font-size:11px;
+      color:#6b7280;
+      margin:4px 0;
+    }
+    
+    .response-time {
+      font-size:11px;
+      color:#6b7280;
+      font-style:italic;
+      margin:4px 0;
+    }
+
+    .tag{
+      display:inline-block;
+      padding:4px 10px;
+      border-radius:999px;
+      background:var(--accent-pink-soft);
+      color:#9d174d;
+      font-size:11px;
+      font-weight:600;
+      border:1px solid rgba(244,114,182,0.4);
+      margin-right:6px;
+      margin-bottom:6px;
+    }
+
+    .lang-row{
+      margin:8px 0;
+      font-size:11px;
+      color:var(--text-muted);
+      display:flex;
+      align-items:center;
+      gap:4px;
+    }
+    
+    .slot-warning {
+      background:#fef3c7;
+      border:1px solid #fbbf24;
+      border-radius:8px;
+      padding:6px 10px;
+      font-size:11px;
+      color:#92400e;
+      font-weight:600;
+      margin:8px 0;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .buttons-row{
+      display:flex;
+      gap:8px;
+      margin-top:12px;
+    }
+    .btn-chat,
+    .btn-call,
+    .btn-book,
+    .btn-waitlist{
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      padding:10px;
+      border-radius:999px;
+      border:none;
+      font-size:12px;
+      font-weight:600;
+      cursor:pointer;
+      color:white;
+      transition:all .15s;
+    }
+    .btn-chat{background:#16a34a;}
+    .btn-call{background:var(--accent-pink);}
+    .btn-book{background:#3b82f6;}
+    .btn-waitlist{background:#8b5cf6;}
+    .btn-chat:hover,
+    .btn-call:hover,
+    .btn-book:hover,
+    .btn-waitlist:hover{
+      transform:translateY(-2px);
+      filter:brightness(1.1);
+    }
+    
+    .share-btn {
+      width:100%;
+      margin-top:8px;
+      padding:8px;
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      background:#f9fafb;
+      font-size:12px;
+      font-weight:600;
+      color:#6b7280;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+    }
+    body.dark-mode .share-btn {
+      background:#374151;
+      border-color:#4b5563;
+      color:#d1d5db;
+    }
+
+    /* MODALS */
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,0.70);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:100;
+      padding:20px;
+    }
+    .modal-backdrop.show {
+      display:flex;
+    }
+    .modal{
+      width:100%;
+      max-width:500px;
+      background:#fff;
+      border-radius:20px;
+      padding:24px;
+      box-shadow:0 20px 50px rgba(15,23,42,0.4);
+      border:1px solid #e5e7eb;
+      max-height:90vh;
+      overflow-y:auto;
+    }
+    body.dark-mode .modal {
+      background:#1f2937;
+      border-color:#374151;
+    }
+    .modal-title{
+      font-size:18px;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+    .modal-sub{
+      font-size:13px;
+      color:var(--text-muted);
+      margin-bottom:16px;
+    }
+    .modal-field{
+      margin-bottom:12px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      font-size:13px;
+    }
+    .modal-field input,
+    .modal-field select,
+    .modal-field textarea{
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid #d1d5db;
+      font-size:14px;
+      font-family:inherit;
+    }
+    body.dark-mode .modal-field input,
+    body.dark-mode .modal-field select,
+    body.dark-mode .modal-field textarea {
+      background:#374151;
+      border-color:#4b5563;
+      color:#f9fafb;
+    }
+    .modal-field textarea {
+      min-height:80px;
+      resize:vertical;
+    }
+    .modal-actions{
+      margin-top:16px;
+      display:flex;
+      gap:8px;
+      justify-content:flex-end;
+    }
+    .btn-secondary{
+      padding:10px 16px;
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      background:#ffffff;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      color:#374151;
+    }
+    body.dark-mode .btn-secondary {
+      background:#374151;
+      border-color:#4b5563;
+      color:#f9fafb;
+    }
+    .btn-primary{
+      padding:10px 16px;
+      border-radius:999px;
+      border:none;
+      background:linear-gradient(135deg,#6366f1,#ec4899);
+      color:#ffffff;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .modal-hint{
+      margin-top:8px;
+      font-size:11px;
+      color:var(--text-muted);
+    }
+
+    .quiz-option{
+      padding:12px;
+      border:2px solid #e5e7eb;
+      border-radius:12px;
+      margin-bottom:8px;
+      cursor:pointer;
+      transition:all .15s;
+      background:#fff;
+    }
+    body.dark-mode .quiz-option {
+      background:#374151;
+      border-color:#4b5563;
+    }
+    .quiz-option:hover{
+      border-color:#3b82f6;
+      background:#eff6ff;
+    }
+    body.dark-mode .quiz-option:hover {
+      background:#1e3a8a;
+    }
+    .quiz-option.selected{
+      border-color:#3b82f6;
+      background:#dbeafe;
+    }
+    
+    .review-item {
+      padding:12px;
+      background:#f9fafb;
+      border-radius:12px;
+      margin-bottom:10px;
+      border:1px solid #e5e7eb;
+    }
+    body.dark-mode .review-item {
+      background:#374151;
+      border-color:#4b5563;
+    }
+    .review-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:6px;
+    }
+    .review-author {
+      font-size:12px;
+      font-weight:600;
+      color:#374151;
+    }
+    body.dark-mode .review-author {
+      color:#f9fafb;
+    }
+    .review-rating {
+      color:#f59e0b;
+      font-size:12px;
+    }
+    .review-text {
+      font-size:13px;
+      color:#6b7280;
+      font-style:italic;
+    }
+    
+    .detail-section {
+      margin:16px 0;
+    }
+    .detail-section h3 {
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:8px;
+      color:#374151;
+    }
+    body.dark-mode .detail-section h3 {
+      color:#f9fafb;
+    }
+    .detail-section p {
+      font-size:13px;
+      color:#6b7280;
+      line-height:1.6;
+    }
+    
+    .video-placeholder {
+      width:100%;
+      height:200px;
+      background:linear-gradient(135deg,#dbeafe,#bfdbfe);
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:48px;
+      margin:12px 0;
+      cursor:pointer;
+      transition:all .2s;
+    }
+    .video-placeholder:hover {
+      transform:scale(1.02);
+    }
+    
+    /* CHAT WIDGET */
+    .chat-widget {
+      position:fixed;
+      bottom:20px;
+      right:20px;
+      z-index:50;
+    }
+    .chat-bubble {
+      width:60px;
+      height:60px;
+      border-radius:999px;
+      background:linear-gradient(135deg,#6366f1,#ec4899);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      font-size:28px;
+      cursor:pointer;
+      box-shadow:0 8px 20px rgba(99,102,241,0.4);
+      transition:all .2s;
+    }
+    .chat-bubble:hover {
+      transform:scale(1.1);
+    }
+    .chat-window {
+      position:absolute;
+      bottom:70px;
+      right:0;
+      width:320px;
+      height:400px;
+      background:#fff;
+      border-radius:16px;
+      box-shadow:0 12px 40px rgba(15,23,42,0.3);
+      display:none;
+      flex-direction:column;
+    }
+    body.dark-mode .chat-window {
+      background:#1f2937;
+    }
+    .chat-window.show {
+      display:flex;
+    }
+    .chat-header {
+      padding:16px;
+      background:linear-gradient(135deg,#6366f1,#ec4899);
+      color:#fff;
+      border-radius:16px 16px 0 0;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .chat-body {
+      flex:1;
+      padding:16px;
+      overflow-y:auto;
+    }
+    .chat-message {
+      padding:8px 12px;
+      background:#f3f4f6;
+      border-radius:12px;
+      margin-bottom:8px;
+      font-size:13px;
+    }
+    body.dark-mode .chat-message {
+      background:#374151;
+    }
+    .chat-message.user {
+      background:#dbeafe;
+      margin-left:20px;
+    }
+    body.dark-mode .chat-message.user {
+      background:#1e3a8a;
+    }
+    .chat-footer {
+      padding:12px;
+      border-top:1px solid #e5e7eb;
+      display:flex;
+      gap:8px;
+    }
+    body.dark-mode .chat-footer {
+      border-top-color:#374151;
+    }
+    .chat-input {
+      flex:1;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid #d1d5db;
+      font-size:13px;
+    }
+    body.dark-mode .chat-input {
+      background:#374151;
+      border-color:#4b5563;
+      color:#f9fafb;
+    }
+    .chat-send {
+      padding:8px 16px;
+      border-radius:999px;
+      background:#3b82f6;
+      color:#fff;
+      border:none;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+    }
+    
+    .typing-indicator {
+      display:flex;
+      gap:4px;
+      padding:8px;
+    }
+    .typing-dot {
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:#6b7280;
+      animation:typing 1.4s infinite;
+    }
+    .typing-dot:nth-child(2) {
+      animation-delay:0.2s;
+    }
+    .typing-dot:nth-child(3) {
+      animation-delay:0.4s;
+    }
+    @keyframes typing {
+      0%, 60%, 100% { opacity:0.3; }
+      30% { opacity:1; }
+    }
+
+    @media(max-width:768px){
+      body{padding:8px;}
+      .shell{border-radius:20px;}
+      .header{padding:12px 16px;}
+      .counselors-section{
+        padding:16px;
+        grid-template-columns:1fr;
+      }
+      .filter-bar{padding:12px 16px;}
+      .chat-window {
+        width:calc(100vw - 32px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-left">
+        <div class="dot-logo"></div>
+        <div>
+          <div class="header-title">Counselors</div>
+          <div class="header-subtitle">Real help when you need it most</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="dark-toggle" onclick="toggleDarkMode()">
+          <span id="darkIcon">🌙</span>
+        </button>
+        <button class="lang-toggle" onclick="toggleLanguage()">
+          <span id="langBtn">हिंदी</span>
+        </button>
+        <a href="journey.html" class="back-btn">← Back</a>
+      </div>
+    </div>
+
+    <!-- CRISIS BANNER -->
+    <div class="crisis-banner">
+      <div class="crisis-text">🚨 In crisis? You're not alone.</div>
+      <a href="sos.html" class="crisis-btn">Get Immediate Help →</a>
+    </div>
+
+    <!-- FAVORITES BAR -->
+    <div class="favorites-bar" id="favoritesBar" style="display:none;">
+      <div class="fav-text">
+        ❤️ <span id="favCount">0</span> counselors saved to favorites
+      </div>
+      <button class="view-fav-btn" onclick="showFavorites()">View My Favorites</button>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        👥 <span class="stat-value">6</span> Counselors available
+      </div>
+      <div class="stat-item">
+        🟢 <span class="stat-value">3</span> Online now
+      </div>
+      <div class="stat-item">
+        ⭐ <span class="stat-value">4.8</span> Average rating
+      </div>
+      <div class="stat-item">
+        🎯 <span class="stat-value" id="viewedCount">0</span> Recently viewed
+      </div>
+    </div>
+
+    <!-- EMERGENCY STRIP -->
+    <div class="emergency-section">
+      <div class="emergency-grid">
+        <div class="emergency-card" onclick="window.location.href='tel:108'">
+          <div class="em-label">EMERGENCY</div>
+          <div class="em-value">📞 108</div>
+        </div>
+        <div class="emergency-card" onclick="window.location.href='tel:9152987821'">
+          <div class="em-label">SOS CRISIS</div>
+          <div class="em-value">🆘 iCall: 9152987821</div>
+        </div>
+        <div class="emergency-card" onclick="window.location.href='tel:9820466726'">
+          <div class="em-label">AASRA</div>
+          <div class="em-value">💬 9820466726</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK MATCH -->
+    <div class="quick-match">
+      <div class="qm-title">🎯 Not sure who to talk to?</div>
+      <button class="qm-btn" onclick="startQuickMatch()">
+        Take 3-question quiz → Get matched
+      </button>
+    </div>
+
+    <!-- GROUP THERAPY BANNER -->
+    <div class="group-therapy-banner">
+      <div class="gt-text">👥 Join group therapy sessions (6-8 people) • More affordable • Peer support</div>
+      <button class="gt-btn" onclick="showGroupTherapy()">Explore Groups</button>
+    </div>
+
+    <!-- MOOD -->
+    <div class="quiz-section">
+      <div class="quiz-title">How are you feeling right now?</div>
+      <div class="mood-grid">
+        <div class="mood-card" data-mood="great" onclick="selectMood('great')">
+          <div class="mood-emoji">😊</div>
+          <div class="mood-label">Great</div>
+        </div>
+        <div class="mood-card" data-mood="okay" onclick="selectMood('okay')">
+          <div class="mood-emoji">😐</div>
+          <div class="mood-label">Okay</div>
+        </div>
+        <div class="mood-card" data-mood="low" onclick="selectMood('low')">
+          <div class="mood-emoji">😔</div>
+          <div class="mood-label">Low</div>
+        </div>
+        <div class="mood-card" data-mood="tough" onclick="selectMood('tough')">
+          <div class="mood-emoji">😣</div>
+          <div class="mood-label">Tough</div>
+        </div>
+      </div>
+      <div class="quiz-result" id="quizResult">
+        <strong>Based on your mood:</strong>
+        <span id="moodText"></span>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-section">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search by name, specialty, language...">
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <span class="filter-label">Specialty</span>
+        <button class="filter-chip active" data-specialty="all">All</button>
+        <button class="filter-chip" data-specialty="anxiety">Anxiety</button>
+        <button class="filter-chip" data-specialty="relationships">Relationships</button>
+        <button class="filter-chip" data-specialty="career">Career</button>
+        <button class="filter-chip" data-specialty="depression">Depression</button>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Language</span>
+        <select id="languageFilter" class="filter-select">
+          <option value="all">Any language</option>
+          <option value="en">English</option>
+          <option value="hi">Hindi</option>
+          <option value="ta">Tamil</option>
+          <option value="te">Telugu</option>
+          <option value="bn">Bengali</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Price</span>
+        <select id="priceFilter" class="filter-select">
+          <option value="all">Any price</option>
+          <option value="free">Free</option>
+          <option value="low">₹300-600</option>
+          <option value="mid">₹600-1000</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- COUNSELORS -->
+    <div class="counselors-section" id="counselorList">
+      <!-- Counselor 1 -->
+      <div class="counselor-card" data-id="1"
+           data-specialty="anxiety"
+           data-languages="en,hi"
+           data-price="500"
+           data-search="Dr. Arjun Sharma Clinical Psychologist Exam Stress Anxiety English Hindi CBT Certified">
+        
+        <div class="card-top">
+          <div class="counselor-header">
+            <div class="avatar">AS</div>
+            <div class="counselor-info">
+              <div class="name" onclick="showCounselorDetail(1)">Dr. Arjun Sharma</div>
+              <div class="role">Clinical Psychologist</div>
+              <div class="verified-badge">✓ RCI Licensed • CBT Certified</div>
+            </div>
+          </div>
+          <div class="favorite-heart" onclick="toggleFavorite(1, event)">♡</div>
+        </div>
+        
+        <div class="meta-row">
+          <div class="availability online">● Online now</div>
+          <div class="rating" onclick="showReviews(1)">★ 4.9 (120)</div>
+        </div>
+        
+        <div class="price-row">
+          <div class="price">₹500/session • First free</div>
+          <div class="match-percent">92% match</div>
+        </div>
+        
+        <div class="experience">8 years exp • 500+ sessions • 94% success rate</div>
+        <div class="response-time">Usually replies in 2 hours</div>
+        
+        <div class="slot-warning">🔥 Only 3 slots left today!</div>
+        
+        <div class="badges-row">
+          <span class="spec-badge">Exam Stress</span>
+          <span class="spec-badge">Anxiety</span>
+        </div>
+        
+        <div class="lang-row">🗣 English, Hindi</div>
+        
+        <div class="buttons-row">
+          <button class="btn-chat" onclick="startChat(1)">💬 Chat</button>
+          <button class="btn-call" onclick="startCall(1)">📞 Call</button>
+          <button class="btn-book" onclick="openBooking(1, 'Dr. Arjun Sharma')">📅 Book</button>
+        </div>
+        
+        <button class="share-btn" onclick="shareProfile(1)">
+          📤 Share Profile via WhatsApp
+        </button>
+      </div>
+
+      <!-- Counselor 2 -->
+      <div class="counselor-card" data-id="2"
+           data-specialty="relationships"
+           data-languages="en,ta"
+           data-price="600"
+           data-search="Priya Nair College Counselor Relationships Sleep English Tamil">
+        
+        <div class="card-top">
+          <div class="counselor-header">
+            <div class="avatar">PN</div>
+            <div class="counselor-info">
+              <div class="name" onclick="showCounselorDetail(2)">Priya Nair</div>
+              <div class="role">College Counselor</div>
+              <div class="verified-badge">✓ Verified</div>
+            </div>
+          </div>
+          <div class="favorite-heart" onclick="toggleFavorite(2, event)">♡</div>
+        </div>
+        
+        <div class="status-dot status-busy"></div>
+        
+        <div class="meta-row">
+          <div class="availability busy">● Available today, 6–9 PM</div>
+          <div class="rating" onclick="showReviews(2)">★ 4.7 (85)</div>
+        </div>
+        
+        <div class="price-row">
+          <div class="price">₹600/session</div>
+          <div class="match-percent">88% match</div>
+        </div>
+        
+        <div class="experience">5 years exp • 300+ sessions • 89% success rate</div>
+        <div class="response-time">Usually replies in 4 hours</div>
+        
+        <div class="badges-row">
+          <span class="spec-badge">Relationships</span>
+          <span class="spec-badge">Sleep Issues</span>
+        </div>
+        
+        <div class="lang-row">🗣 English, Tamil</div>
+        
+        <div class="buttons-row">
+          <button class="btn-chat" onclick="startChat(2)">💬 Chat</button>
+          <button class="btn-call" onclick="startCall(2)">📞 Call</button>
+          <button class="btn-waitlist" onclick="joinWaitlist(2, 'Priya Nair')">🔔 Waitlist</button>
+        </div>
+        
+        <button class="share-btn" onclick="shareProfile(2)">
+          📤 Share Profile via WhatsApp
+        </button>
+      </div>
+
+      <!-- Counselor 3 -->
+      <div class="counselor-card" data-id="3"
+           data-specialty="career"
+           data-languages="en,hi"
+           data-price="700"
+           data-search="Vikram Patel Career Coach Study Motivation English Hindi">
+        
+        <div class="card-top">
+          <div class="counselor-header">
+            <div class="avatar">VP</div>
+            <div class="counselor-info">
+              <div class="name" onclick="showCounselorDetail(3)">Vikram Patel</div>
+              <div class="role">Career Coach</div>
+              <div class="verified-badge">✓ Verified</div>
+            </div>
+          </div>
+          <div class="favorite-heart" onclick="toggleFavorite(3, event)">♡</div>
+        </div>
+        
+        <div class="status-dot status-off"></div>
+        
+        <div class="meta-row">
+          <div class="availability offline">● Slots on Sat–Sun</div>
+          <div class="rating" onclick="showReviews(3)">★ 4.5 (62)</div>
+        </div>
+        
+        <div class="price-row">
+          <div class="price">₹700/session</div>
+          <div class="match-percent">75% match</div>
+        </div>
+        
+        <div class="experience">10 years exp • 400+ sessions • 91% success rate</div>
+        <div class="response-time">Usually replies in 1 day</div>
+        
+        <div class="badges-row">
+          <span class="spec-badge">Study Motivation</span>
+          <span class="spec-badge">Career Planning</span>
+        </div>
+        
+        <div class="lang-row">🗣 English, Hindi</div>
+        
+        <div class="buttons-row">
+          <button class="btn-chat" onclick="startChat(3)">💬 Chat</button>
+          <button class="btn-call" onclick="startCall(3)">📞 Call</button>
+          <button class="btn-book" onclick="openBooking(3, 'Vikram Patel')">📅 Book</button>
+        </div>
+        
+        <button class="share-btn" onclick="shareProfile(3)">
+          📤 Share Profile via WhatsApp
+        </button>
+      </div>
+
+      <!-- Counselor 4 -->
+      <div class="counselor-card" data-id="4"
+           data-specialty="depression"
+           data-languages="hi,en"
+           data-price="400"
+           data-search="Dr. Meera Reddy Psychiatrist Depression Anxiety Hindi English">
+        
+        <div class="card-top">
+          <div class="counselor-header">
+            <div class="avatar">MR</div>
+            <div class="counselor-info">
+              <div class="name" onclick="showCounselorDetail(4)">Dr. Meera Reddy</div>
+              <div class="role">Psychiatrist</div>
+              <div class="verified-badge">✓ RCI Licensed</div>
+            </div>
+          </div>
+          <div class="favorite-heart" onclick="toggleFavorite(4, event)">♡</div>
+        </div>
+        
+        <div class="meta-row">
+          <div class="availability online">● Online now</div>
+          <div class="rating" onclick="showReviews(4)">★ 4.8 (95)</div>
+        </div>
+        
+        <div class="price-row">
+          <div class="price">₹400/session • Student discount</div>
+          <div class="match-percent">90% match</div>
+        </div>
+        
+        <div class="experience">12 years exp • 600+ sessions • 93% success rate</div>
+        <div class="response-time">Usually replies in 1 hour</div>
+        
+        <div class="badges-row">
+          <span class="spec-badge">Depression</span>
+          <span class="spec-badge">Anxiety</span>
+          <span class="spec-badge">Medication Management</span>
+        </div>
+        
+        <div class="lang-row">🗣 Hindi, English</div>
+        
+        <div class="buttons-row">
+          <button class="btn-chat" onclick="startChat(4)">💬 Chat</button>
+          <button class="btn-call" onclick="startCall(4)">📞 Call</button>
+          <button class="btn-book" onclick="openBooking(4, 'Dr. Meera Reddy')">📅 Book</button>
+        </div>
+        
+        <button class="share-btn" onclick="shareProfile(4)">
+          📤 Share Profile via WhatsApp
+        </button>
+      </div>
+
+      <!-- Counselor 5 -->
+      <div class="counselor-card" data-id="5"
+           data-specialty="relationships"
+           data-languages="en"
+           data-price="0"
+           data-search="Ravi Kumar Peer Counselor Relationships Free English">
+        
+        <div class="card-top">
+          <div class="counselor-header">
+            <div class="avatar">RK</div>
+            <div class="counselor-info">
+              <div class="name" onclick="showCounselorDetail(5)">Ravi Kumar</div>
+              <div class="role">Peer Counselor</div>
+              <div class="verified-badge">✓ Verified</div>
+            </div>
+          </div>
+          <div class="favorite-heart" onclick="toggleFavorite(5, event)">♡</div>
+        </div>
+        
+        <div class="meta-row">
+          <div class="availability online">● Online now</div>
+          <div class="rating" onclick="showReviews(5)">★ 4.6 (45)</div>
+        </div>
+        
+        <div class="price-row">
+          <div class="price" style="color:#16a34a;font-size:16px;">FREE sessions</div>
+          <div class="match-percent">85% match</div>
+        </div>
+        
+        <div class="experience">2 years exp • 150+ sessions • 87% success rate</div>
+        <div class="response-time">Usually replies in 30 mins</div>
+        
+        <div class="badges-row">
+          <span class="spec-badge">Relationships</span>
+          <span class="spec-badge">Peer Support</span>
+        </div>
+        
+        <div class="lang-row">🗣 English</div>
+        
+        <div class="buttons-row">
+          <button class="btn-chat" onclick="startChat(5)">💬 Chat</button>
+          <button class="btn-call" onclick="startCall(5)">📞 Call</button>
+          <button class="btn-book" onclick="openBooking(5, 'Ravi Kumar')">📅 Book</button>
+        </div>
+        
+        <button class="share-btn" onclick="shareProfile(5)">
+          📤 Share Profile via WhatsApp
+        </button>
+      </div>
+
+      <!-- Counselor 6 -->
+      <div class="counselor-card" data-id="6"
+           data-specialty="anxiety"
+           data-languages="hi,en,ta"
+           data-price="550"
+           data-search="Anjali Singh Licensed Therapist Anxiety Trauma Hindi English Tamil EMDR Certified">
+        
+        <div class="card-top">
+          <div class="counselor-header">
+            <div class="avatar">AS</div>
+            <div class="counselor-info">
+              <div class="name" onclick="showCounselorDetail(6)">Anjali Singh</div>
+              <div class="role">Licensed Therapist</div>
+              <div class="verified-badge">✓ RCI Licensed • EMDR Certified</div>
+            </div>
+          </div>
+          <div class="favorite-heart" onclick="toggleFavorite(6, event)">♡</div>
+        </div>
+        
+        <div class="status-dot status-busy"></div>
+        
+        <div class="meta-row">
+          <div class="availability busy">● Available tomorrow</div>
+          <div class="rating" onclick="showReviews(6)">★ 4.9 (110)</div>
+        </div>
+        
+        <div class="price-row">
+          <div class="price">₹550/session</div>
+          <div class="match-percent">94% match</div>
+        </div>
+        
+        <div class="experience">7 years exp • 450+ sessions • 95% success rate</div>
+        <div class="response-time">Usually replies in 3 hours</div>
+        
+        <div class="badges-row">
+          <span class="spec-badge">Anxiety</span>
+          <span class="spec-badge">Trauma</span>
+          <span class="spec-badge">PTSD</span>
+        </div>
+        
+        <div class="lang-row">🗣 Hindi, English, Tamil</div>
+        
+        <div class="buttons-row">
+          <button class="btn-chat" onclick="startChat(6)">💬 Chat</button>
+          <button class="btn-call" onclick="startCall(6)">📞 Call</button>
+          <button class="btn-book" onclick="openBooking(6, 'Anjali Singh')">📅 Book</button>
+        </div>
+        
+        <button class="share-btn" onclick="shareProfile(6)">
+          📤 Share Profile via WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT WIDGET -->
+  <div class="chat-widget">
+    <div class="chat-bubble" onclick="toggleChat()">💬</div>
+    <div class="chat-window" id="chatWindow">
+      <div class="chat-header">
+        <div>
+          <div style="font-weight:700;" id="chatHeaderTitle">Ask us anything</div>
+          <div style="font-size:11px;opacity:0.9;" id="chatHeaderSub">We'll help you find the right counselor</div>
+        </div>
+        <div style="cursor:pointer;font-size:20px;" onclick="toggleChat()">×</div>
+      </div>
+      <div class="chat-body" id="chatBody">
+        <div class="chat-message" id="chatWelcomeMsg">
+          Hi! 👋 I'm here to help you find the perfect counselor. What kind of support are you looking for?
+        </div>
+        <div id="chatTyping" class="typing-indicator" style="display:none;">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      </div>
+      <div class="chat-footer">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter')sendChatMessage()">
+        <button class="chat-send" id="chatSendBtn" onclick="sendChatMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALS -->
+  
+  <!-- Booking Modal -->
+  <div class="modal-backdrop" id="bookingModal">
+    <div class="modal">
+      <div class="modal-title" id="modalCounselorName">Book session</div>
+      <div class="modal-sub" id="bookingSub">Choose a date and time. We'll send you a confirmation.</div>
+
+      <div class="modal-field">
+        <label for="bookingDate" id="lblBookingDate">📅 Select Date</label>
+        <input type="date" id="bookingDate">
+      </div>
+      
+      <div class="modal-field">
+        <label for="bookingTime" id="lblBookingTime">🕐 Select Time</label>
+        <select id="bookingTime">
+          <option value="" id="bookingTimePlaceholder">Choose a slot</option>
+          <option>10:00 AM – 10:45 AM</option>
+          <option>11:00 AM – 11:45 AM</option>
+          <option>2:00 PM – 2:45 PM</option>
+          <option>4:00 PM – 4:45 PM</option>
+          <option>6:00 PM – 6:45 PM</option>
+        </select>
+      </div>
+      
+      <div class="modal-field">
+        <label id="lblPreSession">📋 Pre-Session Form (Optional)</label>
+        <textarea id="preSessionConcerns" placeholder="What would you like to discuss? This helps your counselor prepare better."></textarea>
+      </div>
+      
+      <div class="modal-field">
+        <label id="lblRecurring">
+          <input type="checkbox" id="recurringCheck"> Book recurring weekly sessions (4 weeks)
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" id="btnBookingCancel" onclick="closeBooking()">Cancel</button>
+        <button class="btn-primary" id="btnBookingConfirm" onclick="saveBooking()">Confirm Booking</button>
+      </div>
+      <div class="modal-hint" id="bookingHint"></div>
+    </div>
+  </div>
+
+  <!-- Counselor Detail Modal -->
+  <div class="modal-backdrop" id="detailModal">
+    <div class="modal">
+      <div id="detailContent"></div>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="btnDetailClose" onclick="closeDetail()">Close</button>
+        <button class="btn-primary" id="detailBookBtn">Book Session</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews Modal -->
+  <div class="modal-backdrop" id="reviewsModal">
+    <div class="modal">
+      <div class="modal-title" id="reviewsTitle">Reviews</div>
+      <div id="reviewsContent"></div>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="btnReviewsClose" onclick="closeReviews()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Match Modal -->
+  <div class="modal-backdrop" id="matchModal">
+    <div class="modal">
+      <div class="modal-title" id="matchTitle">🎯 Quick Match Quiz</div>
+      <div class="modal-sub" id="matchSub">Answer 3 questions to find your best counselor</div>
+
+      <div id="matchQ1">
+        <p style="font-weight:600;margin-bottom:8px;" id="matchQ1Text">1. What do you need help with most?</p>
+        <div class="quiz-option" onclick="selectMatch(1,'anxiety')" id="matchQ1Opt1">😰 Anxiety & Stress</div>
+        <div class="quiz-option" onclick="selectMatch(1,'relationships')" id="matchQ1Opt2">💔 Relationships & Social</div>
+        <div class="quiz-option" onclick="selectMatch(1,'career')" id="matchQ1Opt3">📚 Career & Studies</div>
+        <div class="quiz-option" onclick="selectMatch(1,'depression')" id="matchQ1Opt4">😔 Depression & Mood</div>
+      </div>
+
+      <div id="matchQ2" style="display:none;">
+        <p style="font-weight:600;margin-bottom:8px;" id="matchQ2Text">2. Preferred language?</p>
+        <div class="quiz-option" onclick="selectMatch(2,'hi')" id="matchQ2Opt1">🇮🇳 Hindi</div>
+        <div class="quiz-option" onclick="selectMatch(2,'en')" id="matchQ2Opt2">🇬🇧 English</div>
+        <div class="quiz-option" onclick="selectMatch(2,'ta')" id="matchQ2Opt3">🗣 Tamil</div>
+        <div class="quiz-option" onclick="selectMatch(2,'any')" id="matchQ2Opt4">✨ Any language</div>
+      </div>
+
+      <div id="matchQ3" style="display:none;">
+        <p style="font-weight:600;margin-bottom:8px;" id="matchQ3Text">3. Budget per session?</p>
+        <div class="quiz-option" onclick="selectMatch(3,'free')" id="matchQ3Opt1">💚 Free only</div>
+        <div class="quiz-option" onclick="selectMatch(3,'low')" id="matchQ3Opt2">💰 ₹300-600</div>
+        <div class="quiz-option" onclick="selectMatch(3,'mid')" id="matchQ3Opt3">💵 ₹600-1000</div>
+        <div class="quiz-option" onclick="selectMatch(3,'any')" id="matchQ3Opt4">✨ Any price</div>
+      </div>
+
+      <div id="matchResult" style="display:none;"></div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" id="btnMatchClose" onclick="closeMatch()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Waitlist Modal -->
+  <div class="modal-backdrop" id="waitlistModal">
+    <div class="modal">
+      <div class="modal-title" id="waitlistTitle">🔔 Join Waitlist</div>
+      <div class="modal-sub" id="waitlistSub">We'll notify you when <span id="waitlistCounselorName"></span> has new slots available.</div>
+
+      <div class="modal-field">
+        <label for="waitlistEmail" id="lblWaitlistEmail">Your email</label>
+        <input type="email" id="waitlistEmail" placeholder="you@example.com">
+      </div>
+      
+      <div class="modal-field">
+        <label for="waitlistPhone" id="lblWaitlistPhone">Your phone (optional)</label>
+        <input type="tel" id="waitlistPhone" placeholder="+91 98765 43210">
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" id="btnWaitlistCancel" onclick="closeWaitlist()">Cancel</button>
+        <button class="btn-primary" id="btnWaitlistJoin" onclick="saveWaitlist()">Join Waitlist</button>
+      </div>
+      <div class="modal-hint" id="waitlistHint"></div>
+    </div>
+  </div>
+
+  <!-- Group Therapy Modal -->
+  <div class="modal-backdrop" id="groupModal">
+    <div class="modal">
+      <div class="modal-title" id="groupTitle">👥 Group Therapy Sessions</div>
+      <div class="modal-sub" id="groupSub">Join 6-8 people with similar concerns • More affordable • Peer support</div>
+
+      <div class="detail-section">
+        <h3 id="groupAvailableTitle">Available Groups</h3>
+        <div class="quiz-option" style="margin-bottom:12px;">
+          <div style="font-weight:600;" id="group1Name">Anxiety Support Group</div>
+          <div style="font-size:12px;color:#6b7280;" id="group1Meta">Every Monday 7-8 PM • ₹200/session • Led by Dr. Arjun Sharma</div>
+        </div>
+        <div class="quiz-option" style="margin-bottom:12px;">
+          <div style="font-weight:600;" id="group2Name">College Life & Relationships</div>
+          <div style="font-size:12px;color:#6b7280;" id="group2Meta">Every Wednesday 6-7 PM • ₹150/session • Led by Priya Nair</div>
+        </div>
+        <div class="quiz-option">
+          <div style="font-weight:600;" id="group3Name">Career Planning & Goals</div>
+          <div style="font-size:12px;color:#6b7280;" id="group3Meta">Every Saturday 10-11 AM • ₹250/session • Led by Vikram Patel</div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" id="btnGroupClose" onclick="closeGroupTherapy()">Close</button>
+        <button class="btn-primary" id="btnGroupJoin" onclick="alert('Group booking feature coming soon!')">Join a Group</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Favorites Modal -->
+  <div class="modal-backdrop" id="favoritesModal">
+    <div class="modal">
+      <div class="modal-title" id="favoritesTitle">❤️ My Favorite Counselors</div>
+      <div class="modal-sub" id="favoritesSub">Your saved counselors</div>
+      <div id="favoritesContent"></div>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="btnFavoritesClose" onclick="closeFavorites()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------------------------
+    // i18n (English + Hindi)
+    // ---------------------------
+    const i18n = {
+      en: {
+        pageTitle: "Counselors – Calm Hub",
+        headerTitle: "Counselors",
+        headerSubtitle: "Real help when you need it most",
+        back: "← Back",
+        crisisText: "🚨 In crisis? You're not alone.",
+        crisisBtn: "Get Immediate Help →",
+        favSuffix: " counselors saved to favorites",
+        viewFav: "View My Favorites",
+        stat1: " Counselors available",
+        stat2: " Online now",
+        stat3: " Average rating",
+        stat4: " Recently viewed",
+        emergency: "EMERGENCY",
+        sosCrisis: "SOS CRISIS",
+        qmTitle: "🎯 Not sure who to talk to?",
+        qmBtn: "Take 3-question quiz → Get matched",
+        gtText: "👥 Join group therapy sessions (6-8 people) • More affordable • Peer support",
+        gtBtn: "Explore Groups",
+        moodQ: "How are you feeling right now?",
+        moodGreat: "Great",
+        moodOkay: "Okay",
+        moodLow: "Low",
+        moodTough: "Tough",
+        basedOnMood: "Based on your mood:",
+        searchPH: "Search by name, specialty, language...",
+        filterSpecialty: "Specialty",
+        filterLanguage: "Language",
+        filterPrice: "Price",
+        chipAll: "All",
+        chipAnxiety: "Anxiety",
+        chipRelationships: "Relationships",
+        chipCareer: "Career",
+        chipDepression: "Depression",
+        langAny: "Any language",
+        langEn: "English",
+        langHi: "Hindi",
+        langTa: "Tamil",
+        langTe: "Telugu",
+        langBn: "Bengali",
+        priceAny: "Any price",
+        priceFree: "Free",
+        btnChat: "💬 Chat",
+        btnCall: "📞 Call",
+        btnBook: "📅 Book",
+        btnWaitlist: "🔔 Waitlist",
+        shareBtn: "📤 Share Profile via WhatsApp",
+        onlineNow: "● Online now",
+        availableToday: "● Available today, 6–9 PM",
+        slotsWeekend: "● Slots on Sat–Sun",
+        availableTomorrow: "● Available tomorrow",
+        replies2h: "Usually replies in 2 hours",
+        replies4h: "Usually replies in 4 hours",
+        replies1d: "Usually replies in 1 day",
+        replies1h: "Usually replies in 1 hour",
+        replies30m: "Usually replies in 30 mins",
+        slotWarning: "🔥 Only 3 slots left today!",
+        matchSuffix: " match",
+        badgeExamStress: "Exam Stress",
+        badgeSleepIssues: "Sleep Issues",
+        badgeStudyMotivation: "Study Motivation",
+        badgeCareerPlanning: "Career Planning",
+        badgeMedication: "Medication Management",
+        badgePeerSupport: "Peer Support",
+        badgeTrauma: "Trauma",
+        badgePTSD: "PTSD",
+        badgeAnxiety: "Anxiety",
+        badgeRelationships: "Relationships",
+        badgeDepression: "Depression",
+        price1: "₹500/session • First free",
+        price2: "₹600/session",
+        price3: "₹700/session",
+        price4: "₹400/session • Student discount",
+        price5: "FREE sessions",
+        price6: "₹550/session",
+        bookSession: "Book session",
+        bookWith: "Book with ",
+        bookingSub: "Choose a date and time. We'll send you a confirmation.",
+        selectDate: "📅 Select Date",
+        selectTime: "🕐 Select Time",
+        chooseSlot: "Choose a slot",
+        preSession: "📋 Pre-Session Form (Optional)",
+        preSessionPH: "What would you like to discuss? This helps your counselor prepare better.",
+        recurring: "Book recurring weekly sessions (4 weeks)",
+        cancel: "Cancel",
+        confirmBooking: "Confirm Booking",
+        close: "Close",
+        bookSessionBtn: "Book Session",
+        reviews: "Reviews",
+        matchTitle: "🎯 Quick Match Quiz",
+        matchSub: "Answer 3 questions to find your best counselor",
+        q1: "1. What do you need help with most?",
+        q1o1: "😰 Anxiety & Stress",
+        q1o2: "💔 Relationships & Social",
+        q1o3: "📚 Career & Studies",
+        q1o4: "😔 Depression & Mood",
+        q2: "2. Preferred language?",
+        q2o4: "✨ Any language",
+        q3: "3. Budget per session?",
+        q3o1: "💚 Free only",
+        q3o4: "✨ Any price",
+        showMatches: "Show My Matches",
+        recommendTitle: "✨ We recommend:",
+        scrollHint: "Scroll down to find them and book your session!",
+        about: "About",
+        edu: "Education & Credentials",
+        approach: "Therapeutic Approach",
+        topReviews: "Top Reviews",
+        waitlistTitle: "🔔 Join Waitlist",
+        waitlistSubPrefix: "We'll notify you when ",
+        waitlistSubSuffix: " has new slots available.",
+        yourEmail: "Your email",
+        yourPhone: "Your phone (optional)",
+        joinWaitlist: "Join Waitlist",
+        groupTitle: "👥 Group Therapy Sessions",
+        groupSub: "Join 6-8 people with similar concerns • More affordable • Peer support",
+        availableGroups: "Available Groups",
+        joinGroup: "Join a Group",
+        groupSoon: "Group booking feature coming soon!",
+        favTitle: "❤️ My Favorite Counselors",
+        favSub: "Your saved counselors",
+        noFav: "No favorites yet. Click the ❤️ on counselors to save them!",
+        needDateTime: "Please select both date and time.",
+        bookedRecurring: "✅ Booked! 4 weekly sessions added to your calendar.",
+        bookedSingle: "✅ Booking confirmed! Check your email for details.",
+        bookingAlert: "🎉 Booking confirmed!\n\nReminder will be sent:\n• 24 hours before\n• 1 hour before\n\nSee you soon!",
+        enterEmail: "Please enter your email.",
+        waitlistDone: "✅ Added to waitlist! We'll notify you when slots open.",
+        videoSoon: "Video introduction coming soon!",
+        chatTitle: "Ask us anything",
+        chatSub: "We'll help you find the right counselor",
+        chatWelcome: "Hi! 👋 I'm here to help you find the perfect counselor. What kind of support are you looking for?",
+        chatPH: "Type your message...",
+        send: "Send",
+        chatGeneric: "Thanks for sharing! Based on what you said, I'd recommend checking out our anxiety specialists. Would you like me to filter them for you?",
+        chatAnxiety: "I understand anxiety can be tough. Dr. Arjun Sharma and Anjali Singh specialize in anxiety. Would you like to see their profiles?",
+        chatRel: "Relationships are important! Priya Nair is great with relationship counseling. Want to check her availability?",
+        chatCareer: "Career clarity is key! Vikram Patel can definitely help. He's available on weekends. Should I show you his slots?",
+        openChatAlertPrefix: "💬 Opening chat with ",
+        openChatAlertSuffix: "...\n\nIn the real app, this will open a secure messaging interface.",
+        callConfirmPrefix: "📞 Call ",
+        callConfirmSuffix: " now?\n\nThis will initiate a video call.",
+        callSoon: "🎥 Video call feature coming soon!\n\nFor now, you can book a session and we'll send you a video link.",
+        shareBook: "Book a session: "
+      },
+      hi: {
+        pageTitle: "काउंसलर – Calm Hub",
+        headerTitle: "काउंसलर",
+        headerSubtitle: "जब सबसे ज़्यादा ज़रूरत हो, तब असली मदद",
+        back: "← वापस",
+        crisisText: "🚨 संकट में हैं? आप अकेले नहीं हैं।",
+        crisisBtn: "तुरंत मदद लें →",
+        favSuffix: " काउंसलर पसंदीदा में सेव",
+        viewFav: "मेरे पसंदीदा देखें",
+        stat1: " काउंसलर उपलब्ध",
+        stat2: " अभी ऑनलाइन",
+        stat3: " औसत रेटिंग",
+        stat4: " हाल ही में देखे गए",
+        emergency: "आपातकाल",
+        sosCrisis: "एसओएस संकट",
+        qmTitle: "🎯 समझ नहीं आ रहा किससे बात करें?",
+        qmBtn: "3 सवालों की क्विज़ लें → मैच पाएं",
+        gtText: "👥 ग्रुप थेरपी सेशन जॉइन करें (6-8 लोग) • कम खर्च • साथियों का सपोर्ट",
+        gtBtn: "ग्रुप देखें",
+        moodQ: "अभी आप कैसा महसूस कर रहे हैं?",
+        moodGreat: "बहुत अच्छा",
+        moodOkay: "ठीक",
+        moodLow: "उदास",
+        moodTough: "कठिन",
+        basedOnMood: "आपके मूड के आधार पर:",
+        searchPH: "नाम, विशेषज्ञता, भाषा से खोजें...",
+        filterSpecialty: "विशेषज्ञता",
+        filterLanguage: "भाषा",
+        filterPrice: "शुल्क",
+        chipAll: "सभी",
+        chipAnxiety: "चिंता",
+        chipRelationships: "रिश्ते",
+        chipCareer: "करियर",
+        chipDepression: "अवसाद",
+        langAny: "कोई भी भाषा",
+        langEn: "अंग्रेज़ी",
+        langHi: "हिंदी",
+        langTa: "तमिल",
+        langTe: "तेलुगू",
+        langBn: "बंगाली",
+        priceAny: "कोई भी शुल्क",
+        priceFree: "मुफ़्त",
+        btnChat: "💬 चैट",
+        btnCall: "📞 कॉल",
+        btnBook: "📅 बुक करें",
+        btnWaitlist: "🔔 वेटलिस्ट",
+        shareBtn: "📤 WhatsApp पर प्रोफ़ाइल शेयर करें",
+        onlineNow: "● अभी ऑनलाइन",
+        availableToday: "● आज उपलब्ध, 6–9 PM",
+        slotsWeekend: "● शनि–रवि स्लॉट",
+        availableTomorrow: "● कल उपलब्ध",
+        replies2h: "आमतौर पर 2 घंटे में जवाब",
+        replies4h: "आमतौर पर 4 घंटे में जवाब",
+        replies1d: "आमतौर पर 1 दिन में जवाब",
+        replies1h: "आमतौर पर 1 घंटे में जवाब",
+        replies30m: "आमतौर पर 30 मिनट में जवाब",
+        slotWarning: "🔥 आज सिर्फ 3 स्लॉट बचे हैं!",
+        matchSuffix: " मैच",
+        badgeExamStress: "एग्ज़ाम स्ट्रेस",
+        badgeSleepIssues: "नींद की समस्या",
+        badgeStudyMotivation: "पढ़ाई की प्रेरणा",
+        badgeCareerPlanning: "करियर प्लानिंग",
+        badgeMedication: "दवा प्रबंधन",
+        badgePeerSupport: "पीयर सपोर्ट",
+        badgeTrauma: "ट्रॉमा",
+        badgePTSD: "पीटीएसडी",
+        badgeAnxiety: "चिंता",
+        badgeRelationships: "रिश्ते",
+        badgeDepression: "अवसाद",
+        price1: "₹500/सेशन • पहली सेशन मुफ़्त",
+        price2: "₹600/सेशन",
+        price3: "₹700/सेशन",
+        price4: "₹400/सेशन • छात्र छूट",
+        price5: "मुफ़्त सेशन",
+        price6: "₹550/सेशन",
+        bookSession: "सेशन बुक करें",
+        bookWith: "बुक करें: ",
+        bookingSub: "तारीख और समय चुनें। पुष्टि भेजी जाएगी।",
+        selectDate: "📅 तारीख चुनें",
+        selectTime: "🕐 समय चुनें",
+        chooseSlot: "स्लॉट चुनें",
+        preSession: "📋 प्री-सेशन फॉर्म (वैकल्पिक)",
+        preSessionPH: "आप किस बारे में बात करना चाहेंगे? इससे काउंसलर बेहतर तैयारी कर पाएंगे।",
+        recurring: "साप्ताहिक दोहराए जाने वाले सेशन बुक करें (4 हफ्ते)",
+        cancel: "रद्द करें",
+        confirmBooking: "बुकिंग कन्फर्म करें",
+        close: "बंद करें",
+        bookSessionBtn: "सेशन बुक करें",
+        reviews: "रिव्यू",
+        matchTitle: "🎯 क्विक मैच क्विज़",
+        matchSub: "3 सवालों के जवाब दें और अपना सबसे अच्छा काउंसलर खोजें",
+        q1: "1. आपको किसमें सबसे ज़्यादा मदद चाहिए?",
+        q1o1: "😰 चिंता व तनाव",
+        q1o2: "💔 रिश्ते व सामाजिक",
+        q1o3: "📚 करियर व पढ़ाई",
+        q1o4: "😔 अवसाद व मूड",
+        q2: "2. पसंदीदा भाषा?",
+        q2o4: "✨ कोई भी भाषा",
+        q3: "3. प्रति सेशन बजट?",
+        q3o1: "💚 सिर्फ़ मुफ़्त",
+        q3o4: "✨ कोई भी",
+        showMatches: "मेरे मैच दिखाएँ",
+        recommendTitle: "✨ हम सुझाव देते हैं:",
+        scrollHint: "नीचे स्क्रॉल करके उन्हें खोजें और सेशन बुक करें!",
+        about: "परिचय",
+        edu: "शिक्षा व प्रमाणपत्र",
+        approach: "उपचार का तरीका",
+        topReviews: "प्रमुख रिव्यू",
+        waitlistTitle: "🔔 वेटलिस्ट जॉइन करें",
+        waitlistSubPrefix: "जब ",
+        waitlistSubSuffix: " के नए स्लॉट होंगे, सूचना मिलेगी।",
+        yourEmail: "आपका ईमेल",
+        yourPhone: "आपका फ़ोन (वैकल्पिक)",
+        joinWaitlist: "वेटलिस्ट जॉइन करें",
+        groupTitle: "👥 ग्रुप थेरपी सेशन",
+        groupSub: "6-8 लोगों के साथ • कम खर्च • साथियों का सपोर्ट",
+        availableGroups: "उपलब्ध ग्रुप",
+        joinGroup: "ग्रुप जॉइन करें",
+        groupSoon: "ग्रुप बुकिंग फीचर जल्द आएगा!",
+        favTitle: "❤️ मेरे पसंदीदा काउंसलर",
+        favSub: "आपके सेव किए हुए काउंसलर",
+        noFav: "अभी कोई पसंदीदा नहीं। काउंसलर पर ❤️ दबाकर सेव करें!",
+        needDateTime: "कृपया तारीख और समय दोनों चुनें।",
+        bookedRecurring: "✅ बुक हो गया! 4 साप्ताहिक सेशन कैलेंडर में जोड़ दिए गए।",
+        bookedSingle: "✅ बुकिंग कन्फर्म! विवरण के लिए ईमेल देखें।",
+        bookingAlert: "🎉 बुकिंग कन्फर्म!\n\nरिमाइंडर भेजे जाएंगे:\n• 24 घंटे पहले\n• 1 घंटा पहले\n\nजल्द मिलते हैं!",
+        enterEmail: "कृपया ईमेल दर्ज करें।",
+        waitlistDone: "✅ वेटलिस्ट में जोड़ दिया गया! स्लॉट खुलते ही बताएंगे।",
+        videoSoon: "वीडियो परिचय जल्द आ रहा है!",
+        chatTitle: "कुछ भी पूछें",
+        chatSub: "सही काउंसलर खोजने में मदद करेंगे",
+        chatWelcome: "नमस्ते! 👋 सही काउंसलर ढूंढने में मदद के लिए यहाँ हूँ। आपको किस तरह का सपोर्ट चाहिए?",
+        chatPH: "अपना संदेश लिखें...",
+        send: "भेजें",
+        chatGeneric: "शेयर करने के लिए धन्यवाद! आपकी बात के आधार पर चिंता-संबंधी विशेषज्ञ देखने की सलाह है। क्या फिल्टर कर दूँ?",
+        chatAnxiety: "चिंता होना मुश्किल हो सकता है। डॉ. अर्जुन शर्मा और अंजली सिंह चिंता में विशेषज्ञ हैं। उनके प्रोफ़ाइल देखना चाहेंगे?",
+        chatRel: "रिश्ते बहुत महत्वपूर्ण हैं! प्रिया नायर रिश्तों की काउंसलिंग में अच्छी हैं। उनकी उपलब्धता देखें?",
+        chatCareer: "करियर में स्पष्टता ज़रूरी है! विक्रम पटेल मदद कर सकते हैं। वे वीकेंड पर उपलब्ध हैं। क्या स्लॉट दिखाऊँ?",
+        openChatAlertPrefix: "💬 चैट खोल रहे हैं: ",
+        openChatAlertSuffix: "...\n\nअसल ऐप में यह सुरक्षित मैसेजिंग इंटरफ़ेस खोलेगा।",
+        callConfirmPrefix: "📞 कॉल करें: ",
+        callConfirmSuffix: "?\n\nयह वीडियो कॉल शुरू करेगा।",
+        callSoon: "🎥 वीडियो कॉल फीचर जल्द आ रहा है!\n\nअभी आप सेशन बुक करें, वीडियो लिंक भेज दिया जाएगा।",
+        shareBook: "सेशन बुक करें: "
+      }
+    };
+
+    // ---------------------------
+    // i18n helpers
+    // ---------------------------
+    let currentLang = localStorage.getItem('uiLang') || 'en';
+
+    function t(key) {
+      const langPack = i18n[currentLang] || i18n.en;
+      return langPack[key] ?? (i18n.en[key] ?? "");
+    }
+
+    function setText(el, text) {
+      if (!el) return;
+      el.textContent = text;
+    }
+
+    function setAfterNode(el, text) {
+      if (!el) return;
+      if (el.nextSibling && el.nextSibling.nodeType === 3) {
+        el.nextSibling.nodeValue = text;
+        return;
+      }
+      el.parentNode && el.parentNode.appendChild(document.createTextNode(text));
+    }
+
+    function applyLanguage() {
+      document.documentElement.lang = currentLang;
+      document.title = t("pageTitle");
+
+      setText(document.querySelector(".header-title"), t("headerTitle"));
+      setText(document.querySelector(".header-subtitle"), t("headerSubtitle"));
+      setText(document.querySelector(".back-btn"), t("back"));
+
+      document.getElementById("langBtn").textContent = currentLang === "en" ? "हिंदी" : "English";
+
+      setText(document.querySelector(".crisis-text"), t("crisisText"));
+      setText(document.querySelector(".crisis-btn"), t("crisisBtn"));
+
+      const favCountEl = document.getElementById("favCount");
+      if (favCountEl) setAfterNode(favCountEl, t("favSuffix"));
+      setText(document.querySelector(".view-fav-btn"), t("viewFav"));
+
+      const statItems = document.querySelectorAll(".stats-bar .stat-item");
+      if (statItems.length >= 4) {
+        const s1 = statItems[0].querySelector(".stat-value");
+        const s2 = statItems[1].querySelector(".stat-value");
+        const s3 = statItems[2].querySelector(".stat-value");
+        const s4 = statItems[3].querySelector(".stat-value");
+        setAfterNode(s1, t("stat1"));
+        setAfterNode(s2, t("stat2"));
+        setAfterNode(s3, t("stat3"));
+        setAfterNode(s4, t("stat4"));
+      }
+
+      const emLabels = document.querySelectorAll(".emergency-card .em-label");
+      if (emLabels[0]) setText(emLabels[0], t("emergency"));
+      if (emLabels[1]) setText(emLabels[1], t("sosCrisis"));
+
+      setText(document.querySelector(".qm-title"), t("qmTitle"));
+      setText(document.querySelector(".qm-btn"), t("qmBtn"));
+
+      setText(document.querySelector(".gt-text"), t("gtText"));
+      setText(document.querySelector(".gt-btn"), t("gtBtn"));
+
+      setText(document.querySelector(".quiz-title"), t("moodQ"));
+      setText(document.querySelector('.mood-card[data-mood="great"] .mood-label'), t("moodGreat"));
+      setText(document.querySelector('.mood-card[data-mood="okay"] .mood-label'), t("moodOkay"));
+      setText(document.querySelector('.mood-card[data-mood="low"] .mood-label'), t("moodLow"));
+      setText(document.querySelector('.mood-card[data-mood="tough"] .mood-label'), t("moodTough"));
+      const basedStrong = document.querySelector("#quizResult strong");
+      if (basedStrong) setText(basedStrong, t("basedOnMood"));
+
+      const searchEl = document.getElementById("searchInput");
+      if (searchEl) searchEl.placeholder = t("searchPH");
+
+      const filterLabels = document.querySelectorAll(".filter-label");
+      if (filterLabels[0]) setText(filterLabels[0], t("filterSpecialty"));
+      if (filterLabels[1]) setText(filterLabels[1], t("filterLanguage"));
+      if (filterLabels[2]) setText(filterLabels[2], t("filterPrice"));
+
+      const chipAll = document.querySelector('.filter-chip[data-specialty="all"]');
+      const chipAnx = document.querySelector('.filter-chip[data-specialty="anxiety"]');
+      const chipRel = document.querySelector('.filter-chip[data-specialty="relationships"]');
+      const chipCar = document.querySelector('.filter-chip[data-specialty="career"]');
+      const chipDep = document.querySelector('.filter-chip[data-specialty="depression"]');
+      if (chipAll) setText(chipAll, t("chipAll"));
+      if (chipAnx) setText(chipAnx, t("chipAnxiety"));
+      if (chipRel) setText(chipRel, t("chipRelationships"));
+      if (chipCar) setText(chipCar, t("chipCareer"));
+      if (chipDep) setText(chipDep, t("chipDepression"));
+
+      const langSelect = document.getElementById("languageFilter");
+      if (langSelect) {
+        const optAll = langSelect.querySelector('option[value="all"]');
+        const optEn = langSelect.querySelector('option[value="en"]');
+        const optHi = langSelect.querySelector('option[value="hi"]');
+        const optTa = langSelect.querySelector('option[value="ta"]');
+        const optTe = langSelect.querySelector('option[value="te"]');
+        const optBn = langSelect.querySelector('option[value="bn"]');
+        if (optAll) optAll.textContent = t("langAny");
+        if (optEn) optEn.textContent = t("langEn");
+        if (optHi) optHi.textContent = t("langHi");
+        if (optTa) optTa.textContent = t("langTa");
+        if (optTe) optTe.textContent = t("langTe");
+        if (optBn) optBn.textContent = t("langBn");
+      }
+
+      const priceSelect = document.getElementById("priceFilter");
+      if (priceSelect) {
+        const optAll = priceSelect.querySelector('option[value="all"]');
+        const optFree = priceSelect.querySelector('option[value="free"]');
+        if (optAll) optAll.textContent = t("priceAny");
+        if (optFree) optFree.textContent = t("priceFree");
+      }
+
+      document.querySelectorAll(".btn-chat").forEach(btn => btn.textContent = t("btnChat"));
+      document.querySelectorAll(".btn-call").forEach(btn => btn.textContent = t("btnCall"));
+      document.querySelectorAll(".btn-book").forEach(btn => btn.textContent = t("btnBook"));
+      document.querySelectorAll(".btn-waitlist").forEach(btn => btn.textContent = t("btnWaitlist"));
+      document.querySelectorAll(".share-btn").forEach(btn => btn.textContent = t("shareBtn"));
+
+      document.querySelectorAll(".availability").forEach(el => {
+        const txt = (el.textContent || "").trim();
+        if (txt === "● Online now") el.textContent = t("onlineNow");
+        if (txt === "● Available today, 6–9 PM") el.textContent = t("availableToday");
+        if (txt === "● Slots on Sat–Sun") el.textContent = t("slotsWeekend");
+        if (txt === "● Available tomorrow") el.textContent = t("availableTomorrow");
+      });
+
+      document.querySelectorAll(".response-time").forEach(el => {
+        const txt = (el.textContent || "").trim();
+        if (txt === "Usually replies in 2 hours") el.textContent = t("replies2h");
+        if (txt === "Usually replies in 4 hours") el.textContent = t("replies4h");
+        if (txt === "Usually replies in 1 day") el.textContent = t("replies1d");
+        if (txt === "Usually replies in 1 hour") el.textContent = t("replies1h");
+        if (txt === "Usually replies in 30 mins") el.textContent = t("replies30m");
+      });
+
+      document.querySelectorAll(".slot-warning").forEach(el => {
+        const txt = (el.textContent || "").trim();
+        if (txt === "🔥 Only 3 slots left today!") el.textContent = t("slotWarning");
+      });
+
+      document.querySelectorAll(".match-percent").forEach(el => {
+        const raw = (el.textContent || "").trim();
+        const m = raw.match(/^(\d+%)/);
+        if (m) el.textContent = m[1] + t("matchSuffix");
+      });
+
+      document.querySelectorAll(".spec-badge").forEach(el => {
+        const txt = (el.textContent || "").trim();
+        const map = {
+          "Exam Stress": t("badgeExamStress"),
+          "Anxiety": t("badgeAnxiety"),
+          "Relationships": t("badgeRelationships"),
+          "Sleep Issues": t("badgeSleepIssues"),
+          "Study Motivation": t("badgeStudyMotivation"),
+          "Career Planning": t("badgeCareerPlanning"),
+          "Depression": t("badgeDepression"),
+          "Medication Management": t("badgeMedication"),
+          "Peer Support": t("badgePeerSupport"),
+          "Trauma": t("badgeTrauma"),
+          "PTSD": t("badgePTSD")
+        };
+        if (map[txt]) el.textContent = map[txt];
+      });
+
+      document.querySelectorAll(".price").forEach(el => {
+        const txt = (el.textContent || "").trim();
+        if (txt === "₹500/session • First free") el.textContent = t("price1");
+        if (txt === "₹600/session") el.textContent = t("price2");
+        if (txt === "₹700/session") el.textContent = t("price3");
+        if (txt === "₹400/session • Student discount") el.textContent = t("price4");
+        if (txt === "FREE sessions") el.textContent = t("price5");
+        if (txt === "₹550/session") el.textContent = t("price6");
+      });
+
+      setText(document.getElementById("bookingSub"), t("bookingSub"));
+      setText(document.getElementById("lblBookingDate"), t("selectDate"));
+      setText(document.getElementById("lblBookingTime"), t("selectTime"));
+      setText(document.getElementById("bookingTimePlaceholder"), t("chooseSlot"));
+      setText(document.getElementById("lblPreSession"), t("preSession"));
+      const pre = document.getElementById("preSessionConcerns");
+      if (pre) pre.placeholder = t("preSessionPH");
+
+      const recurringLbl = document.getElementById("lblRecurring");
+      if (recurringLbl) {
+        const cb = recurringLbl.querySelector("input");
+        if (cb && cb.nextSibling && cb.nextSibling.nodeType === 3) cb.nextSibling.nodeValue = " " + t("recurring");
+        else recurringLbl.innerHTML = `<input type="checkbox" id="recurringCheck"> ${t("recurring")}`;
+      }
+
+      setText(document.getElementById("btnBookingCancel"), t("cancel"));
+      setText(document.getElementById("btnBookingConfirm"), t("confirmBooking"));
+
+      setText(document.getElementById("btnDetailClose"), t("close"));
+      setText(document.getElementById("detailBookBtn"), t("bookSessionBtn"));
+
+      setText(document.getElementById("reviewsTitle"), t("reviews"));
+      setText(document.getElementById("btnReviewsClose"), t("close"));
+
+      setText(document.getElementById("matchTitle"), t("matchTitle"));
+      setText(document.getElementById("matchSub"), t("matchSub"));
+      setText(document.getElementById("matchQ1Text"), t("q1"));
+      setText(document.getElementById("matchQ1Opt1"), t("q1o1"));
+      setText(document.getElementById("matchQ1Opt2"), t("q1o2"));
+      setText(document.getElementById("matchQ1Opt3"), t("q1o3"));
+      setText(document.getElementById("matchQ1Opt4"), t("q1o4"));
+      setText(document.getElementById("matchQ2Text"), t("q2"));
+      setText(document.getElementById("matchQ2Opt4"), t("q2o4"));
+      setText(document.getElementById("matchQ3Text"), t("q3"));
+      setText(document.getElementById("matchQ3Opt1"), t("q3o1"));
+      setText(document.getElementById("matchQ3Opt4"), t("q3o4"));
+      setText(document.getElementById("btnMatchClose"), t("close"));
+
+      setText(document.getElementById("waitlistTitle"), t("waitlistTitle"));
+      setText(document.getElementById("lblWaitlistEmail"), t("yourEmail"));
+      setText(document.getElementById("lblWaitlistPhone"), t("yourPhone"));
+      setText(document.getElementById("btnWaitlistCancel"), t("cancel"));
+      setText(document.getElementById("btnWaitlistJoin"), t("joinWaitlist"));
+
+      setText(document.getElementById("groupTitle"), t("groupTitle"));
+      setText(document.getElementById("groupSub"), t("groupSub"));
+      setText(document.getElementById("groupAvailableTitle"), t("availableGroups"));
+      setText(document.getElementById("btnGroupClose"), t("close"));
+      setText(document.getElementById("btnGroupJoin"), t("joinGroup"));
+
+      setText(document.getElementById("favoritesTitle"), t("favTitle"));
+      setText(document.getElementById("favoritesSub"), t("favSub"));
+      setText(document.getElementById("btnFavoritesClose"), t("close"));
+
+      setText(document.getElementById("chatHeaderTitle"), t("chatTitle"));
+      setText(document.getElementById("chatHeaderSub"), t("chatSub"));
+      setText(document.getElementById("chatWelcomeMsg"), t("chatWelcome"));
+      const chatIn = document.getElementById("chatInput");
+      if (chatIn) chatIn.placeholder = t("chatPH");
+      setText(document.getElementById("chatSendBtn"), t("send"));
+    }
+
+    // Data
+    const counselorData = {
+      1: {
+        name: 'Dr. Arjun Sharma',
+        role: 'Clinical Psychologist',
+        bio: 'Specialized in exam anxiety and academic stress with 8 years of experience helping students ace their goals without burning out.',
+        education: 'PhD Clinical Psychology, TISS Mumbai (2015) • M.A. Counseling, Delhi University (2012)',
+        approach: 'CBT + Mindfulness techniques + Evidence-based strategies',
+        videoUrl: '#',
+        reviews: [
+          {author: 'Rahul K.', rating: 5, text: 'Helped me overcome panic attacks before exams. Life-changing!'},
+          {author: 'Priya S.', rating: 5, text: 'Very patient listener. Makes you feel heard and understood.'},
+          {author: 'Amit T.', rating: 5, text: 'Gave me practical tools I use every day. Highly recommend!'}
+        ]
+      },
+      2: {
+        name: 'Priya Nair',
+        role: 'College Counselor',
+        bio: 'Passionate about helping young adults navigate relationships, social anxiety, and finding their identity in college years.',
+        education: 'M.A. Counseling Psychology, Christ University (2018) • B.A. Psychology, Mumbai University (2016)',
+        approach: 'Person-centered therapy + Emotion-focused techniques',
+        videoUrl: '#',
+        reviews: [
+          {author: 'Sneha M.', rating: 5, text: 'Helped me set healthy boundaries with toxic friends.'},
+          {author: 'Ravi K.', rating: 4, text: 'Good counselor, very understanding.'},
+          {author: 'Anjali P.', rating: 5, text: 'Made me realize I\'m not alone in my struggles.'}
+        ]
+      },
+      3: {
+        name: 'Vikram Patel',
+        role: 'Career Coach',
+        bio: '10 years helping students and professionals discover their passion, build skills, and achieve career clarity with confidence.',
+        education: 'MBA, IIM Ahmedabad (2013) • B.Tech Computer Science, IIT Delhi (2011)',
+        approach: 'Goal-setting frameworks + Strength-based coaching + Accountability systems',
+        videoUrl: '#',
+        reviews: [
+          {author: 'Karthik R.', rating: 5, text: 'Helped me pivot from engineering to design. Forever grateful!'},
+          {author: 'Divya S.', rating: 4, text: 'Very practical advice for job search strategies.'},
+          {author: 'Arjun M.', rating: 5, text: 'Gave me clarity on my career path within 3 sessions.'}
+        ]
+      },
+      4: {
+        name: 'Dr. Meera Reddy',
+        role: 'Psychiatrist',
+        bio: '12 years of experience treating depression, anxiety disorders, and mood issues with medication management + therapy.',
+        education: 'MD Psychiatry, AIIMS Delhi (2011) • MBBS, CMC Vellore (2008)',
+        approach: 'Medication management + CBT + Holistic wellness approach',
+        videoUrl: '#',
+        reviews: [
+          {author: 'Anonymous', rating: 5, text: 'Saved my life during my darkest phase. Thank you Dr. Reddy.'},
+          {author: 'Lakshmi V.', rating: 5, text: 'Very thorough and compassionate. Explains everything clearly.'},
+          {author: 'Suresh K.', rating: 5, text: 'Finally found the right medication combo thanks to her expertise.'}
+        ]
+      },
+      5: {
+        name: 'Ravi Kumar',
+        role: 'Peer Counselor',
+        bio: 'College student turned peer counselor. Been through mental health struggles myself - here to listen and support without judgment.',
+        education: 'B.A. Psychology, Delhi University (Ongoing) • Peer Counseling Certification',
+        approach: 'Peer support + Active listening + Shared lived experience',
+        videoUrl: '#',
+        reviews: [
+          {author: 'Neha K.', rating: 5, text: 'Felt like talking to a friend who really gets it.'},
+          {author: 'Rohit S.', rating: 4, text: 'Great for someone who wants casual support.'},
+          {author: 'Shruti M.', rating: 5, text: 'No judgment, just pure support. Exactly what I needed.'}
+        ]
+      },
+      6: {
+        name: 'Anjali Singh',
+        role: 'Licensed Therapist',
+        bio: 'Specializing in trauma, PTSD, and anxiety disorders using evidence-based EMDR therapy for lasting healing and recovery.',
+        education: 'M.Sc. Clinical Psychology, NIMHANS Bangalore (2016) • EMDR Certification (2018)',
+        approach: 'EMDR therapy + Trauma-informed care + Somatic techniques',
+        videoUrl: '#',
+        reviews: [
+          {author: 'Anonymous', rating: 5, text: 'EMDR changed my life. Finally processed my trauma after years.'},
+          {author: 'Kavya R.', rating: 5, text: 'Incredibly skilled and gentle with sensitive topics.'},
+          {author: 'Deepak M.', rating: 5, text: 'Best therapist I\'ve ever had. Worth every rupee.'}
+        ]
+      }
+    };
+
+    // State
+    let favorites = JSON.parse(localStorage.getItem('favoriteCounselors') || '[]');
+    let recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+    let darkMode = localStorage.getItem('darkMode') === 'true';
+    let currentBookingId = null;
+    let matchAnswers = {};
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadFavorites();
+      updateFavBar();
+      updateStats();
+      if (darkMode) {
+        document.body.classList.add('dark-mode');
+        document.getElementById('darkIcon').textContent = '☀️';
+      }
+      applyLanguage();
+    });
+
+    // Dark Mode
+    function toggleDarkMode() {
+      darkMode = !darkMode;
+      document.body.classList.toggle('dark-mode');
+      document.getElementById('darkIcon').textContent = darkMode ? '☀️' : '🌙';
+      localStorage.setItem('darkMode', darkMode);
+    }
+
+    // Language
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'hi' : 'en';
+      localStorage.setItem('uiLang', currentLang);
+      applyLanguage();
+    }
+
+    // Favorites
+    function toggleFavorite(id, event) {
+      event.stopPropagation();
+      const heart = event.target;
+      const index = favorites.indexOf(id);
+      
+      if (index > -1) {
+        favorites.splice(index, 1);
+        heart.classList.remove('loved');
+      } else {
+        favorites.push(id);
+        heart.classList.add('loved');
+      }
+      
+      localStorage.setItem('favoriteCounselors', JSON.stringify(favorites));
+      updateFavBar();
+    }
+
+    function loadFavorites() {
+      favorites.forEach(id => {
+        const card = document.querySelector(`.counselor-card[data-id="${id}"]`);
+        if (card) {
+          const heart = card.querySelector('.favorite-heart');
+          if (heart) heart.classList.add('loved');
+        }
+      });
+    }
+
+    function updateFavBar() {
+      const favBar = document.getElementById('favoritesBar');
+      const favCount = document.getElementById('favCount');
+      
+      if (favorites.length > 0) {
+        favBar.style.display = 'flex';
+        favCount.textContent = favorites.length;
+      } else {
+        favBar.style.display = 'none';
+      }
+      applyLanguage();
+    }
+
+    function showFavorites() {
+      const content = document.getElementById('favoritesContent');
+      
+      if (favorites.length === 0) {
+        content.innerHTML = `<p style="text-align:center;color:#6b7280;padding:20px;">${t("noFav")}</p>`;
+      } else {
+        content.innerHTML = favorites.map(id => {
+          const data = counselorData[id];
+          return `
+            <div class="review-item" style="cursor:pointer;" onclick="showCounselorDetail(${id})">
+              <div style="font-weight:600;font-size:14px;margin-bottom:4px;">${data.name}</div>
+              <div style="font-size:12px;color:#6b7280;">${data.role}</div>
+            </div>
+          `;
+        }).join('');
+      }
+      
+      document.getElementById('favoritesModal').classList.add('show');
+    }
+
+    function closeFavorites() {
+      document.getElementById('favoritesModal').classList.remove('show');
+    }
+
+    // Recently Viewed
+    function addToRecentlyViewed(id) {
+      const index = recentlyViewed.indexOf(id);
+      if (index > -1) recentlyViewed.splice(index, 1);
+      recentlyViewed.unshift(id);
+      if (recentlyViewed.length > 5) recentlyViewed.pop();
+      localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+      updateStats();
+    }
+
+    function updateStats() {
+      document.getElementById('viewedCount').textContent = recentlyViewed.length;
+      applyLanguage();
+    }
+
+    // Mood Selection
+    const moodMap = {
+      en: {
+        great: "Awesome! Regular check-ins help maintain mental wellness.",
+        okay: "You're doing alright. A short chat can help you feel lighter.",
+        low: "You don't have to stay here alone. Try messaging a counselor today.",
+        tough: "Please reach out now. Talking to someone is the safest next step."
+      },
+      hi: {
+        great: "बहुत बढ़िया! नियमित चेक-इन मानसिक स्वास्थ्य बनाए रखने में मदद करते हैं।",
+        okay: "आप ठीक हैं। थोड़ी बातचीत से मन हल्का हो सकता है।",
+        low: "आपको अकेले नहीं रहना है। आज ही किसी काउंसलर को मैसेज करें।",
+        tough: "कृपया अभी संपर्क करें। किसी से बात करना सबसे सुरक्षित अगला कदम है।"
+      }
+    };
+
+    function selectMood(mood) {
+      document.querySelectorAll(".mood-card").forEach(c=>c.classList.remove("active"));
+      event.target.closest('.mood-card').classList.add("active");
+      const box = document.getElementById("quizResult");
+      const text = document.getElementById("moodText");
+      text.textContent = " " + (moodMap[currentLang] ? moodMap[currentLang][mood] : moodMap.en[mood]);
+      box.style.display = "block";
+      
+      if (mood === 'tough' || mood === 'low') {
+        document.querySelector('[data-specialty="anxiety"]').click();
+      }
+    }
+
+    // Search & Filter
+    const searchInput = document.getElementById('searchInput');
+    const specialtyChips = document.querySelectorAll(".filter-chip");
+    const languageSelect = document.getElementById("languageFilter");
+    const priceSelect = document.getElementById("priceFilter");
+    const counselorCards = document.querySelectorAll(".counselor-card");
+
+    searchInput.addEventListener('input', applyFilters);
+    languageSelect.addEventListener("change", applyFilters);
+    priceSelect.addEventListener("change", applyFilters);
+
+    specialtyChips.forEach(chip=>{
+      chip.addEventListener("click", ()=>{
+        specialtyChips.forEach(c=>c.classList.remove("active"));
+        chip.classList.add("active");
+        applyFilters();
+      });
+    });
+
+    function applyFilters() {
+      const activeChip = document.querySelector(".filter-chip.active");
+      const specialty = activeChip ? activeChip.dataset.specialty : "all";
+      const lang = languageSelect.value;
+      const price = priceSelect.value;
+      const search = searchInput.value.toLowerCase();
+
+      counselorCards.forEach(card=>{
+        const cardSpec = card.dataset.specialty;
+        const cardLangs = (card.dataset.languages || "").split(",").map(l=>l.trim());
+        const cardPrice = parseInt(card.dataset.price || "0");
+        const cardSearch = (card.dataset.search || "").toLowerCase();
+        
+        const specMatch = specialty === "all" || cardSpec === specialty;
+        const langMatch = lang === "all" || cardLangs.includes(lang);
+        
+        let priceMatch = true;
+        if (price === "free") priceMatch = cardPrice === 0;
+        else if (price === "low") priceMatch = cardPrice > 0 && cardPrice <= 600;
+        else if (price === "mid") priceMatch = cardPrice > 600 && cardPrice <= 1000;
+        
+        const searchMatch = search === "" || cardSearch.includes(search);
+        
+        if (specMatch && langMatch && priceMatch && searchMatch) {
+          card.classList.remove('hidden-card');
+        } else {
+          card.classList.add('hidden-card');
+        }
+      });
+    }
+
+    // Counselor Detail
+    function showCounselorDetail(id) {
+      const data = counselorData[id];
+      addToRecentlyViewed(id);
+      
+      const content = document.getElementById('detailContent');
+      content.innerHTML = `
+        <div class="modal-title">${data.name}</div>
+        <div class="modal-sub">${data.role}</div>
+        
+        <div class="video-placeholder" onclick="alert('${t("videoSoon")}')">
+          ▶️
+        </div>
+        
+        <div class="detail-section">
+          <h3>${t("about")}</h3>
+          <p>${data.bio}</p>
+        </div>
+        
+        <div class="detail-section">
+          <h3>${t("edu")}</h3>
+          <p>${data.education}</p>
+        </div>
+        
+        <div class="detail-section">
+          <h3>${t("approach")}</h3>
+          <p>${data.approach}</p>
+        </div>
+        
+        <div class="detail-section">
+          <h3>${t("topReviews")}</h3>
+          ${data.reviews.slice(0,2).map(r => `
+            <div class="review-item">
+              <div class="review-header">
+                <div class="review-author">${r.author}</div>
+                <div class="review-rating">${'★'.repeat(r.rating)}</div>
+              </div>
+              <div class="review-text">"${r.text}"</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      
+      document.getElementById('detailBookBtn').onclick = () => {
+        closeDetail();
+        openBooking(id, data.name);
+      };
+      
+      document.getElementById('detailModal').classList.add('show');
+    }
+
+    function closeDetail() {
+      document.getElementById('detailModal').classList.remove('show');
+    }
+
+    // Reviews
+    function showReviews(id) {
+      const data = counselorData[id];
+      const content = document.getElementById('reviewsContent');
+      
+      document.getElementById('reviewsTitle').textContent =
+        (currentLang === "hi" ? `${data.name} के ${t("reviews")}` : `Reviews for ${data.name}`);
+      
+      content.innerHTML = data.reviews.map(r => `
+        <div class="review-item">
+          <div class="review-header">
+            <div class="review-author">${r.author}</div>
+            <div class="review-rating">${'★'.repeat(r.rating)}</div>
+          </div>
+          <div class="review-text">"${r.text}"</div>
+        </div>
+      `).join('');
+      
+      document.getElementById('reviewsModal').classList.add('show');
+    }
+
+    function closeReviews() {
+      document.getElementById('reviewsModal').classList.remove('show');
+    }
+
+    // Booking
+    function openBooking(id, name) {
+      currentBookingId = id;
+      document.getElementById('modalCounselorName').textContent = `${t("bookWith")}${name}`;
+      document.getElementById('bookingDate').value = '';
+      document.getElementById('bookingTime').value = '';
+      document.getElementById('preSessionConcerns').value = '';
+      document.getElementById('recurringCheck').checked = false;
+      document.getElementById('bookingHint').textContent = '';
+      document.getElementById('bookingModal').classList.add('show');
+    }
+
+    function closeBooking() {
+      document.getElementById('bookingModal').classList.remove('show');
+    }
+
+    function saveBooking() {
+      const date = document.getElementById('bookingDate').value;
+      const time = document.getElementById('bookingTime').value;
+      const concerns = document.getElementById('preSessionConcerns').value;
+      const recurring = document.getElementById('recurringCheck').checked;
+      
+      if (!date || !time) {
+        document.getElementById('bookingHint').textContent = t("needDateTime");
+        document.getElementById('bookingHint').style.color = '#b91c1c';
+        return;
+      }
+      
+      const booking = {
+        counselorId: currentBookingId,
+        counselor: document.getElementById('modalCounselorName').textContent.replace(t("bookWith"), ''),
+        date,
+        time,
+        concerns,
+        recurring,
+        createdAt: new Date().toISOString()
+      };
+      
+      const existing = JSON.parse(localStorage.getItem("counselorBookings") || "[]");
+      existing.push(booking);
+      localStorage.setItem("counselorBookings", JSON.stringify(existing));
+      
+      document.getElementById('bookingHint').textContent = recurring ? 
+        t("bookedRecurring") : 
+        t("bookedSingle");
+      document.getElementById('bookingHint').style.color = '#16a34a';
+      
+      setTimeout(() => {
+        closeBooking();
+        alert(t("bookingAlert"));
+      }, 1500);
+    }
+
+    // Waitlist
+    function joinWaitlist(id, name) {
+      document.getElementById('waitlistCounselorName').textContent = name;
+
+      const sub = document.getElementById("waitlistSub");
+      if (sub) {
+        sub.innerHTML = `${t("waitlistSubPrefix")}<span id="waitlistCounselorName">${name}</span>${t("waitlistSubSuffix")}`;
+      }
+
+      document.getElementById('waitlistEmail').value = '';
+      document.getElementById('waitlistPhone').value = '';
+      document.getElementById('waitlistHint').textContent = '';
+      document.getElementById('waitlistModal').classList.add('show');
+    }
+
+    function closeWaitlist() {
+      document.getElementById('waitlistModal').classList.remove('show');
+    }
+
+    function saveWaitlist() {
+      const email = document.getElementById('waitlistEmail').value;
+      const phone = document.getElementById('waitlistPhone').value;
+      
+      if (!email) {
+        document.getElementById('waitlistHint').textContent = t("enterEmail");
+        document.getElementById('waitlistHint').style.color = '#b91c1c';
+        return;
+      }
+      
+      const waitlist = JSON.parse(localStorage.getItem('waitlist') || '[]');
+      waitlist.push({
+        counselor: document.getElementById('waitlistCounselorName').textContent,
+        email,
+        phone,
+        createdAt: new Date().toISOString()
+      });
+      localStorage.setItem('waitlist', JSON.stringify(waitlist));
+      
+      document.getElementById('waitlistHint').textContent = t("waitlistDone");
+      document.getElementById('waitlistHint').style.color = '#16a34a';
+      
+      setTimeout(closeWaitlist, 1500);
+    }
+
+    // Quick Match
+    function startQuickMatch() {
+      matchAnswers = {};
+      document.getElementById('matchQ1').style.display = 'block';
+      document.getElementById('matchQ2').style.display = 'none';
+      document.getElementById('matchQ3').style.display = 'none';
+      document.getElementById('matchResult').style.display = 'none';
+      document.getElementById('matchModal').classList.add('show');
+    }
+
+    function closeMatch() {
+      document.getElementById('matchModal').classList.remove('show');
+    }
+
+    function selectMatch(q, value) {
+      if (q === 1) {
+        matchAnswers.specialty = value;
+        document.getElementById('matchQ1').style.display = 'none';
+        document.getElementById('matchQ2').style.display = 'block';
+      } else if (q === 2) {
+        matchAnswers.language = value;
+        document.getElementById('matchQ2').style.display = 'none';
+        document.getElementById('matchQ3').style.display = 'block';
+      } else if (q === 3) {
+        matchAnswers.price = value;
+        showMatchResult();
+      }
+    }
+
+    function showMatchResult() {
+      document.getElementById('matchQ3').style.display = 'none';
+      const result = document.getElementById('matchResult');
+      result.style.display = 'block';
+      
+      let recommendation = '';
+      
+      if (matchAnswers.specialty === 'anxiety') {
+        recommendation = matchAnswers.price === 'free' ? 
+          'Dr. Arjun Sharma (First session free!) or Anjali Singh' : 
+          'Dr. Arjun Sharma or Anjali Singh';
+      } else if (matchAnswers.specialty === 'relationships') {
+        recommendation = matchAnswers.price === 'free' ? 
+          'Ravi Kumar (Free peer support)' : 
+          'Priya Nair';
+      } else if (matchAnswers.specialty === 'career') {
+        recommendation = 'Vikram Patel';
+      } else if (matchAnswers.specialty === 'depression') {
+        recommendation = 'Dr. Meera Reddy';
+      }
+      
+      result.innerHTML = `
+        <div style="background:#d1fae5;padding:16px;border-radius:12px;border:2px solid #10b981;">
+          <h3 style="color:#065f46;margin-bottom:8px;">${t("recommendTitle")}</h3>
+          <p style="font-size:16px;font-weight:600;color:#047857;margin-bottom:8px;">${recommendation}</p>
+          <p style="font-size:13px;color:#065f46;">${t("scrollHint")}</p>
+          <button class="btn-primary" onclick="closeMatch();applyMatchFilters();" style="margin-top:8px;width:100%;">
+            ${t("showMatches")}
+          </button>
+        </div>
+      `;
+    }
+
+    function applyMatchFilters() {
+      if (matchAnswers.specialty && matchAnswers.specialty !== 'any') {
+        const specBtn = document.querySelector(`[data-specialty="${matchAnswers.specialty}"]`);
+        if (specBtn) {
+          document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+          specBtn.classList.add('active');
+        }
+      }
+      if (matchAnswers.language && matchAnswers.language !== 'any') {
+        languageSelect.value = matchAnswers.language;
+      }
+      if (matchAnswers.price && matchAnswers.price !== 'any') {
+        priceSelect.value = matchAnswers.price;
+      }
+      applyFilters();
+    }
+
+    // Communication
+    function startChat(id) {
+      alert(`${t("openChatAlertPrefix")}${counselorData[id].name}${t("openChatAlertSuffix")}`);
+    }
+
+    function startCall(id) {
+      if (confirm(`${t("callConfirmPrefix")}${counselorData[id].name}${t("callConfirmSuffix")}`)) {
+        alert(t("callSoon"));
+      }
+    }
+
+    // Share Profile
+    function shareProfile(id) {
+      const data = counselorData[id];
+      const link = `https://calmhub.app/counselors/${id}`;
+      const text = (currentLang === "hi")
+        ? `देखें ${data.name} (Calm Hub पर)!\n\n${data.role}\n\n${t("shareBook")}${link}`
+        : `Check out ${data.name} on Calm Hub!\n\n${data.role}\n\nBook a session: ${link}`;
+
+      const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+    }
+
+    // Group Therapy
+    function showGroupTherapy() {
+      document.getElementById('groupModal').classList.add('show');
+    }
+
+    function closeGroupTherapy() {
+      document.getElementById('groupModal').classList.remove('show');
+    }
+
+    // Chat Widget
+    function toggleChat() {
+      document.getElementById('chatWindow').classList.toggle('show');
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      
+      if (!message) return;
+      
+      const chatBody = document.getElementById('chatBody');
+      chatBody.innerHTML += `<div class="chat-message user">${message}</div>`;
+      input.value = '';
+      
+      chatBody.scrollTop = chatBody.scrollHeight;
+      
+      document.getElementById('chatTyping').style.display = 'flex';
+      
+      setTimeout(() => {
+        document.getElementById('chatTyping').style.display = 'none';
+        
+        let response = t("chatGeneric");
+        
+        if (message.toLowerCase().includes('anxiety') || message.toLowerCase().includes('stress') ||
+            message.includes('चिंता') || message.includes('तनाव')) {
+          response = t("chatAnxiety");
+        } else if (message.toLowerCase().includes('relationship') || message.toLowerCase().includes('friend') ||
+                   message.includes('रिश्त') || message.includes('दोस्त')) {
+          response = t("chatRel");
+        } else if (message.toLowerCase().includes('career') || message.toLowerCase().includes('job') ||
+                   message.includes('करियर') || message.includes('नौकरी')) {
+          response = t("chatCareer");
+        }
+        
+        chatBody.innerHTML += `<div class="chat-message">${response}</div>`;
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }, 2000);
+    }
+
+    // Initialize
+    applyFilters();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOS & Crisis Support – Calm Hub</title>
+  <style>
+    *{
+      margin:0;padding:0;box-sizing:border-box;
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+    body{
+      min-height:100vh;
+      background:
+        linear-gradient(135deg,rgba(248,113,113,0.2),rgba(59,130,246,0.18)),
+        url("image.jpg");
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+      background-attachment:fixed;
+      padding:24px;
+      color:#111827;
+    }
+    body.crisis-mode{
+      background:#450a0a;
+      animation:pulse 2s infinite;
+    }
+    @keyframes pulse{
+      0%, 100%{opacity:0.95;}
+      50%{opacity:1;}
+    }
+    .shell{
+      max-width:900px;
+      margin:0 auto;
+      background:rgba(255,255,255,0.95);
+      backdrop-filter:blur(20px) saturate(180%);
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,0.9);
+      box-shadow:0 26px 60px rgba(15,23,42,0.2);
+      padding:28px 26px 22px;
+    }
+    .crisis-mode .shell{
+      background:rgba(254,202,202,0.98);
+      border:2px solid #dc2626;
+    }
+    .top-row{
+      display:flex;justify-content:space-between;align-items:center;
+      gap:16px;margin-bottom:18px;flex-wrap:wrap;
+    }
+    .logo-row{display:flex;align-items:center;gap:10px;}
+    .dot{
+      width:20px;height:20px;border-radius:999px;
+      background:radial-gradient(circle at 30% 30%,#facc15,#f97316);
+      box-shadow:0 0 0 6px rgba(251,191,36,0.25);
+    }
+    .title-main{font-size:22px;font-weight:700;}
+    .subtitle{font-size:13px;color:#6b7280;}
+    .back-chip{
+      padding:8px 16px;border-radius:999px;
+      border:1px solid #e5e7eb;background:#ffffff;
+      font-size:13px;color:#4b5563;text-decoration:none;
+      display:inline-flex;align-items:center;gap:6px;
+      box-shadow:0 4px 10px rgba(148,163,184,0.3);
+    }
+
+    .lang-toggle{
+      padding:6px 12px;border-radius:999px;
+      border:1px solid #e5e7eb;background:#f3f4f6;
+      font-size:12px;font-weight:600;color:#374151;
+      cursor:pointer;transition:all .15s;
+    }
+    .lang-toggle:hover{background:#e5e7eb;}
+
+    .warning-box{
+      margin-bottom:10px;
+      padding:10px 12px;
+      border-radius:16px;
+      background:#fef2f2;
+      border:1px solid #fecaca;
+      font-size:13px;
+      color:#7f1d1d;
+      font-weight:600;
+    }
+
+    .helper-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:18px;
+    }
+    .helper-btn{
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      background:#f9fafb;
+      font-size:13px;
+      font-weight:500;
+      color:#374151;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      transition:all .12s;
+    }
+    .helper-btn:hover{
+      background:#e5e7eb;
+      transform:translateY(-1px);
+    }
+    .helper-btn.priority{
+      background:linear-gradient(135deg,#fef3c7,#fde68a);
+      border-color:#fbbf24;
+      font-weight:600;
+    }
+
+    .em-row{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .em-card{
+      background:#fee2e2;
+      border-radius:18px;
+      padding:12px 14px;
+      border:1px solid #fecaca;
+      box-shadow:0 10px 26px rgba(248,113,113,0.3);
+      cursor:pointer;
+      transition:transform .12s, box-shadow .12s, background .12s;
+    }
+    .em-card:hover{
+      transform:translateY(-2px);
+      background:#fecaca;
+      box-shadow:0 14px 34px rgba(248,113,113,0.35);
+    }
+    .em-label{
+      font-size:11px;font-weight:700;letter-spacing:.07em;
+      text-transform:uppercase;color:#991b1b;margin-bottom:4px;
+    }
+    .em-value{
+      font-size:15px;font-weight:700;color:#7f1d1d;
+      display:flex;align-items:center;gap:6px;
+    }
+
+    .section-title{
+      font-size:14px;font-weight:700;color:#4b5563;
+      text-transform:uppercase;letter-spacing:.06em;
+      margin:18px 0 8px;
+    }
+    .help-list{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:10px;
+      margin-bottom:12px;
+    }
+    .help-item{
+      background:#f9fafb;
+      border-radius:14px;
+      border:1px solid #e5e7eb;
+      padding:10px 12px;
+      font-size:13px;
+    }
+    .help-name{font-weight:600;color:#111827;margin-bottom:2px;}
+    .help-number{font-weight:600;color:#b91c1c;}
+    .help-detail{font-size:12px;color:#6b7280;margin-top:2px;}
+
+    .safety-card{
+      margin-top:16px;
+      padding:14px 14px 12px;
+      border-radius:18px;
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      font-size:13px;
+      color:#1e3a8a;
+    }
+    .safety-title{
+      font-size:14px;font-weight:700;margin-bottom:6px;
+    }
+    .safety-list{
+      margin-left:18px;margin-top:4px;
+    }
+    .safety-list li{
+      margin-bottom:4px;
+    }
+
+    .modal{
+      display:none;
+      position:fixed;
+      top:0;left:0;right:0;bottom:0;
+      background:rgba(0,0,0,0.5);
+      z-index:9999;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+    .modal.show{display:flex;}
+    .modal-content{
+      background:#fff;
+      border-radius:20px;
+      padding:24px;
+      max-width:500px;
+      width:100%;
+      max-height:85vh;
+      overflow-y:auto;
+      box-shadow:0 20px 50px rgba(0,0,0,0.3);
+    }
+    .modal-title{
+      font-size:18px;font-weight:700;margin-bottom:12px;
+    }
+    .modal-input, .modal-textarea{
+      width:100%;
+      padding:10px 12px;
+      border:1px solid #d1d5db;
+      border-radius:12px;
+      font-size:14px;
+      margin-bottom:10px;
+      font-family:inherit;
+    }
+    .modal-textarea{
+      min-height:80px;
+      resize:vertical;
+    }
+    .modal-btn{
+      padding:10px 20px;
+      border-radius:999px;
+      border:none;
+      font-size:14px;
+      font-weight:600;
+      cursor:pointer;
+      margin-right:8px;
+      margin-bottom:8px;
+    }
+    .btn-primary{background:#3b82f6;color:#fff;}
+    .btn-secondary{background:#e5e7eb;color:#374151;}
+    .btn-danger{background:#dc2626;color:#fff;}
+    .btn-success{background:#16a34a;color:#fff;}
+
+    .quiz-option{
+      padding:12px;
+      border:2px solid #e5e7eb;
+      border-radius:12px;
+      margin-bottom:8px;
+      cursor:pointer;
+      transition:all .15s;
+      background:#fff;
+    }
+    .quiz-option:hover{
+      border-color:#3b82f6;
+      background:#eff6ff;
+    }
+    .quiz-option.selected{
+      border-color:#3b82f6;
+      background:#dbeafe;
+    }
+
+    .progress-bar{
+      height:8px;
+      background:#e5e7eb;
+      border-radius:999px;
+      overflow:hidden;
+      margin:12px 0;
+    }
+    .progress-fill{
+      height:100%;
+      background:linear-gradient(90deg,#3b82f6,#60a5fa);
+      transition:width .3s ease;
+    }
+
+    .footer-note{
+      margin-top:14px;
+      font-size:11px;
+      color:#6b7280;
+      text-align:center;
+    }
+
+    @media(max-width:640px){
+      body{padding:16px;}
+      .shell{padding:22px 18px 18px;border-radius:22px;}
+      .helper-row{flex-direction:column;}
+      .helper-btn{justify-content:center;}
+    }
+
+    .hidden{display:none;}
+    
+    .checklist-item{
+      padding:8px;
+      border:1px solid #e5e7eb;
+      border-radius:8px;
+      margin-bottom:6px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .checklist-item input{
+      width:18px;height:18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="top-row">
+      <div class="logo-row">
+        <div class="dot"></div>
+        <div>
+          <div class="title-main" id="pageTitle">SOS & Crisis Support</div>
+          <div class="subtitle" id="pageSubtitle">Use this page if things feel very heavy or unsafe.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="lang-toggle" onclick="toggleLanguage()">
+          <span id="langBtn">हिंदी / Hindi</span>
+        </button>
+        <a href="journey.html" class="back-chip">← <span id="backText">Back to Journey</span></a>
+      </div>
+    </div>
+
+    <div class="warning-box" id="warningText">
+      ⚠️ If you are in immediate danger, or worried you might hurt yourself or someone else, use these numbers right now. Calls open directly from your phone.
+    </div>
+
+    <!-- PRIORITY HELPERS -->
+    <div class="helper-row">
+      <button class="helper-btn priority" onclick="startCrisisAssessment()">
+        🎯 <span id="btnAssess">Check my crisis level</span>
+      </button>
+      <button class="helper-btn priority" onclick="openLifebox()">
+        💎 <span id="btnLifebox">My Hope Box</span>
+      </button>
+      <button class="helper-btn priority" onclick="startDistraction()">
+        ⏱ <span id="btnDistract">15-min wait timer</span>
+      </button>
+    </div>
+
+    <!-- REGULAR HELPERS -->
+    <div class="helper-row">
+      <button class="helper-btn" onclick="openSafetyPlan()">
+        📝 <span id="btnSafety">My safety plan</span>
+      </button>
+      <button class="helper-btn" onclick="openBreathing()">
+        🌬 <span id="btnBreath">2‑min breathing</span>
+      </button>
+      <button class="helper-btn" onclick="openGrounding()">
+        🧘 <span id="btnGround">5-4-3-2-1 grounding</span>
+      </button>
+      <button class="helper-btn" onclick="openReasonsLiving()">
+        ❤️ <span id="btnReasons">Why I stay</span>
+      </button>
+      <button class="helper-btn" onclick="openLethalMeans()">
+        🛡️ <span id="btnLethal">Safety checklist</span>
+      </button>
+      <button class="helper-btn" onclick="findHospital()">
+        🏥 <span id="btnHospital">Find hospital</span>
+      </button>
+      <button class="helper-btn" onclick="shareTrusted()">
+        📱 <span id="btnShare">Alert contact</span>
+      </button>
+      <button class="helper-btn" onclick="exportPlan()">
+        💾 <span id="btnExport">Export plan</span>
+      </button>
+    </div>
+
+    <!-- EMERGENCY ROW -->
+    <div class="em-row" id="emergencyCards">
+      <div class="em-card" data-tel="108">
+        <div class="em-label">Emergency</div>
+        <div class="em-value">🔴 108 · Ambulance / Medical</div>
+      </div>
+      <div class="em-card" data-tel="100">
+        <div class="em-label">Police</div>
+        <div class="em-value">🚓 100 · Police help</div>
+      </div>
+      <div class="em-card" data-tel="9152987821">
+        <div class="em-label">Mental health crisis</div>
+        <div class="em-value">🆘 iCall · 9152987821</div>
+      </div>
+      <div class="em-card" data-tel="9820466726">
+        <div class="em-label">Suicide prevention</div>
+        <div class="em-value">💬 AASRA · 9820466726</div>
+      </div>
+    </div>
+
+    <!-- HELPLINES -->
+    <div class="section-title" id="helplinesTitle">Key helplines (India)</div>
+    <div class="help-list" id="helplinesList">
+      <div class="help-item">
+        <div class="help-name">Tele MANAS (Govt. of India)</div>
+        <div class="help-number">14416 / 1800-891-4416</div>
+        <div class="help-detail" data-en="24×7 free mental health support in multiple languages." data-hi="24×7 मुफ्त मानसिक स्वास्थ्य सहायता कई भाषाओं में।">24×7 free mental health support in multiple languages.</div>
+      </div>
+      <div class="help-item">
+        <div class="help-name">iCall (TISS)</div>
+        <div class="help-number">9152987821</div>
+        <div class="help-detail" data-en="Counselling by trained professionals, usually daytime hours." data-hi="प्रशिक्षित पेशेवरों द्वारा परामर्श, आमतौर पर दिन के समय।">Counselling by trained professionals, usually daytime hours.</div>
+      </div>
+      <div class="help-item">
+        <div class="help-name">AASRA</div>
+        <div class="help-number">9820466726</div>
+        <div class="help-detail" data-en="24×7 suicide prevention and emotional support hotline." data-hi="24×7 आत्महत्या रोकथाम और भावनात्मक सहायता हॉटलाइन।">24×7 suicide prevention and emotional support hotline.</div>
+      </div>
+      <div class="help-item">
+        <div class="help-name">Ambulance</div>
+        <div class="help-number">108 / 102</div>
+        <div class="help-detail" data-en="Medical emergency and hospital transport." data-hi="चिकित्सा आपातकाल और अस्पताल परिवहन।">Medical emergency and hospital transport.</div>
+      </div>
+      <div class="help-item">
+        <div class="help-name">Women's Helpline</div>
+        <div class="help-number">1091</div>
+        <div class="help-detail" data-en="Women's safety and crisis assistance." data-hi="महिला सुरक्षा और संकट सहायता।">Women's safety and crisis assistance.</div>
+      </div>
+      <div class="help-item">
+        <div class="help-name">Child Helpline</div>
+        <div class="help-number">1098</div>
+        <div class="help-detail" data-en="Support and protection for children in distress." data-hi="संकट में बच्चों के लिए समर्थन और सुरक्षा।">Support and protection for children in distress.</div>
+      </div>
+    </div>
+
+    <!-- SAFETY PLAN QUICK STEPS -->
+    <div class="safety-card">
+      <div class="safety-title" id="safetyStepsTitle">Quick safety steps if you feel at risk</div>
+      <ol class="safety-list" id="safetyStepsList">
+        <li>Move to a safer place (away from rooftops, traffic, sharp objects, medicines).</li>
+        <li>Call one number from the list above, or a trusted friend/family member.</li>
+        <li>Tell them clearly: "I am not feeling safe right now. I need help."</li>
+        <li>Stay on the line or stay with someone until you feel safer or reach help.</li>
+        <li>Book follow‑up support with a counselor or doctor as soon as you can.</li>
+      </ol>
+    </div>
+
+    <div class="footer-note" id="footerNote">
+      ⚠️ Calm Hub is NOT a replacement for doctors or emergency services. In immediate danger, call 108 first. These contacts are for India and should be verified from official sources.
+    </div>
+  </div>
+
+  <!-- MODALS -->
+  
+  <!-- Crisis Assessment Modal -->
+  <div class="modal" id="assessModal">
+    <div class="modal-content">
+      <div class="modal-title">🎯 Crisis Level Assessment</div>
+      <p style="font-size:13px;color:#6b7280;margin-bottom:12px;">Answer 3 quick questions. We'll show you the best help.</p>
+      
+      <div id="assessQ1" class="hidden">
+        <p style="font-weight:600;margin-bottom:8px;">1. How intense is your crisis right now?</p>
+        <div class="quiz-option" onclick="selectAssess(1,1)">😌 Mild - Stressed but manageable</div>
+        <div class="quiz-option" onclick="selectAssess(1,2)">😰 Moderate - Very distressed, hard to cope</div>
+        <div class="quiz-option" onclick="selectAssess(1,3)">🚨 Severe - Thoughts of harming myself/others</div>
+      </div>
+
+      <div id="assessQ2" class="hidden">
+        <p style="font-weight:600;margin-bottom:8px;">2. Do you have a plan to harm yourself?</p>
+        <div class="quiz-option" onclick="selectAssess(2,1)">No plan or thoughts</div>
+        <div class="quiz-option" onclick="selectAssess(2,2)">Thoughts but no specific plan</div>
+        <div class="quiz-option" onclick="selectAssess(2,3)">Yes, I have a specific plan</div>
+      </div>
+
+      <div id="assessQ3" class="hidden">
+        <p style="font-weight:600;margin-bottom:8px;">3. Can you stay safe for the next 24 hours?</p>
+        <div class="quiz-option" onclick="selectAssess(3,1)">✅ Yes, I can stay safe</div>
+        <div class="quiz-option" onclick="selectAssess(3,2)">🤔 Unsure / Need support</div>
+        <div class="quiz-option" onclick="selectAssess(3,3)">❌ No, I'm in immediate danger</div>
+      </div>
+
+      <div id="assessResult" class="hidden"></div>
+
+      <div style="margin-top:16px;">
+        <button class="modal-btn btn-secondary" onclick="closeAssess()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lifebox / Hope Box Modal -->
+  <div class="modal" id="lifeboxModal">
+    <div class="modal-content">
+      <div class="modal-title">💎 My Hope Box</div>
+      <p style="font-size:13px;color:#6b7280;margin-bottom:12px;">Store reasons to live, happy memories, and things that matter.</p>
+      
+      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">💭 Why life is worth living:</label>
+      <textarea class="modal-textarea" id="lifeboxReason" placeholder="My family loves me, I want to see my sister graduate..."></textarea>
+      
+      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">📸 Happy memory or moment:</label>
+      <textarea class="modal-textarea" id="lifeboxMemory" placeholder="Beach trip 2024, mom's smile, Diwali dinner..."></textarea>
+      
+      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">🎵 Song/quote that helps:</label>
+      <input type="text" class="modal-input" id="lifeboxQuote" placeholder="'This too shall pass' or your favorite song">
+      
+      <button class="modal-btn btn-success" onclick="saveLifebox()">💾 Save to Hope Box</button>
+      
+      <div id="lifeboxList" style="margin-top:16px;"></div>
+      
+      <div style="margin-top:16px;">
+        <button class="modal-btn btn-secondary" onclick="closeLifebox()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Distraction Timer Modal -->
+  <div class="modal" id="distractModal">
+    <div class="modal-content" style="text-align:center;">
+      <div class="modal-title">⏱ Wait 15 Minutes</div>
+      <p style="font-size:13px;color:#6b7280;margin-bottom:12px;">The urge often passes. Stay with us.</p>
+      
+      <div id="timerDisplay" style="font-size:48px;font-weight:700;color:#3b82f6;margin:20px 0;">15:00</div>
+      
+      <div class="progress-bar">
+        <div class="progress-fill" id="timerProgress" style="width:0%;"></div>
+      </div>
+      
+      <div id="distractActivity" style="margin:16px 0;padding:12px;background:#f3f4f6;border-radius:12px;font-size:14px;">
+        <strong>Do this now:</strong><br>
+        <span id="activityText">Name 5 blue things you can see around you.</span>
+      </div>
+      
+      <button class="modal-btn btn-primary" id="timerBtn" onclick="startTimer()">Start Timer</button>
+      <button class="modal-btn btn-secondary" onclick="closeDistract()">Close</button>
+    </div>
+  </div>
+
+  <!-- Safety Plan Modal -->
+  <div class="modal" id="safetyModal">
+    <div class="modal-content">
+      <div class="modal-title">📝 My Personal Safety Plan</div>
+      <p style="font-size:13px;color:#6b7280;margin-bottom:12px;">Fill this once. It will be saved privately on your device.</p>
+      
+      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">⚠️ My warning signs:</label>
+      <input type="text" class="modal-input" id="warningSigns" placeholder="e.g., Can't sleep, crying, feel hopeless">
+      
+      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">💪 My coping steps:</label>
+      <input type="text" class="modal-input" id="copingSteps" placeholder="e.g., Call mom, walk outside, breathe">
+      
+      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">👥 3 Trusted contacts (name + number):</label>
+      <input type="text" class="modal-input" id="contact1" placeholder="Contact 1: Name, Number">
+      <input type="text" class="modal-input" id="contact2" placeholder="Contact 2: Name, Number">
+      <input type="text" class="modal-input" id="contact3" placeholder="Contact 3: Name, Number">
+      
+      <div style="margin-top:16px;">
+        <button class="modal-btn btn-primary" onclick="saveSafetyPlan()">Save Plan</button>
+        <button class="modal-btn btn-secondary" onclick="closeSafetyPlan()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Breathing Modal -->
+  <div class="modal" id="breathModal">
+    <div class="modal-content" style="text-align:center;">
+      <div class="modal-title">🌬 Box Breathing (2 minutes)</div>
+      <p style="font-size:13px;color:#6b7280;margin-bottom:20px;">Follow the circle. Breathe slowly.</p>
+      
+      <div id="breathCircle" style="width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#60a5fa,#3b82f6);margin:0 auto 16px;transition:transform 4s ease-in-out;"></div>
+      
+      <div id="breathInstruction" style="font-size:18px;font-weight:700;color:#1e40af;margin-bottom:20px;">Breathe In (4s)</div>
+      
+      <button class="modal-btn btn-secondary" onclick="closeBreathing()">Close</button>
+    </div>
+  </div>
+
+  <!-- Grounding 5-4-3-2-1 Modal -->
+  <div class="modal" id="groundModal">
+    <div class="modal-content">
+      <div class="modal-title">🧘 5-4-3-2-1 Grounding</div>
+      <p style="font-size:13px;color:#6b7280;margin-bottom:12px;">Focus on your senses. This brings you to the present moment.</p>
+      
+      <div style="font-size:14px;line-height:1.8;">
+        <p><strong>5 things you can SEE:</strong><br>
+        <input type="text" class="modal-input" placeholder="Look around..."></p>
+        
+        <p><strong>4 things you can TOUCH:</strong><br>
+        <input type="text" class="modal-input" placeholder="Feel textures..."></p>
+        
+        <p><strong>3 things you can HEAR:</strong><br>
+        <input type="text" class="modal-input" placeholder="Listen carefully..."></p>
+        
+        <p><strong>2 things you can SMELL:</strong><br>
+        <input type="text" class="modal-input" placeholder="Breathe in..."></p>
+        
+        <p><strong>1 thing you can TASTE:</strong><br>
+        <input type="text" class="modal-input" placeholder="Notice..."></p>
+      </div>
+      
+      <button class="modal-btn btn-secondary" onclick="closeGrounding()">Close</button>
+    </div>
+  </div>
+
+  <!-- Reasons for Living Modal -->
+  <div class="modal" id="reasonsModal">
+    <div class="modal-content">
+      <div class="modal-title">❤️ Why I Stay</div>
+      <p style="font-size:13px;color:#6b7280;margin-bottom:12px;">List your reasons for living. Read this when things get hard.</p>
+      
+      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">My reasons to keep going:</label>
+      <textarea class="modal-textarea" id="reasonsText" placeholder="My family needs me&#10;I want to see my goals happen&#10;My pet depends on me&#10;Things can get better..." style="min-height:120px;"></textarea>
+      
+      <button class="modal-btn btn-success" onclick="saveReasons()">💾 Save My Reasons</button>
+      
+      <div style="margin-top:16px;">
+        <button class="modal-btn btn-secondary" onclick="closeReasons()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lethal Means Counseling Modal -->
+  <div class="modal" id="lethalModal">
+    <div class="modal-content">
+      <div class="modal-title">🛡️ Safety Checklist</div>
+      <p style="font-size:13px;color:#6b7280;margin-bottom:12px;">Remove dangerous items from easy reach. This saves lives.</p>
+      
+      <div class="checklist-item">
+        <input type="checkbox" id="check1">
+        <label for="check1">Lock up or give away medications/pills</label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="check2">
+        <label for="check2">Remove sharp objects (knives, razors)</label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="check3">
+        <label for="check3">Secure or remove ropes/cords</label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="check4">
+        <label for="check4">Stay away from high places (rooftops, bridges)</label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="check5">
+        <label for="check5">Tell someone I trust I'm struggling</label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="check6">
+        <label for="check6">Have emergency numbers saved in phone</label>
+      </div>
+      
+      <button class="modal-btn btn-success" onclick="saveLethalCheck()">✅ Mark Complete</button>
+      <button class="modal-btn btn-secondary" onclick="closeLethal()">Close</button>
+    </div>
+  </div>
+
+  <!-- Share Modal -->
+  <div class="modal" id="shareModal">
+    <div class="modal-content">
+      <div class="modal-title">📱 Alert Trusted Contact</div>
+      <p style="font-size:13px;color:#6b7280;margin-bottom:12px;">Send your location + SOS message via WhatsApp</p>
+      
+      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Contact number (with country code):</label>
+      <input type="tel" class="modal-input" id="trustedNumber" placeholder="+91 98765 43210">
+      
+      <div style="margin-top:16px;">
+        <button class="modal-btn btn-primary" onclick="sendSOS()">Send SOS</button>
+        <button class="modal-btn btn-secondary" onclick="closeShare()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Emergency card clicks
+    document.querySelectorAll('.em-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const tel = card.getAttribute('data-tel');
+        if (tel) window.location.href = 'tel:' + tel;
+      });
+    });
+
+    // Language toggle
+    let currentLang = 'en';
+    const translations = {
+      en: {
+        title: 'SOS & Crisis Support',
+        subtitle: 'Use this page if things feel very heavy or unsafe.',
+        warning: '⚠️ If you are in immediate danger, or worried you might hurt yourself or someone else, use these numbers right now. Calls open directly from your phone.',
+        btnAssess: 'Check my crisis level',
+        btnLifebox: 'My Hope Box',
+        btnDistract: '15-min wait timer',
+        btnSafety: 'My safety plan',
+        btnBreath: '2‑min breathing',
+        btnGround: '5-4-3-2-1 grounding',
+        btnReasons: 'Why I stay',
+        btnLethal: 'Safety checklist',
+        btnHospital: 'Find hospital',
+        btnShare: 'Alert contact',
+        btnExport: 'Export plan',
+        helplines: 'Key helplines (India)',
+        safetyTitle: 'Quick safety steps if you feel at risk',
+        backText: 'Back to Journey',
+        footer: '⚠️ Calm Hub is NOT a replacement for doctors or emergency services. In immediate danger, call 108 first. These contacts are for India and should be verified from official sources.'
+      },
+      hi: {
+        title: 'SOS और संकट सहायता',
+        subtitle: 'यदि चीजें बहुत भारी या असुरक्षित महसूस हों तो इस पृष्ठ का उपयोग करें।',
+        warning: '⚠️ यदि आप तत्काल खतरे में हैं, या चिंतित हैं कि आप खुद को या किसी और को चोट पहुंचा सकते हैं, तो अभी इन नंबरों का उपयोग करें। कॉल सीधे आपके फोन से खुलती हैं।',
+        btnAssess: 'मेरे संकट स्तर की जांच करें',
+        btnLifebox: 'मेरा आशा बॉक्स',
+        btnDistract: '15-मिनट की प्रतीक्षा टाइमर',
+        btnSafety: 'मेरी सुरक्षा योजना',
+        btnBreath: '2-मिनट की सांस',
+        btnGround: '5-4-3-2-1 ग्राउंडिंग',
+        btnReasons: 'मैं क्यों रहता हूं',
+        btnLethal: 'सुरक्षा चेकलिस्ट',
+        btnHospital: 'अस्पताल खोजें',
+        btnShare: 'संपर्क को सचेत करें',
+        btnExport: 'योजना निर्यात करें',
+        helplines: 'मुख्य हेल्पलाइन (भारत)',
+        safetyTitle: 'यदि आप जोखिम में महसूस करते हैं तो त्वरित सुरक्षा कदम',
+        backText: 'यात्रा पर वापस',
+        footer: '⚠️ Calm Hub डॉक्टरों या आपातकालीन सेवाओं का प्रतिस्थापन नहीं है। तत्काल खतरे में, पहले 108 पर कॉल करें।'
+      }
+    };
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'hi' : 'en';
+      const t = translations[currentLang];
+      
+      document.getElementById('pageTitle').textContent = t.title;
+      document.getElementById('pageSubtitle').textContent = t.subtitle;
+      document.getElementById('warningText').textContent = t.warning;
+      document.getElementById('btnAssess').textContent = t.btnAssess;
+      document.getElementById('btnLifebox').textContent = t.btnLifebox;
+      document.getElementById('btnDistract').textContent = t.btnDistract;
+      document.getElementById('btnSafety').textContent = t.btnSafety;
+      document.getElementById('btnBreath').textContent = t.btnBreath;
+      document.getElementById('btnGround').textContent = t.btnGround;
+      document.getElementById('btnReasons').textContent = t.btnReasons;
+      document.getElementById('btnLethal').textContent = t.btnLethal;
+      document.getElementById('btnHospital').textContent = t.btnHospital;
+      document.getElementById('btnShare').textContent = t.btnShare;
+      document.getElementById('btnExport').textContent = t.btnExport;
+      document.getElementById('helplinesTitle').textContent = t.helplines;
+      document.getElementById('safetyStepsTitle').textContent = t.safetyTitle;
+      document.getElementById('backText').textContent = t.backText;
+      document.getElementById('footerNote').textContent = t.footer;
+      document.getElementById('langBtn').textContent = currentLang === 'en' ? 'हिंदी / Hindi' : 'English';
+      
+      document.querySelectorAll('.help-detail').forEach(el => {
+        el.textContent = el.getAttribute('data-' + currentLang);
+      });
+    }
+
+    // Crisis Assessment
+    let assessAnswers = [];
+    function startCrisisAssessment() {
+      assessAnswers = [];
+      document.getElementById('assessModal').classList.add('show');
+      document.getElementById('assessQ1').classList.remove('hidden');
+      document.getElementById('assessQ2').classList.add('hidden');
+      document.getElementById('assessQ3').classList.add('hidden');
+      document.getElementById('assessResult').classList.add('hidden');
+    }
+
+    function selectAssess(q, score) {
+      assessAnswers[q-1] = score;
+      
+      if (q === 1) {
+        document.getElementById('assessQ1').classList.add('hidden');
+        document.getElementById('assessQ2').classList.remove('hidden');
+      } else if (q === 2) {
+        document.getElementById('assessQ2').classList.add('hidden');
+        document.getElementById('assessQ3').classList.remove('hidden');
+      } else if (q === 3) {
+        showAssessResult();
+      }
+    }
+
+    function showAssessResult() {
+      document.getElementById('assessQ3').classList.add('hidden');
+      const total = assessAnswers.reduce((a,b) => a+b, 0);
+      const result = document.getElementById('assessResult');
+      result.classList.remove('hidden');
+      
+      if (total >= 7) {
+        document.body.classList.add('crisis-mode');
+        result.innerHTML = `
+          <div style="background:#fee2e2;padding:16px;border-radius:12px;border:2px solid #dc2626;">
+            <h3 style="color:#991b1b;margin-bottom:8px;">🚨 HIGH CRISIS - IMMEDIATE HELP NEEDED</h3>
+            <p style="font-size:14px;margin-bottom:12px;">You need urgent professional support right now.</p>
+            <button class="modal-btn btn-danger" onclick="window.location.href='tel:108'">🔴 CALL 108 AMBULANCE NOW</button>
+            <button class="modal-btn btn-danger" onclick="window.location.href='tel:9152987821'">🆘 CALL iCALL NOW</button>
+            <p style="font-size:12px;margin-top:8px;color:#7f1d1d;">Please stay with someone or go to nearest hospital ER immediately.</p>
+          </div>
+        `;
+      } else if (total >= 4) {
+        result.innerHTML = `
+          <div style="background:#fef3c7;padding:16px;border-radius:12px;border:2px solid #f59e0b;">
+            <h3 style="color:#92400e;margin-bottom:8px;">⚠️ MODERATE CRISIS - NEED SUPPORT</h3>
+            <p style="font-size:14px;margin-bottom:12px;">You're struggling. Use these tools + talk to someone.</p>
+            <button class="modal-btn btn-primary" onclick="closeAssess();openLifebox();">💎 Open Hope Box</button>
+            <button class="modal-btn btn-primary" onclick="closeAssess();startDistraction();">⏱ Start 15-min timer</button>
+            <p style="font-size:12px;margin-top:8px;">Then call: 9152987821 (iCall) or 14416 (Tele MANAS)</p>
+          </div>
+        `;
+      } else {
+        result.innerHTML = `
+          <div style="background:#d1fae5;padding:16px;border-radius:12px;border:2px solid #10b981;">
+            <h3 style="color:#065f46;margin-bottom:8px;">✅ MILD DISTRESS - YOU'RE MANAGING</h3>
+            <p style="font-size:14px;margin-bottom:12px;">You're coping well. Use these to feel better:</p>
+            <button class="modal-btn btn-success" onclick="closeAssess();openBreathing();">🌬 2-min Breathing</button>
+            <button class="modal-btn btn-success" onclick="closeAssess();openGrounding();">🧘 Grounding Exercise</button>
+          </div>
+        `;
+      }
+    }
+
+    function closeAssess() {
+      document.getElementById('assessModal').classList.remove('show');
+      document.body.classList.remove('crisis-mode');
+    }
+
+    // Lifebox / Hope Box
+    function openLifebox() {
+      document.getElementById('lifeboxModal').classList.add('show');
+      loadLifebox();
+    }
+
+    function closeLifebox() {
+      document.getElementById('lifeboxModal').classList.remove('show');
+    }
+
+    function saveLifebox() {
+      const box = JSON.parse(localStorage.getItem('calmHubLifebox') || '[]');
+      const entry = {
+        reason: document.getElementById('lifeboxReason').value,
+        memory: document.getElementById('lifeboxMemory').value,
+        quote: document.getElementById('lifeboxQuote').value,
+        date: new Date().toLocaleDateString()
+      };
+      
+      if (entry.reason || entry.memory || entry.quote) {
+        box.push(entry);
+        localStorage.setItem('calmHubLifebox', JSON.stringify(box));
+        document.getElementById('lifeboxReason').value = '';
+        document.getElementById('lifeboxMemory').value = '';
+        document.getElementById('lifeboxQuote').value = '';
+        loadLifebox();
+        alert('💎 Added to your Hope Box!');
+      }
+    }
+
+    function loadLifebox() {
+      const box = JSON.parse(localStorage.getItem('calmHubLifebox') || '[]');
+      const list = document.getElementById('lifeboxList');
+      
+      if (box.length === 0) {
+        list.innerHTML = '<p style="font-size:13px;color:#6b7280;font-style:italic;">Your Hope Box is empty. Add your first reason above!</p>';
+      } else {
+        list.innerHTML = '<div style="font-size:14px;font-weight:600;margin-bottom:8px;">💎 Your Hope Box (' + box.length + ' items):</div>';
+        box.forEach((item, i) => {
+          list.innerHTML += `
+            <div style="background:#f3f4f6;padding:10px;border-radius:8px;margin-bottom:8px;font-size:13px;">
+              ${item.reason ? '<div><strong>Why I stay:</strong> ' + item.reason + '</div>' : ''}
+              ${item.memory ? '<div><strong>Memory:</strong> ' + item.memory + '</div>' : ''}
+              ${item.quote ? '<div><strong>Quote:</strong> ' + item.quote + '</div>' : ''}
+              <div style="font-size:11px;color:#6b7280;margin-top:4px;">Saved: ${item.date}</div>
+            </div>
+          `;
+        });
+      }
+    }
+
+    // Distraction Timer
+    let timerInterval;
+    let timerRunning = false;
+    const activities = [
+      "Name 5 blue things you can see around you.",
+      "Count backwards from 100 by 7s (100, 93, 86...).",
+      "List 10 countries you'd like to visit.",
+      "Think of 5 people who care about you.",
+      "Name all your family members and one thing you love about each.",
+      "List your top 5 favorite foods.",
+      "What are 3 goals you want to achieve this year?",
+      "Remember 5 happy moments from the past month.",
+    ];
+
+    function startDistraction() {
+      document.getElementById('distractModal').classList.add('show');
+      document.getElementById('activityText').textContent = activities[Math.floor(Math.random() * activities.length)];
+    }
+
+    function closeDistract() {
+      document.getElementById('distractModal').classList.remove('show');
+      clearInterval(timerInterval);
+      timerRunning = false;
+    }
+
+    function startTimer() {
+      if (timerRunning) return;
+      
+      timerRunning = true;
+      let seconds = 900; // 15 minutes
+      document.getElementById('timerBtn').disabled = true;
+      
+      timerInterval = setInterval(() => {
+        seconds--;
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        document.getElementById('timerDisplay').textContent = 
+          mins + ':' + (secs < 10 ? '0' : '') + secs;
+        
+        const progress = ((900 - seconds) / 900) * 100;
+        document.getElementById('timerProgress').style.width = progress + '%';
+        
+        if (seconds % 180 === 0 && seconds > 0) {
+          document.getElementById('activityText').textContent = 
+            activities[Math.floor(Math.random() * activities.length)];
+        }
+        
+        if (seconds === 0) {
+          clearInterval(timerInterval);
+          document.getElementById('timerDisplay').textContent = 'Done! 🎉';
+          document.getElementById('activityText').innerHTML = 
+            '<strong>You made it through 15 minutes!</strong><br>How are you feeling now? Still need help?';
+          alert('✅ Great job! You waited 15 minutes. How do you feel now?');
+          setTimeout(() => {
+            if (confirm('Do you still need immediate help?')) {
+              window.location.href = 'tel:9152987821';
+            }
+          }, 1000);
+        }
+      }, 1000);
+    }
+
+    // Safety Plan
+    function openSafetyPlan() {
+      const plan = JSON.parse(localStorage.getItem('calmHubSafetyPlan') || '{}');
+      if (plan.warningSigns) {
+        document.getElementById('warningSigns').value = plan.warningSigns || '';
+        document.getElementById('copingSteps').value = plan.copingSteps || '';
+        document.getElementById('contact1').value = plan.contact1 || '';
+        document.getElementById('contact2').value = plan.contact2 || '';
+        document.getElementById('contact3').value = plan.contact3 || '';
+      }
+      document.getElementById('safetyModal').classList.add('show');
+    }
+
+    function closeSafetyPlan() {
+      document.getElementById('safetyModal').classList.remove('show');
+    }
+
+    function saveSafetyPlan() {
+      const plan = {
+        warningSigns: document.getElementById('warningSigns').value,
+        copingSteps: document.getElementById('copingSteps').value,
+        contact1: document.getElementById('contact1').value,
+        contact2: document.getElementById('contact2').value,
+        contact3: document.getElementById('contact3').value,
+        savedAt: new Date().toISOString()
+      };
+      localStorage.setItem('calmHubSafetyPlan', JSON.stringify(plan));
+      alert('✅ Safety plan saved privately on your device!');
+      closeSafetyPlan();
+    }
+
+    // Breathing Exercise
+    let breathTimer;
+    function openBreathing() {
+      document.getElementById('breathModal').classList.add('show');
+      startBreathing();
+    }
+
+    function closeBreathing() {
+      document.getElementById('breathModal').classList.remove('show');
+      clearInterval(breathTimer);
+    }
+
+    function startBreathing() {
+      const circle = document.getElementById('breathCircle');
+      const instruction = document.getElementById('breathInstruction');
+      let step = 0;
+      
+      const steps = [
+        { text: 'Breathe In (4s)', scale: 1.5 },
+        { text: 'Hold (4s)', scale: 1.5 },
+        { text: 'Breathe Out (4s)', scale: 1 },
+        { text: 'Hold (4s)', scale: 1 }
+      ];
+      
+      breathTimer = setInterval(() => {
+        const current = steps[step % 4];
+        instruction.textContent = current.text;
+        circle.style.transform = `scale(${current.scale})`;
+        step++;
+        if (step >= 12) {
+          clearInterval(breathTimer);
+          instruction.textContent = 'Done! Feel calmer?';
+        }
+      }, 4000);
+    }
+
+    // Grounding
+    function openGrounding() {
+      document.getElementById('groundModal').classList.add('show');
+    }
+
+    function closeGrounding() {
+      document.getElementById('groundModal').classList.remove('show');
+    }
+
+    // Reasons for Living
+    function openReasonsLiving() {
+      const saved = localStorage.getItem('calmHubReasons');
+      if (saved) {
+        document.getElementById('reasonsText').value = saved;
+      }
+      document.getElementById('reasonsModal').classList.add('show');
+    }
+
+    function closeReasons() {
+      document.getElementById('reasonsModal').classList.remove('show');
+    }
+
+    function saveReasons() {
+      const text = document.getElementById('reasonsText').value;
+      if (text.trim()) {
+        localStorage.setItem('calmHubReasons', text);
+        alert('❤️ Your reasons saved! Read them whenever you need.');
+      }
+    }
+
+    // Lethal Means
+    function openLethalMeans() {
+      document.getElementById('lethalModal').classList.add('show');
+      loadLethalCheck();
+    }
+
+    function closeLethal() {
+      document.getElementById('lethalModal').classList.remove('show');
+    }
+
+    function saveLethalCheck() {
+      const checks = {
+        check1: document.getElementById('check1').checked,
+        check2: document.getElementById('check2').checked,
+        check3: document.getElementById('check3').checked,
+        check4: document.getElementById('check4').checked,
+        check5: document.getElementById('check5').checked,
+        check6: document.getElementById('check6').checked,
+        date: new Date().toLocaleDateString()
+      };
+      localStorage.setItem('calmHubLethalCheck', JSON.stringify(checks));
+      alert('✅ Safety checklist saved! Great job taking these steps.');
+    }
+
+    function loadLethalCheck() {
+      const saved = JSON.parse(localStorage.getItem('calmHubLethalCheck') || '{}');
+      if (saved.check1) {
+        document.getElementById('check1').checked = saved.check1;
+        document.getElementById('check2').checked = saved.check2;
+        document.getElementById('check3').checked = saved.check3;
+        document.getElementById('check4').checked = saved.check4;
+        document.getElementById('check5').checked = saved.check5;
+        document.getElementById('check6').checked = saved.check6;
+      }
+    }
+
+    // Hospital Finder - FIXED FOR PSYCHIATRISTS
+    function findHospital() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          // Search specifically for PSYCHIATRIST at your location
+          const url = `https://www.google.com/maps/search/psychiatrist/@${lat},${lng},15z`;
+          window.open(url, '_blank');
+        }, () => {
+          alert('📍 Location access denied. Opening psychiatrist search.');
+          window.open('https://www.google.com/maps/search/psychiatrist/', '_blank');
+        });
+      } else {
+        window.open('https://www.google.com/maps/search/psychiatrist/', '_blank');
+      }
+    }
+
+    // Share SOS
+    function shareTrusted() {
+      document.getElementById('shareModal').classList.add('show');
+    }
+
+    function closeShare() {
+      document.getElementById('shareModal').classList.remove('show');
+    }
+
+    function sendSOS() {
+      const number = document.getElementById('trustedNumber').value.replace(/\D/g, '');
+      if (!number) {
+        alert('Please enter a phone number');
+        return;
+      }
+      
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const message = `🚨 SOS: I need help. My location: https://maps.google.com/?q=${lat},${lng}`;
+          const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+          window.open(url, '_blank');
+          closeShare();
+        }, () => {
+          const message = `🚨 SOS: I need help right now. Please call me.`;
+          const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+          window.open(url, '_blank');
+          closeShare();
+        });
+      }
+    }
+
+    // Export Safety Plan
+    function exportPlan() {
+      const plan = JSON.parse(localStorage.getItem('calmHubSafetyPlan') || '{}');
+      const lifebox = JSON.parse(localStorage.getItem('calmHubLifebox') || '[]');
+      const reasons = localStorage.getItem('calmHubReasons') || '';
+      
+      if (!plan.warningSigns && lifebox.length === 0 && !reasons) {
+        alert('No data saved yet. Create your safety plan first!');
+        return;
+      }
+      
+      let text = `📝 MY COMPLETE SAFETY PLAN - Calm Hub\n\n`;
+      
+      if (plan.warningSigns) {
+        text += `⚠️ Warning Signs:\n${plan.warningSigns}\n\n💪 Coping Steps:\n${plan.copingSteps}\n\n👥 Trusted Contacts:\n1. ${plan.contact1}\n2. ${plan.contact2}\n3. ${plan.contact3}\n\n`;
+      }
+      
+      if (reasons) {
+        text += `❤️ WHY I STAY:\n${reasons}\n\n`;
+      }
+      
+      if (lifebox.length > 0) {
+        text += `💎 MY HOPE BOX (${lifebox.length} items):\n`;
+        lifebox.forEach((item, i) => {
+          text += `\n${i+1}. ${item.reason || item.memory || item.quote}`;
+        });
+        text += '\n\n';
+      }
+      
+      text += `🆘 EMERGENCY NUMBERS:\n• 108 - Ambulance\n• 9152987821 - iCall\n• 9820466726 - AASRA\n• 14416 - Tele MANAS\n\nExported: ${new Date().toLocaleString()}`;
+      
+      const blob = new Blob([text], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'My_Complete_Safety_Plan_CalmHub.txt';
+      a.click();
+      alert('✅ Complete safety plan exported! Check your downloads.');
+    }
+
+    // Offline indicator
+    window.addEventListener('offline', () => {
+      document.querySelector('.footer-note').innerHTML = '📵 <strong>OFFLINE MODE:</strong> Emergency numbers still work. Call 108 for ambulance.';
+    });
+
+    window.addEventListener('online', () => {
+      document.getElementById('footerNote').textContent = translations[currentLang].footer;
+    });
+  </script>
+</body>
+</html>

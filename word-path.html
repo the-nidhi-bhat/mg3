@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Word Path – Calm Hub</title>
+  <style>
+    /* --- Premium Reset & Typography --- */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- Luxury Animated Background --- */
+    body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(236, 72, 153, 0.15)),
+                    url("image.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        padding: 20px;
+    }
+
+    /* --- The Glass Shell --- */
+    .shell {
+        width: 100%;
+        max-width: 640px;
+        border-radius: 32px;
+        padding: 40px;
+        
+        /* High-end Frosted Glass */
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 
+            0 25px 50px rgba(0, 0, 0, 0.12),
+            0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+
+        /* Entry Animation */
+        opacity: 0;
+        transform: translateY(20px);
+        animation: floatUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes floatUp {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- Header --- */
+    .top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .title-block h1 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 4px;
+        letter-spacing: -0.5px;
+    }
+
+    .title-block p {
+        font-size: 15px;
+        color: #64748b;
+    }
+
+    .back-link a {
+        font-size: 14px;
+        color: #64748b;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .back-link a span {
+        color: #6366f1;
+        font-weight: 700;
+    }
+
+    .back-link a:hover {
+        color: #334155;
+    }
+
+    /* --- Game Area --- */
+    .game-area {
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f1f5f9;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Hint Box */
+    .hint-box {
+        width: 100%;
+        background: #f0f9ff;
+        border: 1px solid #bae6fd;
+        color: #0369a1;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
+        margin-bottom: 20px;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Grid */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 24px;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .cell {
+        aspect-ratio: 1;
+        border-radius: 12px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 700;
+        color: #334155;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .cell:hover {
+        transform: translateY(-2px);
+        background: #ffffff;
+        border-color: #cbd5e1;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+    }
+    
+    .cell.selected {
+        background: #e0e7ff;
+        border-color: #6366f1;
+        color: #4338ca;
+        box-shadow: 
+            inset 0 0 10px rgba(99, 102, 241, 0.15),
+            0 0 0 2px rgba(99, 102, 241, 0.3);
+        transform: scale(0.96);
+    }
+
+    /* Current Word Display */
+    .word-display {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 24px;
+        min-height: 32px;
+        letter-spacing: 2px;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 4px;
+        width: 100%;
+        max-width: 200px;
+        text-align: center;
+    }
+
+    /* Controls */
+    .info-row {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 12px;
+        border: none;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        color: #ffffff;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+        transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 14px rgba(99, 102, 241, 0.3);
+    }
+    
+    .btn:active {
+        transform: translateY(0);
+    }
+
+    .btn.secondary {
+        background: #f1f5f9;
+        color: #475569;
+        box-shadow: none;
+        border: 1px solid #cbd5e1;
+    }
+    
+    .btn.secondary:hover {
+        background: #e2e8f0;
+        border-color: #94a3b8;
+    }
+
+    .status {
+        margin-top: 16px;
+        font-size: 14px;
+        font-weight: 600;
+        min-height: 20px;
+        color: #64748b;
+        text-align: center;
+    }
+
+    .status.good { color: #16a34a; }
+    .status.bad  { color: #dc2626; }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+        .shell { padding: 24px 20px; }
+        .grid { gap: 8px; }
+        .cell { font-size: 18px; border-radius: 10px; }
+        .info-row { flex-direction: column; width: 100%; }
+        .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    
+    <div class="top-row">
+      <div class="title-block">
+        <h1>Word Path 🔤</h1>
+        <p>Find the hidden word that matches the hint.</p>
+      </div>
+      <div class="back-link">
+        <a href="games.html">← <span>Back to Games</span></a>
+      </div>
+    </div>
+
+    <div class="game-area">
+      
+      <div id="hintText" class="hint-box">
+        Press “New Puzzle” to start.
+      </div>
+      
+      <div id="grid" class="grid"></div>
+      
+      <div id="currentWord" class="word-display"></div>
+
+      <div class="info-row">
+        <button id="newPuzzleBtn" class="btn">New Puzzle</button>
+        <button id="clearBtn" class="btn secondary">Clear</button>
+        <button id="checkBtn" class="btn secondary">Check Word</button>
+      </div>
+
+      <div id="status" class="status"></div>
+    </div>
+  </div>
+
+  <script>
+    // --- Audio Context ---
+    let audioCtx;
+    function getAudioCtx() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
+
+    function playClick() {
+      const ctx = getAudioCtx();
+      if (ctx.state === "suspended") ctx.resume();
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine"; 
+      osc.frequency.setValueAtTime(600, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.1);
+      
+      gain.gain.setValueAtTime(0.05, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+      
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.15);
+    }
+
+    function playSuccess() {
+      const ctx = getAudioCtx();
+      if (ctx.state === "suspended") ctx.resume();
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "triangle"; 
+      osc.frequency.setValueAtTime(440, ctx.currentTime); 
+      osc.frequency.linearRampToValueAtTime(880, ctx.currentTime + 0.15);
+      
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+      
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.5);
+    }
+
+    function playError() {
+      const ctx = getAudioCtx();
+      if (ctx.state === "suspended") ctx.resume();
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(150, ctx.currentTime);
+      osc.frequency.linearRampToValueAtTime(100, ctx.currentTime + 0.15);
+      
+      gain.gain.setValueAtTime(0.05, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+      
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.2);
+    }
+
+    // --- Game Logic ---
+    const gridEl = document.getElementById("grid");
+    const hintEl = document.getElementById("hintText");
+    const currentWordEl = document.getElementById("currentWord");
+    const newPuzzleBtn = document.getElementById("newPuzzleBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const checkBtn = document.getElementById("checkBtn");
+    const statusEl = document.getElementById("status");
+
+    const PUZZLES = [
+      { word: "CALM", hint: "A state of peace." },
+      { word: "REST", hint: "What you need after work." },
+      { word: "HOPE", hint: "Looking forward with positivity." },
+      { word: "SAFE", hint: "Protected from harm." },
+      { word: "EASY", hint: "Not difficult." },
+      { word: "JOY",  hint: "A feeling of great pleasure." },
+      { word: "SLOW", hint: "The opposite of fast." },
+      { word: "MIND", hint: "Where your thoughts live." }
+    ];
+
+    let currentPuzzle = null;
+    let selectedIndices = [];
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function newPuzzle() {
+      statusEl.textContent = "";
+      statusEl.className = "status";
+      selectedIndices = [];
+      currentWordEl.textContent = "";
+
+      // Pick Random
+      currentPuzzle = PUZZLES[Math.floor(Math.random() * PUZZLES.length)];
+      hintEl.textContent = `Hint: "${currentPuzzle.hint}"`;
+
+      // Fill Grid (16 slots)
+      const letters = currentPuzzle.word.split("");
+      const extras = ["A","E","I","O","U","R","S","T","L","N","M"];
+      while (letters.length < 16) {
+        letters.push(extras[Math.floor(Math.random() * extras.length)]);
+      }
+      shuffleArray(letters);
+
+      gridEl.innerHTML = "";
+      letters.forEach((ch, idx) => {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        cell.textContent = ch;
+        cell.dataset.index = String(idx);
+        
+        cell.addEventListener("click", () => toggleSelect(idx, cell));
+        
+        gridEl.appendChild(cell);
+      });
+
+      playClick();
+    }
+
+    function toggleSelect(idx, cell) {
+      const pos = selectedIndices.indexOf(idx);
+      
+      if (pos === -1) {
+        selectedIndices.push(idx);
+        cell.classList.add("selected");
+      } else {
+        selectedIndices.splice(pos, 1);
+        cell.classList.remove("selected");
+      }
+      
+      playClick();
+      updateCurrentWord();
+    }
+
+    function updateCurrentWord() {
+      // Sort by order of selection? Or order in grid?
+      // Usually "Word Path" implies selection order
+      let word = "";
+      selectedIndices.forEach(i => {
+        const cell = gridEl.children[i];
+        word += cell.textContent;
+      });
+      currentWordEl.textContent = word;
+    }
+
+    function clearSelection() {
+      selectedIndices = [];
+      Array.from(gridEl.children).forEach(c => c.classList.remove("selected"));
+      currentWordEl.textContent = "";
+      statusEl.textContent = "";
+      statusEl.className = "status";
+      playClick();
+    }
+
+    function checkWord() {
+      if (!currentPuzzle) return;
+      const word = currentWordEl.textContent;
+      if (!word) return;
+
+      if (word === currentPuzzle.word) {
+        statusEl.textContent = `Correct! "${word}" matches the hint.`;
+        statusEl.className = "status good";
+        playSuccess();
+        
+        // Disable grid interaction temporarily to show win state
+        Array.from(gridEl.children).forEach(c => c.style.pointerEvents = "none");
+        
+      } else {
+        statusEl.textContent = `"${word}" isn't the hidden word. Try again.`;
+        statusEl.className = "status bad";
+        playError();
+      }
+    }
+
+    newPuzzleBtn.addEventListener("click", newPuzzle);
+    clearBtn.addEventListener("click", clearSelection);
+    checkBtn.addEventListener("click", checkWord);
+    
+    // Init with empty grid or instructions?
+    // Let's init empty so they press New Puzzle
+  </script>
+</body>
+</html>

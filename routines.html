@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calm Hub – Routine Templates</title>
+  <style>
+    /* --- Premium Reset & Typography --- */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing:antialiased; }
+
+    /* --- CSS Variables for Themes --- */
+    :root {
+      --bg-gradient-start: rgba(79, 70, 229, 0.15);
+      --bg-gradient-end: rgba(236, 72, 153, 0.15);
+      --bg-image: url('image.jpg');
+      --shell-bg: rgba(255, 255, 255, 0.85);
+      --shell-border: rgba(255, 255, 255, 0.9);
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #475569;
+      --card-bg: #ffffff;
+      --card-border: #f1f5f9;
+      --card-hover-bg: #f8fafc;
+      --step-bg: #f8fafc;
+      --step-border: #e2e8f0;
+      --resource-bg: #f8fafc;
+      --resource-border: #e2e8f0;
+      --resource-title: #475569;
+      --btn-secondary-bg: #f1f5f9;
+      --btn-secondary-text: #475569;
+      --btn-secondary-hover: #e2e8f0;
+      --situation-bg: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(236,72,153,0.08));
+      --situation-border: rgba(99,102,241,0.15);
+      --tag-bg: white;
+      --tag-text: #475569;
+      --tag-border: #e2e8f0;
+    }
+
+    [data-theme="dark"] {
+      --bg-gradient-start: rgba(15, 23, 42, 0.95);
+      --bg-gradient-end: rgba(30, 41, 59, 0.95);
+      --bg-image: url('night.jpg');
+      --shell-bg: rgba(15, 23, 42, 0.95);
+      --shell-border: rgba(51, 65, 85, 0.6);
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.8);
+      --card-border: rgba(51, 65, 85, 0.5);
+      --card-hover-bg: rgba(51, 65, 85, 0.3);
+      --step-bg: rgba(51, 65, 85, 0.3);
+      --step-border: rgba(71, 85, 105, 0.4);
+      --resource-bg: rgba(51, 65, 85, 0.4);
+      --resource-border: rgba(71, 85, 105, 0.4);
+      --resource-title: #cbd5e1;
+      --btn-secondary-bg: rgba(51, 65, 85, 0.6);
+      --btn-secondary-text: #cbd5e1;
+      --btn-secondary-hover: rgba(71, 85, 105, 0.6);
+      --situation-bg: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.15));
+      --situation-border: rgba(99,102,241,0.3);
+      --tag-bg: rgba(51, 65, 85, 0.6);
+      --tag-text: #cbd5e1;
+      --tag-border: rgba(71, 85, 105, 0.5);
+    }
+
+    /* --- Background --- */
+    body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 40px 20px;
+        background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end)), var(--bg-image);
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        transition: all 0.4s ease;
+    }
+
+    /* --- Theme Toggle Button --- */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1) rotate(15deg);
+      box-shadow: 0 12px 32px rgba(99, 102, 241, 0.5);
+    }
+
+    /* --- Glass Shell --- */
+    .shell {
+        width: 100%;
+        max-width: 1200px;
+        border-radius: 32px;
+        padding: 40px;
+        background: var(--shell-bg);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        border: 1px solid var(--shell-border);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+        animation: floatUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        transition: all 0.4s ease;
+    }
+    @keyframes floatUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+    /* --- Header --- */
+    .top-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:32px; flex-wrap:wrap; gap:16px; }
+    .title-block h1 { font-size:32px; font-weight:700; color:var(--text-primary); margin-bottom:4px; }
+    .title-block p { font-size:15px; color:var(--text-secondary); }
+    .back-link a { font-size:14px; color:var(--text-secondary); text-decoration:none; font-weight:500; display:flex; align-items:center; gap:6px; }
+    .back-link a span { color:#6366f1; font-weight:700; }
+    .back-link a:hover { color:var(--text-muted); }
+
+    /* --- What Are You Going Through Section --- */
+    .situation-selector {
+      background: var(--situation-bg);
+      border-radius: 24px;
+      padding: 32px;
+      margin-bottom: 32px;
+      border: 1px solid var(--situation-border);
+    }
+    .situation-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .situation-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+    .situation-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .situation-tag {
+      padding: 12px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      border: 2px solid var(--tag-border);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .situation-tag:hover {
+      border-color: #6366f1;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(99,102,241,0.2);
+    }
+    .situation-tag.active {
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+    }
+
+    /* --- Filter Info Banner --- */
+    .filter-banner {
+      background: linear-gradient(135deg, #10b981, #34d399);
+      color: white;
+      padding: 16px 24px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: 14px;
+      box-shadow: 0 8px 24px rgba(16,185,129,0.3);
+    }
+    .filter-banner.show { display: flex; }
+    .clear-filter {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .clear-filter:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* --- Routine Cards Grid --- */
+    .routines-grid { 
+      display:grid; 
+      grid-template-columns:repeat(auto-fit, minmax(340px, 1fr)); 
+      gap:24px; 
+      margin-bottom:32px; 
+    }
+    @media (max-width:900px) { .routines-grid { grid-template-columns:1fr; } }
+
+    /* --- Routine Cards --- */
+    .routine-card { 
+      background:var(--card-bg); 
+      border-radius:24px; 
+      padding:32px; 
+      box-shadow:0 4px 6px -1px rgba(0,0,0,0.05); 
+      border:1px solid var(--card-border); 
+      position:relative; 
+      overflow:hidden;
+      transition: all 0.4s ease;
+      cursor: pointer;
+      opacity: 1;
+      transform: scale(1);
+    }
+    .routine-card.hidden {
+      display: none;
+    }
+    .routine-card:hover { 
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    }
+    .routine-card.selected {
+      border-color: #10b981;
+      box-shadow: 0 0 0 4px rgba(16,185,129,0.1);
+    }
+    
+    .routine-card::before { 
+      content:''; 
+      position:absolute; 
+      top:0; left:0; right:0; 
+      height:5px; 
+      background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+    }
+    
+    .card-header { 
+      display:flex; justify-content:space-between; 
+      align-items:flex-start; 
+      margin-bottom:24px; 
+    }
+    .routine-title { 
+      font-size:20px; 
+      font-weight:700; 
+      color:var(--text-primary); 
+      margin-bottom:4px;
+    }
+    .routine-subtitle { 
+      font-size:14px; 
+      color:var(--text-secondary); 
+      font-weight:500;
+    }
+    .goal-badge { 
+      padding:8px 16px; 
+      border-radius:20px; 
+      font-size:12px; 
+      font-weight:700; 
+      color:#fff; 
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* --- Steps List --- */
+    .steps-list { margin-bottom:20px; }
+    .step-item { 
+      display:flex; gap:12px; 
+      padding:16px 0; 
+      border-bottom:1px solid var(--step-border);
+      transition: all 0.2s;
+    }
+    .step-item:last-child { border-bottom: none; }
+    .step-item:hover { background: var(--card-hover-bg); padding-left:8px; }
+    .step-number { 
+      width:32px; height:32px; 
+      border-radius:50%; 
+      background:linear-gradient(135deg, #10b981, #34d399); 
+      color:#fff; 
+      display:flex; align-items:center; 
+      justify-content:center; 
+      font-size:13px; 
+      font-weight:700;
+      flex-shrink: 0;
+    }
+    .step-content { flex:1; }
+    .step-title { 
+      font-size:15px; 
+      font-weight:600; 
+      color:var(--text-primary); 
+      margin-bottom:4px;
+    }
+    .step-description { 
+      font-size:13px; 
+      color:var(--text-secondary); 
+      line-height:1.5;
+    }
+
+    /* --- App Resources --- */
+    .app-resources { 
+      background:var(--resource-bg); 
+      border-radius:16px; 
+      padding:20px; 
+      border:1px solid var(--resource-border);
+    }
+    .resources-title { 
+      font-size:14px; 
+      font-weight:700; 
+      color:var(--resource-title); 
+      margin-bottom:12px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .resource-tag { 
+      padding:4px 10px; 
+      border-radius:999px; 
+      font-size:11px; 
+      font-weight:700; 
+      background:#e0f2fe; 
+      color:#0369a1; 
+      border:1px solid #bae6fd;
+    }
+
+    /* --- Buttons --- */
+    .btn { 
+      padding:12px 24px; 
+      border-radius:12px; 
+      border:none; 
+      font-size:14px; 
+      font-weight:600; 
+      cursor:pointer; 
+      color:#fff; 
+      background:linear-gradient(135deg,#6366f1,#ec4899); 
+      box-shadow:0 4px 10px rgba(99,102,241,0.2); 
+      transition:all 0.2s ease; 
+      text-decoration:none; 
+      display:inline-flex; 
+      align-items:center; 
+      gap:8px;
+    }
+    .btn:hover { 
+      transform:translateY(-1px); 
+      box-shadow:0 6px 14px rgba(99,102,241,0.3); 
+    }
+    .btn.secondary { 
+      background:var(--btn-secondary-bg); 
+      color:var(--btn-secondary-text); 
+      box-shadow:none; 
+    }
+    .btn.secondary:hover { 
+      background:var(--btn-secondary-hover); 
+      transform:none; 
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* --- Routine Color Variants --- */
+    .routine-heartbreak { --accent-start: #ec4899; --accent-end: #f472b6; }
+    .routine-anxiety { --accent-start: #8b5cf6; --accent-end: #a78bfa; }
+    .routine-depression { --accent-start: #14b8a6; --accent-end: #2dd4bf; }
+    .routine-calm { --accent-start: #10b981; --accent-end: #34d399; }
+    .routine-energy { --accent-start: #f59e0b; --accent-end: #fbbf24; }
+    .routine-support { --accent-start: #6366f1; --accent-end: #ec4899; }
+    .routine-sleep { --accent-start: #06b6d4; --accent-end: #0891b2; }
+    .routine-ptsd { --accent-start: #dc2626; --accent-end: #f87171; }
+    .routine-burnout { --accent-start: #ea580c; --accent-end: #fb923c; }
+    .routine-grief { --accent-start: #6366f1; --accent-end: #818cf8; }
+    .routine-anger { --accent-start: #dc2626; --accent-end: #ef4444; }
+    .routine-social { --accent-start: #8b5cf6; --accent-end: #c084fc; }
+    .routine-ocd { --accent-start: #0891b2; --accent-end: #22d3ee; }
+
+    /* --- Selection State --- */
+    .selection-notice {
+      position: fixed;
+      top: 90px;
+      right: 20px;
+      background: linear-gradient(135deg, #10b981, #34d399);
+      color: white;
+      padding: 16px 24px;
+      border-radius: 20px;
+      box-shadow: 0 12px 32px rgba(16,185,129,0.4);
+      font-weight: 600;
+      font-size: 14px;
+      transform: translateX(400px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+      z-index: 1000;
+      max-width: 300px;
+    }
+    .selection-notice.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    /* --- Status Messages --- */
+    .status-message {
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+    }
+    .status-success { background: #ecfdf5; color: #166534; border: 1px solid #bbf7d0; }
+    .status-error { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+
+    [data-theme="dark"] .status-success { background: rgba(16,185,129,0.2); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
+    [data-theme="dark"] .status-error { background: rgba(220,38,38,0.2); color: #fca5a5; border: 1px solid rgba(220,38,38,0.3); }
+  </style>
+</head>
+<body>
+
+<!-- Theme Toggle Button -->
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+  <span id="themeIcon">🌙</span>
+</button>
+
+<div class="shell">
+  <div class="top-row">
+    <div class="title-block">
+      <h1>Routine Templates 📋</h1>
+      <p>Find the right daily structure for what you're experiencing today.</p>
+    </div>
+    <div class="back-link">
+      <a href="planner.html">📅 <span>View My Planner</span></a>
+    </div>
+  </div>
+
+  <!-- What Are You Going Through Section -->
+  <div class="situation-selector">
+    <div class="situation-title">What are you going through? 💭</div>
+    <div class="situation-subtitle">Select what you're experiencing to see recommended routines</div>
+    <div class="situation-tags">
+      <div class="situation-tag" data-filter="heartbreak">💔 Heartbreak/Loss</div>
+      <div class="situation-tag" data-filter="anxiety">😰 Anxiety/Worry</div>
+      <div class="situation-tag" data-filter="depression">🌧️ Low Energy/Depression</div>
+      <div class="situation-tag" data-filter="stress">😓 Overwhelmed/Stressed</div>
+      <div class="situation-tag" data-filter="sleep">😴 Sleep Issues</div>
+      <div class="situation-tag" data-filter="focus">🎯 Need Focus/Energy</div>
+      <div class="situation-tag" data-filter="lonely">🤝 Feeling Lonely</div>
+      <div class="situation-tag" data-filter="trauma">⚡ Trauma/PTSD</div>
+      <div class="situation-tag" data-filter="burnout">🔥 Burnout</div>
+      <div class="situation-tag" data-filter="anger">😤 Anger Issues</div>
+      <div class="situation-tag" data-filter="social">😶 Social Anxiety</div>
+      <div class="situation-tag" data-filter="ocd">🔄 OCD/Repetitive Thoughts</div>
+      <div class="situation-tag" data-filter="all">✨ Show All</div>
+    </div>
+  </div>
+
+  <!-- Filter Banner -->
+  <div class="filter-banner" id="filterBanner">
+    <span id="filterText">Showing routines for your situation</span>
+    <button class="clear-filter" id="clearFilter">Show All Routines</button>
+  </div>
+
+  <div class="routines-grid">
+    <!-- EXISTING ROUTINES (7) -->
+    
+    <!-- HEARTBREAK HEALING ROUTINE -->
+    <div class="routine-card routine-heartbreak" data-routine="heartbreak" data-tags="heartbreak,stress,lonely">
+      <div class="card-header">
+        <div>
+          <div class="routine-title">💔 Heartbreak Healing</div>
+          <div class="routine-subtitle">Navigate grief and rebuild after loss</div>
+        </div>
+        <div class="goal-badge" style="background: linear-gradient(135deg, #ec4899, #f472b6);">Healing</div>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <div class="step-title">Morning Gentle Start</div>
+            <div class="step-description">Allow yourself to feel - no forcing positivity (5 min breathing)</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <div class="step-title">Express & Release</div>
+            <div class="step-description">Journal raw feelings or voice memo to yourself (15 min)</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <div class="step-title">Self-Compassion Break</div>
+            <div class="step-description">Talk to yourself like your best friend would</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <div class="step-title">One Small Joy</div>
+            <div class="step-description">Do something that feels like care - tea, music, walk</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <div class="step-title">Evening Reflection</div>
+            <div class="step-description">Note 1 thing you did today + playlist for comfort</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-resources">
+        <div class="resources-title">
+          🎯 App Resources
+          <span class="resource-tag">5 Tools</span>
+        </div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+          Guided Meditations → Reflect & Journal → Music Hub → Relief Games → Calm Chatbot
+        </div>
+      </div>
+    </div>
+
+    <!-- ANXIETY RESET ROUTINE -->
+    <div class="routine-card routine-anxiety" data-routine="anxiety" data-tags="anxiety,stress">
+      <div class="card-header">
+        <div>
+          <div class="routine-title">😰 Anxiety Reset</div>
+          <div class="routine-subtitle">Break the worry cycle with grounding tools</div>
+        </div>
+        <div class="goal-badge" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">Calming</div>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <div class="step-title">Morning Anchor</div>
+            <div class="step-description">5-4-3-2-1 grounding (name 5 things you see, 4 you touch...)</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <div class="step-title">Worry Time Block</div>
+            <div class="step-description">Set aside 10 min to worry, then close it with "Throw worries away"</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <div class="step-title">Body Movement</div>
+            <div class="step-description">5-min walk or stretch to release physical tension</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <div class="step-title">Fact Check Thoughts</div>
+            <div class="step-description">Write 1 anxious thought + challenge it with evidence</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <div class="step-title">Evening Wind-Down</div>
+            <div class="step-description">Breathing exercise + calming sounds before bed</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-resources">
+        <div class="resources-title">
+          🎯 App Resources
+          <span class="resource-tag">5 Tools</span>
+        </div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+          Guided Meditations → Relief Games → Reflect & Journal → Music Hub → Progress Dashboard
+        </div>
+      </div>
+    </div>
+
+    <!-- DEPRESSION SUPPORT ROUTINE -->
+    <div class="routine-card routine-depression" data-routine="depression" data-tags="depression,stress">
+      <div class="card-header">
+        <div>
+          <div class="routine-title">🌧️ Small Steps Forward</div>
+          <div class="routine-subtitle">Manageable tasks for low-energy days</div>
+        </div>
+        <div class="goal-badge" style="background: linear-gradient(135deg, #14b8a6, #2dd4bf);">Gentle</div>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <div class="step-title">Just One Thing</div>
+            <div class="step-description">Get out of bed, drink water - that's enough to start</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <div class="step-title">Tiny Movement</div>
+            <div class="step-description">2-min stretch in bed or by window for sunlight</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <div class="step-title">Connect (Even Briefly)</div>
+            <div class="step-description">One text to someone safe or chat with Calm Bot</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <div class="step-title">Track Your Day</div>
+            <div class="step-description">Mark mood + note 1 neutral thing that happened</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <div class="step-title">Rest Permission</div>
+            <div class="step-description">Sleep sounds or meditation - rest is productive</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-resources">
+        <div class="resources-title">
+          🎯 App Resources
+          <span class="resource-tag">5 Tools</span>
+        </div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+          Mood Calendar → Calm Chatbot → Counselors → Music Hub → Guided Meditations
+        </div>
+      </div>
+    </div>
+
+    <!-- CALM THE SYSTEM ROUTINE -->
+    <div class="routine-card routine-calm" data-routine="calm" data-tags="stress,anxiety">
+      <div class="card-header">
+        <div>
+          <div class="routine-title">🧘 Calm the System</div>
+          <div class="routine-subtitle">Reset your nervous system throughout the day</div>
+        </div>
+        <div class="goal-badge" style="background: linear-gradient(135deg, #10b981, #34d399);">Grounding</div>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <div class="step-title">Start the Day with Grounding</div>
+            <div class="step-description">Morning body-scan or "Exam Calm" session (5 min)</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <div class="step-title">Take a Worry Break</div>
+            <div class="step-description">Afternoon "Throw worries away" game (3 min)</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <div class="step-title">Reflect & Release</div>
+            <div class="step-description">Evening free writing or doodling (10 min)</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <div class="step-title">Prepare for Sleep</div>
+            <div class="step-description">"Sleep Sounds" ambient track (play while winding down)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-resources">
+        <div class="resources-title">
+          🎯 App Resources
+          <span class="resource-tag">4 Tools</span>
+        </div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+          Guided Meditations → Relief Games → Reflect & Journal → Music Hub
+        </div>
+      </div>
+    </div>
+
+    <!-- START WITH ENERGY ROUTINE -->
+    <div class="routine-card routine-energy" data-routine="energy" data-tags="focus,depression">
+      <div class="card-header">
+        <div>
+          <div class="routine-title">⚡ Start with Energy</div>
+          <div class="routine-subtitle">Build momentum with small wins all day</div>
+        </div>
+        <div class="goal-badge" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">Productivity</div>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <div class="step-title">Small Positive Habit</div>
+            <div class="step-description">Track water (8 glasses) or 5-min stretch</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <div class="step-title">Mindful Lunch Check-in</div>
+            <div class="step-description">Protein + veggies for steady energy</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <div class="step-title">Productive Session</div>
+            <div class="step-description">90-min study block in 24-Hour Planner</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <div class="step-title">Daily Check-in</div>
+            <div class="step-description">Chat with Calm Bot about your day</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-resources">
+        <div class="resources-title">
+          🎯 App Resources
+          <span class="resource-tag">4 Tools</span>
+        </div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+          Progress Dashboard → Simple Diet Tips → Day Planner → Calm Chatbot
+        </div>
+      </div>
+    </div>
+
+    <!-- FIND SUPPORT ROUTINE -->
+    <div class="routine-card routine-support" data-routine="support" data-tags="lonely,heartbreak,depression">
+      <div class="card-header">
+        <div>
+          <div class="routine-title">🤝 Find Support</div>
+          <div class="routine-subtitle">Stay connected when you need people</div>
+        </div>
+        <div class="goal-badge" style="background: linear-gradient(135deg, #6366f1, #ec4899);">Connection</div>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <div class="step-title">Morning Mood Check</div>
+            <div class="step-description">Mark mood + note 1 thing you're grateful for</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <div class="step-title">Reach Out</div>
+            <div class="step-description">Text 1 trusted person or check Counselor list</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <div class="step-title">Afternoon Reset</div>
+            <div class="step-description">5-min breathing + check support numbers</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <div class="step-title">Evening Reflection</div>
+            <div class="step-description">Journal what helped today</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-resources">
+        <div class="resources-title">
+          🎯 App Resources
+          <span class="resource-tag">3 Tools</span>
+        </div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+          Mood Calendar → Counselors → Reflect & Journal
+        </div>
+      </div>
+    </div>
+
+    <!-- WIND DOWN EARLY ROUTINE -->
+    <div class="routine-card routine-sleep" data-routine="sleep" data-tags="sleep,anxiety,stress">
+      <div class="card-header">
+        <div>
+          <div class="routine-title">😴 Wind Down Early</div>
+          <div class="routine-subtitle">Prepare your body and mind for deep rest</div>
+        </div>
+        <div class="goal-badge" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">Recovery</div>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <div class="step-title">Screen Break</div>
+            <div class="step-description">60 min before bed - no phone/TV</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <div class="step-title">Sleep Meditation</div>
+            <div class="step-description">"Sleep Wind-Down" guided session (10 min)</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <div class="step-title">Soothe Senses</div>
+            <div class="step-description">"Rain & Nature" or "Sleep Sounds" (30 min)</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <div class="step-title">Quick Brain Dump</div>
+            <div class="step-description">Doodle or jot tomorrow's 3 priorities</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-resources">
+        <div class="resources-title">
+          🎯 App Resources
+          <span class="resource-tag">4 Tools</span>
+        </div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+          Routine Templates → Guided Meditations → Music Hub → Reflect & Journal
+        </div>
+      </div>
+    </div>
+
+    <!-- NEW ROUTINES (6) -->
+
+    <!-- PTSD GROUNDING ROUTINE -->
+    <div class="routine-card routine-ptsd" data-routine="ptsd" data-tags="trauma,anxiety,stress">
+      <div class="card-header">
+        <div>
+          <div class="routine-title">⚡ PTSD Grounding</div>
+          <div class="routine-subtitle">Manage flashbacks and stay present</div>
+        </div>
+        <div class="goal-badge" style="background: linear-gradient(135deg, #dc2626, #f87171);">Safety</div>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <div class="step-title">Morning Safety Routine</div>
+            <div class="step-description">Establish predictable structure - same wake time, meal, walk</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <div class="step-title">Grounding Techniques</div>
+            <div class="step-description">5-4-3-2-1 method when triggered + progressive muscle relaxation</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <div class="step-title">Safe Space Check-in</div>
+            <div class="step-description">Identify 3 things around you that feel safe right now</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <div class="step-title">Gentle Movement</div>
+            <div class="step-description">Yoga or outdoor walk to release stored tension</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <div class="step-title">Evening Wind-Down</div>
+            <div class="step-description">Avoid triggers before bed + calming sounds for sleep</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-resources">
+        <div class="resources-title">
+          🎯 App Resources
+          <span class="resource-tag">5 Tools</span>
+        </div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+          Guided Meditations → Relief Games → Music Hub → Counselors → Calm Chatbot
+        </div>
+      </div>
+    </div>
+
+    <!-- BURNOUT RECOVERY ROUTINE -->
+    <div class="routine-card routine-burnout" data-routine="burnout" data-tags="burnout,stress,depression">
+      <div class="card-header">
+        <div>
+          <div class="routine-title">🔥 Burnout Recovery</div>
+          <div class="routine-subtitle">Rebuild energy and set boundaries</div>
+        </div>
+        <div class="goal-badge" style="background: linear-gradient(135deg, #ea580c, #fb923c);">Restore</div>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <div class="step-title">Set Boundaries First</div>
+            <div class="step-description">Identify 1 thing to say "no" to today - protect your energy</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <div class="step-title">Prioritize Sleep</div>
+            <div class="step-description">Go to bed 30 min earlier + consistent sleep schedule</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <div class="step-title">Nourish Body</div>
+            <div class="step-description">One balanced meal + hydration tracking (8 glasses)</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <div class="step-title">Micro-Rest Breaks</div>
+            <div class="step-description">5-10 min walks between work + breathwork sessions</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <div class="step-title">Reconnect to Joy</div>
+            <div class="step-description">Spend 15 min on a hobby with zero productivity pressure</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-resources">
+        <div class="resources-title">
+          🎯 App Resources
+          <span class="resource-tag">5 Tools</span>
+        </div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+          Day Planner → Simple Diet Tips → Guided Meditations → Music Hub → Progress Dashboard
+        </div>
+      </div>
+    </div>
+
+    <!-- GRIEF SUPPORT ROUTINE -->
+    <div class="routine-card routine-grief" data-routine="grief" data-tags="heartbreak,lonely,depression">
+      <div class="card-header">
+        <div>
+          <div class="routine-title">🕊️ Grief Support</div>
+          <div class="routine-subtitle">Honor loss while caring for yourself</div>
+        </div>
+        <div class="goal-badge" style="background: linear-gradient(135deg, #6366f1, #818cf8);">Compassion</div>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <div class="step-title">Allow the Feelings</div>
+            <div class="step-description">No timeline on grief - let emotions come without judgment</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <div class="step-title">Express Through Writing</div>
+            <div class="step-description">Journal memories, unsaid words, or just feelings (10 min)</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <div class="step-title">Connect with Support</div>
+            <div class="step-description">Reach out to one trusted person or support group</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <div class="step-title">Self-Care Rituals</div>
+            <div class="step-description">One nourishing act - walk, tea, music, or rest</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <div class="step-title">Evening Reflection</div>
+            <div class="step-description">Note what you're grateful for + what was hard today</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-resources">
+        <div class="resources-title">
+          🎯 App Resources
+          <span class="resource-tag">4 Tools</span>
+        </div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+          Reflect & Journal → Counselors → Music Hub → Calm Chatbot
+        </div>
+      </div>
+    </div>
+
+    <!-- ANGER MANAGEMENT ROUTINE -->
+    <div class="routine-card routine-anger" data-routine="anger" data-tags="anger,stress">
+      <div class="card-header">
+        <div>
+          <div class="routine-title">😤 Anger Management</div>
+          <div class="routine-subtitle">Recognize triggers and respond calmly</div>
+        </div>
+        <div class="goal-badge" style="background: linear-gradient(135deg, #dc2626, #ef4444);">Control</div>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <div class="step-title">Morning Mindfulness</div>
+            <div class="step-description">5-min meditation to start day with calm awareness</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <div class="step-title">Identify Triggers</div>
+            <div class="step-description">Journal situations that made you angry + patterns</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <div class="step-title">Pause Practice</div>
+            <div class="step-description">When angry, visualize STOP sign + deep breathing (4-7-8 technique)</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <div class="step-title">Physical Release</div>
+            <div class="step-description">Exercise, walk, or progressive muscle relaxation</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <div class="step-title">Reframe Thoughts</div>
+            <div class="step-description">Challenge "they're doing this on purpose" with alternatives</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-resources">
+        <div class="resources-title">
+          🎯 App Resources
+          <span class="resource-tag">5 Tools</span>
+        </div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+          Guided Meditations → Reflect & Journal → Relief Games → Music Hub → Mood Calendar
+        </div>
+      </div>
+    </div>
+
+    <!-- SOCIAL ANXIETY ROUTINE -->
+    <div class="routine-card routine-social" data-routine="social" data-tags="social,anxiety,stress">
+      <div class="card-header">
+        <div>
+          <div class="routine-title">😶 Social Confidence</div>
+          <div class="routine-subtitle">Build comfort in social situations</div>
+        </div>
+        <div class="goal-badge" style="background: linear-gradient(135deg, #8b5cf6, #c084fc);">Growth</div>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <div class="step-title">Morning Affirmations</div>
+            <div class="step-description">"I am enough" + "Mistakes are human" (3 min)</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <div class="step-title">Grounding Before Events</div>
+            <div class="step-description">Deep breathing + notice 5 things you can see/hear/touch</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <div class="step-title">Start Small</div>
+            <div class="step-description">Set achievable goal - make eye contact or say hi to 1 person</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <div class="step-title">Focus Outward</div>
+            <div class="step-description">In conversations, listen actively - shift from self-judgment</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <div class="step-title">Evening Self-Care</div>
+            <div class="step-description">Celebrate wins + relaxation routine (no self-criticism)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-resources">
+        <div class="resources-title">
+          🎯 App Resources
+          <span class="resource-tag">4 Tools</span>
+        </div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+          Guided Meditations → Reflect & Journal → Calm Chatbot → Progress Dashboard
+        </div>
+      </div>
+    </div>
+
+    <!-- OCD MANAGEMENT ROUTINE -->
+    <div class="routine-card routine-ocd" data-routine="ocd" data-tags="ocd,anxiety,stress">
+      <div class="card-header">
+        <div>
+          <div class="routine-title">🔄 OCD Management</div>
+          <div class="routine-subtitle">Reduce compulsions with structured routine</div>
+        </div>
+        <div class="goal-badge" style="background: linear-gradient(135deg, #0891b2, #22d3ee);">Balance</div>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <div class="step-title">Structured Morning</div>
+            <div class="step-description">Follow set routine - reduces decision fatigue and anxiety</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <div class="step-title">Set Time Limits</div>
+            <div class="step-description">Use timer for tasks prone to compulsions (e.g., checking)</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <div class="step-title">Mindfulness Practice</div>
+            <div class="step-description">10-min meditation to observe thoughts without acting on them</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <div class="step-title">Planned Activities</div>
+            <div class="step-description">Schedule productive tasks to shift focus from intrusive thoughts</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <div class="step-title">Track Progress</div>
+            <div class="step-description">Note times you resisted compulsions - celebrate wins</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-resources">
+        <div class="resources-title">
+          🎯 App Resources
+          <span class="resource-tag">5 Tools</span>
+        </div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+          Day Planner → Guided Meditations → Progress Dashboard → Relief Games → Reflect & Journal
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Quick Actions -->
+  <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+    <button id="setReminderBtn" class="btn">🔔 Set Reminders in Planner</button>
+    <button id="viewPlannerBtn" class="btn secondary">📅 View My Planner</button>
+  </div>
+
+  <!-- Status Messages -->
+  <div id="statusMessage"></div>
+</div>
+
+<!-- Selection Notice -->
+<div class="selection-notice" id="selectionNotice">
+  <div style="display:flex; align-items:center; gap:8px;">
+    ✅ <strong id="selectedRoutineName"></strong> selected!
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  let selectedRoutine = null;
+  let activeFilter = null;
+
+  // Theme toggle functionality
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const html = document.documentElement;
+
+  // Load saved theme
+  const savedTheme = localStorage.getItem('calmTheme') || 'light';
+  html.setAttribute('data-theme', savedTheme);
+  themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+  themeToggle.addEventListener('click', function() {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('calmTheme', newTheme);
+    themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+  });
+
+  // Situation filtering
+  document.querySelectorAll('.situation-tag').forEach(tag => {
+    tag.addEventListener('click', function() {
+      const filter = this.dataset.filter;
+      
+      document.querySelectorAll('.situation-tag').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      
+      if (filter === 'all') {
+        activeFilter = null;
+        document.querySelectorAll('.routine-card').forEach(card => {
+          card.classList.remove('hidden');
+        });
+        document.getElementById('filterBanner').classList.remove('show');
+      } else {
+        activeFilter = filter;
+        document.querySelectorAll('.routine-card').forEach(card => {
+          const tags = card.dataset.tags.split(',');
+          if (tags.includes(filter)) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+        
+        const filterNames = {
+          heartbreak: 'Heartbreak/Loss',
+          anxiety: 'Anxiety/Worry',
+          depression: 'Low Energy/Depression',
+          stress: 'Overwhelmed/Stressed',
+          sleep: 'Sleep Issues',
+          focus: 'Need Focus/Energy',
+          lonely: 'Feeling Lonely',
+          trauma: 'Trauma/PTSD',
+          burnout: 'Burnout',
+          anger: 'Anger Issues',
+          social: 'Social Anxiety',
+          ocd: 'OCD/Repetitive Thoughts'
+        };
+        document.getElementById('filterText').textContent = `Showing routines for: ${filterNames[filter]}`;
+        document.getElementById('filterBanner').classList.add('show');
+      }
+    });
+  });
+
+  // Clear filter button
+  document.getElementById('clearFilter').addEventListener('click', function() {
+    document.querySelectorAll('.situation-tag').forEach(t => t.classList.remove('active'));
+    document.querySelector('[data-filter="all"]').classList.add('active');
+    document.querySelectorAll('.routine-card').forEach(card => card.classList.remove('hidden'));
+    document.getElementById('filterBanner').classList.remove('show');
+    activeFilter = null;
+  });
+
+  // Routine selection
+  document.querySelectorAll('.routine-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+      document.querySelectorAll('.routine-card').forEach(c => c.classList.remove('selected'));
+      this.classList.add('selected');
+      selectedRoutine = this.dataset.routine;
+      showSelectionNotice(this.querySelector('.routine-title').textContent);
+    });
+  });
+
+  // Set Reminder Button - SAVES TO PLANNER
+  document.getElementById('setReminderBtn').addEventListener('click', function() {
+    if (!selectedRoutine) {
+      showStatus('⚠️ Please select a routine first!', 'error');
+      return;
+    }
+
+    // Routine reminder schedules with proper times
+    const routineReminders = {
+      heartbreak: [
+        { hour: 8, title: '💔 Morning breathing - allow yourself to feel', type: 'wellness' },
+        { hour: 14, title: '💔 Journal raw feelings or voice memo', type: 'wellness' },
+        { hour: 17, title: '💔 Self-compassion break', type: 'wellness' },
+        { hour: 19, title: '💔 One small joy - tea, music, or walk', type: 'wellness' },
+        { hour: 21, title: '💔 Evening reflection + comfort playlist', type: 'wellness' }
+      ],
+      anxiety: [
+        { hour: 8, title: '😰 5-4-3-2-1 grounding exercise', type: 'wellness' },
+        { hour: 14, title: '😰 Worry time block + throw worries away', type: 'wellness' },
+        { hour: 16, title: '😰 5-min walk or stretch', type: 'wellness' },
+        { hour: 19, title: '😰 Fact check anxious thought in journal', type: 'wellness' },
+        { hour: 21, title: '😰 Evening breathing + calming sounds', type: 'wellness' }
+      ],
+      depression: [
+        { hour: 8, title: '🌧️ Just one thing - get up, drink water', type: 'wellness' },
+        { hour: 9, title: '🌧️ Tiny movement - stretch or sunlight', type: 'wellness' },
+        { hour: 14, title: '🌧️ Connect briefly - text or Calm Bot', type: 'wellness' },
+        { hour: 18, title: '🌧️ Track mood + note 1 neutral thing', type: 'wellness' },
+        { hour: 21, title: '🌧️ Rest permission - sleep sounds', type: 'wellness' }
+      ],
+      calm: [
+        { hour: 8, title: '🧘 Morning body-scan or Exam Calm (5 min)', type: 'wellness' },
+        { hour: 14, title: '🧘 Throw worries away game (3 min)', type: 'wellness' },
+        { hour: 19, title: '🧘 Evening free writing or doodling', type: 'wellness' },
+        { hour: 22, title: '🧘 Sleep Sounds ambient track', type: 'wellness' }
+      ],
+      energy: [
+        { hour: 8, title: '⚡ Track water or 5-min stretch', type: 'other' },
+        { hour: 13, title: '⚡ Mindful lunch check-in', type: 'other' },
+        { hour: 15, title: '⚡ 90-min study block', type: 'study' },
+        { hour: 19, title: '⚡ Daily check-in with Calm Bot', type: 'wellness' }
+      ],
+      support: [
+        { hour: 8, title: '🤝 Morning mood check + gratitude', type: 'wellness' },
+        { hour: 14, title: '🤝 Text trusted person or check counselors', type: 'wellness' },
+        { hour: 16, title: '🤝 5-min breathing + support numbers', type: 'wellness' },
+        { hour: 20, title: '🤝 Evening reflection journal', type: 'wellness' }
+      ],
+      sleep: [
+        { hour: 20, title: '😴 Screen break - 60 min before bed', type: 'wellness' },
+        { hour: 21, title: '😴 Sleep Wind-Down guided session', type: 'wellness' },
+        { hour: 21, title: '😴 Rain & Nature or Sleep Sounds', type: 'wellness' },
+        { hour: 22, title: '😴 Quick brain dump - 3 priorities', type: 'wellness' }
+      ],
+      ptsd: [
+        { hour: 8, title: '⚡ Morning safety routine - predictable structure', type: 'wellness' },
+        { hour: 12, title: '⚡ Grounding: 5-4-3-2-1 method', type: 'wellness' },
+        { hour: 15, title: '⚡ Safe space check-in (3 safe things)', type: 'wellness' },
+        { hour: 17, title: '⚡ Gentle movement - yoga or walk', type: 'wellness' },
+        { hour: 21, title: '⚡ Evening wind-down + calming sounds', type: 'wellness' }
+      ],
+      burnout: [
+        { hour: 9, title: '🔥 Set 1 boundary - say "no" to protect energy', type: 'other' },
+        { hour: 13, title: '🔥 One balanced meal + hydration', type: 'other' },
+        { hour: 15, title: '🔥 Micro-rest break + walk', type: 'wellness' },
+        { hour: 18, title: '🔥 Reconnect to joy - hobby time (15 min)', type: 'wellness' },
+        { hour: 21, title: '🔥 Sleep 30 min earlier tonight', type: 'wellness' }
+      ],
+      grief: [
+        { hour: 9, title: '🕊️ Allow the feelings - no judgment', type: 'wellness' },
+        { hour: 14, title: '🕊️ Express through writing (10 min)', type: 'wellness' },
+        { hour: 16, title: '🕊️ Connect with support person/group', type: 'wellness' },
+        { hour: 18, title: '🕊️ Self-care ritual - walk, tea, music', type: 'wellness' },
+        { hour: 20, title: '🕊️ Evening reflection - gratitude + hardships', type: 'wellness' }
+      ],
+      anger: [
+        { hour: 8, title: '😤 Morning mindfulness (5 min)', type: 'wellness' },
+        { hour: 12, title: '😤 Journal anger triggers + patterns', type: 'wellness' },
+        { hour: 15, title: '😤 Pause practice - STOP sign + breathing', type: 'wellness' },
+        { hour: 17, title: '😤 Physical release - exercise or walk', type: 'wellness' },
+        { hour: 20, title: '😤 Reframe thoughts journal', type: 'wellness' }
+      ],
+      social: [
+        { hour: 8, title: '😶 Morning affirmations - "I am enough"', type: 'wellness' },
+        { hour: 12, title: '😶 Grounding before events - deep breathing', type: 'wellness' },
+        { hour: 15, title: '😶 Start small - eye contact with 1 person', type: 'wellness' },
+        { hour: 18, title: '😶 Focus outward - listen actively', type: 'wellness' },
+        { hour: 21, title: '😶 Evening self-care - celebrate wins', type: 'wellness' }
+      ],
+      ocd: [
+        { hour: 8, title: '🔄 Structured morning routine', type: 'other' },
+        { hour: 11, title: '🔄 Set time limits for compulsion tasks', type: 'wellness' },
+        { hour: 14, title: '🔄 10-min mindfulness - observe thoughts', type: 'wellness' },
+        { hour: 16, title: '🔄 Planned productive activity', type: 'other' },
+        { hour: 20, title: '🔄 Track progress - note wins', type: 'wellness' }
+      ]
+    };
+
+    const reminders = routineReminders[selectedRoutine];
+    const today = new Date();
+    const todayISO = today.toISOString().split('T')[0];
+    
+    try {
+      // Load existing planner events
+      let dayEvents = JSON.parse(localStorage.getItem('calmDayEventsByDate') || '{}');
+      
+      if (!dayEvents[todayISO]) {
+        dayEvents[todayISO] = [];
+      }
+      
+      // Add each reminder as a timed event
+      reminders.forEach(reminder => {
+        dayEvents[todayISO].push({
+          id: Date.now() + Math.random(),
+          hour: reminder.hour,
+          title: reminder.title,
+          type: reminder.type,
+          completed: false
+        });
+      });
+      
+      // Save to localStorage
+      localStorage.setItem('calmDayEventsByDate', JSON.stringify(dayEvents));
+      
+      showStatus(`✅ ${reminders.length} reminders added to your planner for today!`, 'success');
+      
+      // Optional browser notification
+      if (Notification.permission === 'granted') {
+        new Notification('Calm Hub Reminder', {
+          body: `${selectedRoutine.charAt(0).toUpperCase() + selectedRoutine.slice(1)} routine reminders set in your planner!`
+        });
+      } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission();
+      }
+      
+      // Auto-redirect to planner after 2 seconds
+      setTimeout(() => {
+        window.location.href = 'planner.html';
+      }, 2000);
+      
+    } catch(e) {
+      console.error('Error saving reminders:', e);
+      showStatus('⚠️ Could not save reminders. Please try again.', 'error');
+    }
+  });
+
+  // View Planner Button
+  document.getElementById('viewPlannerBtn').addEventListener('click', function() {
+    window.location.href = 'planner.html';
+  });
+
+  function showSelectionNotice(routineName) {
+    const notice = document.getElementById('selectionNotice');
+    document.getElementById('selectedRoutineName').textContent = routineName;
+    notice.classList.add('show');
+    setTimeout(() => notice.classList.remove('show'), 3000);
+  }
+
+  function showStatus(message, type = 'success') {
+    const statusEl = document.getElementById('statusMessage');
+    statusEl.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
+    setTimeout(() => statusEl.innerHTML = '', 5000);
+  }
+});
+</script>
+
+</body>
+</html>

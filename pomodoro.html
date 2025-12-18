@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomodoro Focus Timer – Calm Hub</title>
+  <style>
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box; 
+      font-family:'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; 
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 12px;
+      background-image: url("image.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(15,23,42,0.15);
+      backdrop-filter: blur(4px);
+      z-index: 1;
+    }
+
+    .shell {
+      width:100%;
+      max-width:950px;
+      border-radius:28px;
+      padding:48px 40px;
+      background:rgba(15,23,42,0.96);
+      color:#e5e7eb;
+      border:1px solid rgba(255,255,255,0.28);
+      box-shadow: 
+        0 32px 80px rgba(15,23,42,0.92),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      backdrop-filter:blur(28px);
+      -webkit-backdrop-filter:blur(28px);
+      position:relative;
+      z-index:2;
+      text-align:center;
+    }
+
+    .shell::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(99,102,241,0.8), rgba(139,92,246,0.8), transparent);
+    }
+
+    h1 {
+      font-size:36px;
+      font-weight:800;
+      background:linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+    }
+
+    .subtitle {
+      font-size:16px;
+      color:rgba(255,255,255,0.85);
+      margin-bottom:32px;
+      font-weight:500;
+    }
+
+    /* PRESET SELECTOR */
+    .preset-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+      gap:16px;
+      margin:32px 0;
+    }
+
+    .preset-card {
+      padding:20px 16px;
+      background:linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border:2px solid rgba(255,255,255,0.12);
+      border-radius:20px;
+      cursor:pointer;
+      transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+      backdrop-filter:blur(20px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .preset-card::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:3px;
+      background:linear-gradient(90deg, #8b5cf6, #6366f1);
+      transform:scaleX(0);
+      transition:transform 0.3s;
+    }
+
+    .preset-card:hover::before, .preset-card.active::before {
+      transform:scaleX(1);
+    }
+
+    .preset-card:hover, .preset-card.active {
+      border-color:rgba(139,92,246,0.6);
+      background:linear-gradient(145deg, rgba(139,92,246,0.2), rgba(99,102,241,0.15));
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(139,92,246,0.3);
+    }
+
+    .preset-icon {
+      font-size:32px;
+      margin-bottom:8px;
+    }
+
+    .preset-card h3 {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:4px;
+    }
+
+    .preset-card p {
+      font-size:12px;
+      color:rgba(255,255,255,0.7);
+      line-height:1.4;
+      margin-bottom:8px;
+    }
+
+    .preset-time {
+      font-size:11px;
+      font-weight:700;
+      color:#a78bfa;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+
+    /* CURRENT TASK */
+    .task-section {
+      background:linear-gradient(145deg, rgba(139,92,246,0.15), rgba(99,102,241,0.1));
+      border-radius:20px;
+      padding:20px 24px;
+      margin:24px 0;
+      border:1px solid rgba(139,92,246,0.3);
+    }
+
+    .task-input-wrapper {
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .task-input {
+      flex:1;
+      padding:14px 20px;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.15);
+      border-radius:16px;
+      color:#ffffff;
+      font-size:15px;
+      font-weight:600;
+    }
+
+    .task-input::placeholder {
+      color:rgba(255,255,255,0.5);
+    }
+
+    .task-input:focus {
+      outline:none;
+      border-color:rgba(139,92,246,0.6);
+      background:rgba(255,255,255,0.12);
+    }
+
+    .add-task-btn {
+      padding:14px 24px;
+      background:linear-gradient(135deg, #8b5cf6, #6366f1);
+      border:none;
+      border-radius:16px;
+      color:#ffffff;
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.3s;
+    }
+
+    .add-task-btn:hover {
+      transform:translateY(-2px);
+      box-shadow:0 8px 24px rgba(139,92,246,0.4);
+    }
+
+    .current-task-display {
+      margin-top:16px;
+      padding:16px 20px;
+      background:rgba(16,185,129,0.15);
+      border-radius:16px;
+      border:1px solid rgba(16,185,129,0.3);
+      display:none;
+    }
+
+    .current-task-display.show {
+      display:block;
+    }
+
+    .current-task-label {
+      font-size:12px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      margin-bottom:6px;
+    }
+
+    .current-task-text {
+      font-size:18px;
+      font-weight:700;
+      color:#10b981;
+    }
+
+    /* TIMER SECTION */
+    .timer-section {
+      background:linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.08));
+      border-radius:24px;
+      padding:48px 32px;
+      margin:32px 0;
+      border:1px solid rgba(255,255,255,0.18);
+      backdrop-filter:blur(20px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .timer-section::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 50% 50%, rgba(139,92,246,0.1), transparent 70%);
+      animation:pulse-glow 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity:0.5; }
+      50% { opacity:1; }
+    }
+
+    .phase-badge {
+      display:inline-block;
+      padding:12px 28px;
+      border-radius:999px;
+      background:linear-gradient(135deg, #fbbf24, #f59e0b);
+      color:#1e293b;
+      font-size:16px;
+      font-weight:700;
+      margin-bottom:24px;
+      box-shadow:0 8px 24px rgba(251,191,36,0.4);
+      position:relative;
+      z-index:1;
+    }
+
+    .phase-badge.focus {
+      background:linear-gradient(135deg, #8b5cf6, #6366f1);
+      color:#ffffff;
+    }
+
+    .phase-badge.break {
+      background:linear-gradient(135deg, #10b981, #059669);
+      color:#ffffff;
+    }
+
+    .phase-badge.long-break {
+      background:linear-gradient(135deg, #3b82f6, #2563eb);
+      color:#ffffff;
+    }
+
+    .timer-display {
+      font-size:96px;
+      font-weight:800;
+      background:linear-gradient(135deg, #a78bfa, #8b5cf6);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin:24px 0;
+      font-variant-numeric:tabular-nums;
+      letter-spacing:-4px;
+      text-shadow:0 0 40px rgba(139,92,246,0.5);
+      position:relative;
+      z-index:1;
+    }
+
+    .session-indicator {
+      font-size:15px;
+      color:rgba(255,255,255,0.8);
+      margin-bottom:20px;
+      font-weight:600;
+    }
+
+    .progress-bar {
+      width:100%;
+      height:8px;
+      background:rgba(255,255,255,0.1);
+      border-radius:999px;
+      overflow:hidden;
+      margin-top:32px;
+      border:1px solid rgba(255,255,255,0.15);
+      position:relative;
+      z-index:1;
+    }
+
+    .progress-fill {
+      height:100%;
+      background:linear-gradient(90deg, #8b5cf6, #6366f1);
+      border-radius:999px;
+      transition:width 1s linear;
+      width:0%;
+      box-shadow:0 0 20px rgba(139,92,246,0.6);
+    }
+
+    /* BREAK ACTIVITIES */
+    .break-activities {
+      background:linear-gradient(145deg, rgba(16,185,129,0.15), rgba(5,150,105,0.1));
+      border-radius:20px;
+      padding:24px;
+      margin:24px 0;
+      border:1px solid rgba(16,185,129,0.3);
+      display:none;
+    }
+
+    .break-activities.show {
+      display:block;
+    }
+
+    .break-activities h3 {
+      font-size:18px;
+      font-weight:700;
+      color:#10b981;
+      margin-bottom:16px;
+    }
+
+    .activity-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
+      gap:12px;
+    }
+
+    .activity-card {
+      padding:16px 12px;
+      background:rgba(255,255,255,0.08);
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.12);
+      cursor:pointer;
+      transition:all 0.3s;
+      text-align:center;
+    }
+
+    .activity-card:hover {
+      background:rgba(16,185,129,0.2);
+      border-color:rgba(16,185,129,0.4);
+      transform:translateY(-2px);
+    }
+
+    .activity-icon {
+      font-size:32px;
+      margin-bottom:8px;
+    }
+
+    .activity-name {
+      font-size:13px;
+      font-weight:600;
+      color:rgba(255,255,255,0.9);
+    }
+
+    /* CONTROLS */
+    .controls {
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      margin-top:40px;
+      flex-wrap:wrap;
+    }
+
+    .btn {
+      padding:16px 36px;
+      border-radius:28px;
+      border:none;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .btn-primary {
+      background:linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+      color:#ffffff;
+      box-shadow:0 12px 32px rgba(139,92,246,0.4);
+    }
+
+    .btn-primary::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition:left 0.5s;
+    }
+
+    .btn-primary:hover::before {
+      left:100%;
+    }
+
+    .btn-primary:hover {
+      transform:translateY(-3px);
+      box-shadow:0 20px 50px rgba(139,92,246,0.5);
+    }
+
+    .btn-secondary {
+      background:rgba(255,255,255,0.12);
+      color:#ffffff;
+      border:1px solid rgba(255,255,255,0.28);
+    }
+
+    .btn-secondary:hover {
+      background:rgba(255,255,255,0.2);
+      transform:translateY(-2px);
+    }
+
+    /* STATS */
+    .stats-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+      gap:16px;
+      margin-top:40px;
+      padding-top:40px;
+      border-top:1px solid rgba(255,255,255,0.15);
+    }
+
+    .stat-card {
+      background:linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border-radius:20px;
+      padding:24px 16px;
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter:blur(20px);
+      transition:all 0.3s;
+    }
+
+    .stat-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(139,92,246,0.2);
+    }
+
+    .stat-value {
+      font-size:40px;
+      font-weight:800;
+      background:linear-gradient(135deg, #8b5cf6, #6366f1);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      display:block;
+      margin-bottom:8px;
+    }
+
+    .stat-label {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+
+    /* TASK LIST */
+    .tasks-section {
+      margin-top:40px;
+      text-align:left;
+    }
+
+    .tasks-section h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:16px;
+      text-align:center;
+    }
+
+    .tasks-list {
+      display:grid;
+      gap:12px;
+      max-height:300px;
+      overflow-y:auto;
+      padding-right:8px;
+    }
+
+    .tasks-list::-webkit-scrollbar {
+      width:6px;
+    }
+
+    .tasks-list::-webkit-scrollbar-track {
+      background:rgba(255,255,255,0.05);
+      border-radius:10px;
+    }
+
+    .tasks-list::-webkit-scrollbar-thumb {
+      background:rgba(139,92,246,0.5);
+      border-radius:10px;
+    }
+
+    .task-item {
+      padding:16px 20px;
+      background:linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.12);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      transition:all 0.3s;
+    }
+
+    .task-item:hover {
+      background:linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.08));
+      transform:translateX(4px);
+    }
+
+    .task-item.completed {
+      opacity:0.5;
+      text-decoration:line-through;
+    }
+
+    .task-content {
+      flex:1;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .task-checkbox {
+      width:20px;
+      height:20px;
+      border-radius:6px;
+      border:2px solid rgba(139,92,246,0.6);
+      cursor:pointer;
+      flex-shrink:0;
+      transition:all 0.3s;
+    }
+
+    .task-checkbox.checked {
+      background:linear-gradient(135deg, #8b5cf6, #6366f1);
+      border-color:#8b5cf6;
+    }
+
+    .task-text {
+      font-size:15px;
+      font-weight:600;
+      color:rgba(255,255,255,0.9);
+    }
+
+    .task-pomodoros {
+      display:flex;
+      gap:4px;
+    }
+
+    .pomo-dot {
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:rgba(139,92,246,0.3);
+    }
+
+    .pomo-dot.filled {
+      background:#8b5cf6;
+    }
+
+    .task-actions {
+      display:flex;
+      gap:8px;
+    }
+
+    .task-btn {
+      padding:6px 12px;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:12px;
+      color:rgba(255,255,255,0.8);
+      font-size:12px;
+      font-weight:600;
+      cursor:pointer;
+      transition:all 0.3s;
+    }
+
+    .task-btn:hover {
+      background:rgba(139,92,246,0.2);
+      border-color:rgba(139,92,246,0.4);
+    }
+
+    /* GUIDE */
+    .guide-section {
+      background:linear-gradient(145deg, rgba(59,130,246,0.15), rgba(139,92,246,0.1));
+      border-radius:24px;
+      padding:32px;
+      margin-top:40px;
+      border:1px solid rgba(59,130,246,0.25);
+      text-align:left;
+    }
+
+    .guide-section h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:20px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .tips-grid {
+      display:grid;
+      gap:16px;
+    }
+
+    .tip-card {
+      padding:20px;
+      background:rgba(255,255,255,0.08);
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.12);
+      display:flex;
+      gap:16px;
+      align-items:flex-start;
+      transition:all 0.3s;
+    }
+
+    .tip-card:hover {
+      background:rgba(255,255,255,0.12);
+      transform:translateX(8px);
+    }
+
+    .tip-icon {
+      font-size:32px;
+      flex-shrink:0;
+    }
+
+    .tip-content h4 {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:6px;
+    }
+
+    .tip-content p {
+      font-size:14px;
+      color:rgba(255,255,255,0.8);
+      line-height:1.6;
+    }
+
+    .back-link {
+      margin-top:40px;
+    }
+
+    .back-link a {
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:14px 28px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(255,255,255,0.15);
+      color:#ffffff;
+      font-size:14px;
+      font-weight:600;
+      text-decoration:none;
+      backdrop-filter:blur(24px);
+      transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .back-link a:hover {
+      background:rgba(255,255,255,0.28);
+      transform:translateY(-2px);
+      box-shadow:0 16px 40px rgba(255,255,255,0.18);
+    }
+
+    @media (max-width: 768px) {
+      .shell { padding:32px 24px; }
+      h1 { font-size:28px; }
+      .timer-display { font-size:72px; }
+      .stats-grid { grid-template-columns:1fr 1fr; }
+      .preset-grid { grid-template-columns:1fr; }
+      .task-input-wrapper { flex-direction:column; }
+      .add-task-btn { width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <h1>🎯 Pomodoro Study Timer</h1>
+    <p class="subtitle">Deep focus sessions • Mindful breaks • Peak productivity</p>
+
+    <!-- PRESET SELECTOR -->
+    <div class="preset-grid">
+      <div class="preset-card active" onclick="selectPreset('classic')" data-preset="classic">
+        <div class="preset-icon">📚</div>
+        <h3>Classic</h3>
+        <p>Perfect for most study sessions</p>
+        <div class="preset-time">25 min focus • 5 min break</div>
+      </div>
+      
+      <div class="preset-card" onclick="selectPreset('deep')" data-preset="deep">
+        <div class="preset-icon">🧠</div>
+        <h3>Deep Work</h3>
+        <p>For complex topics & hard subjects</p>
+        <div class="preset-time">50 min focus • 10 min break</div>
+      </div>
+      
+      <div class="preset-card" onclick="selectPreset('short')" data-preset="short">
+        <div class="preset-icon">⚡</div>
+        <h3>Quick Sprint</h3>
+        <p>When you have limited time</p>
+        <div class="preset-time">15 min focus • 3 min break</div>
+      </div>
+      
+      <div class="preset-card" onclick="selectPreset('exam')" data-preset="exam">
+        <div class="preset-icon">📝</div>
+        <h3>Exam Prep</h3>
+        <p>Intense revision mode</p>
+        <div class="preset-time">40 min focus • 8 min break</div>
+      </div>
+    </div>
+
+    <!-- TASK INPUT -->
+    <div class="task-section">
+      <div class="task-input-wrapper">
+        <input type="text" id="taskInput" class="task-input" placeholder="What are you working on? (e.g., Math Chapter 5)" maxlength="60">
+        <button class="add-task-btn" onclick="addTask()">+ Add Task</button>
+      </div>
+      
+      <div class="current-task-display" id="currentTaskDisplay">
+        <div class="current-task-label">Currently Working On:</div>
+        <div class="current-task-text" id="currentTaskText"></div>
+      </div>
+    </div>
+
+    <!-- TIMER SECTION -->
+    <div class="timer-section">
+      <div class="phase-badge focus" id="phaseBadge">Focus Session</div>
+      <div class="session-indicator" id="sessionIndicator">Session 1 of 4 • Then long break</div>
+      <div class="timer-display" id="timer">25:00</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+      </div>
+    </div>
+
+    <!-- BREAK ACTIVITIES -->
+    <div class="break-activities" id="breakActivities">
+      <h3>☕ Break Time! Choose an activity:</h3>
+      <div class="activity-grid">
+        <div class="activity-card" onclick="selectActivity('water')">
+          <div class="activity-icon">💧</div>
+          <div class="activity-name">Drink Water</div>
+        </div>
+        <div class="activity-card" onclick="selectActivity('stretch')">
+          <div class="activity-icon">🤸</div>
+          <div class="activity-name">Stretch</div>
+        </div>
+        <div class="activity-card" onclick="selectActivity('walk')">
+          <div class="activity-icon">🚶</div>
+          <div class="activity-name">Quick Walk</div>
+        </div>
+        <div class="activity-card" onclick="selectActivity('breathe')">
+          <div class="activity-icon">🫁</div>
+          <div class="activity-name">Deep Breaths</div>
+        </div>
+        <div class="activity-card" onclick="selectActivity('snack')">
+          <div class="activity-icon">🍎</div>
+          <div class="activity-name">Healthy Snack</div>
+        </div>
+        <div class="activity-card" onclick="selectActivity('eyes')">
+          <div class="activity-icon">👀</div>
+          <div class="activity-name">Rest Eyes</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <button class="btn btn-primary" id="startBtn" onclick="startTimer()">▶ Start Focus</button>
+      <button class="btn btn-secondary" id="pauseBtn" onclick="pauseTimer()" style="display:none;">⏸ Pause</button>
+      <button class="btn btn-secondary" onclick="resetTimer()">↻ Reset</button>
+      <button class="btn btn-secondary" onclick="skipPhase()">⏭ Skip</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-value" id="completedStat">0</span>
+        <span class="stat-label">Completed Today</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="totalCompleted">0</span>
+        <span class="stat-label">Total Sessions</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="totalMinutes">0</span>
+        <span class="stat-label">Total Minutes</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="currentStreak">0</span>
+        <span class="stat-label">Day Streak</span>
+      </div>
+    </div>
+
+    <!-- TASK LIST -->
+    <div class="tasks-section">
+      <h3>📋 Today's Tasks</h3>
+      <div class="tasks-list" id="tasksList">
+        <div style="text-align:center;padding:40px 20px;color:rgba(255,255,255,0.5);">
+          Add your first task above to get started! 📝
+        </div>
+      </div>
+    </div>
+
+    <!-- GUIDE -->
+    <div class="guide-section">
+      <h3>💡 Study Productivity Tips</h3>
+      <div class="tips-grid">
+        <div class="tip-card">
+          <div class="tip-icon">🎯</div>
+          <div class="tip-content">
+            <h4>Set Clear Goals</h4>
+            <p>Before each session, write down exactly what you want to accomplish. "Finish 10 math problems" beats "study math".</p>
+          </div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">📵</div>
+          <div class="tip-content">
+            <h4>Eliminate Distractions</h4>
+            <p>Put your phone in another room. Close all tabs except study materials. Tell people you're in focus mode.</p>
+          </div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🚫</div>
+          <div class="tip-content">
+            <h4>Don't Skip Breaks</h4>
+            <p>Breaks are NOT wasted time. They recharge your brain and actually improve long-term retention and focus.</p>
+          </div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">💪</div>
+          <div class="tip-content">
+            <h4>Move During Breaks</h4>
+            <p>Physical movement increases blood flow to the brain. Stretch, walk, or do jumping jacks during breaks.</p>
+          </div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🎧</div>
+          <div class="tip-content">
+            <h4>Try Lo-Fi Music</h4>
+            <p>Instrumental lo-fi beats or white noise can help you focus without lyrics distracting your reading brain.</p>
+          </div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🏆</div>
+          <div class="tip-content">
+            <h4>Reward Yourself</h4>
+            <p>After completing 4 pomodoros, do something fun! Watch a YouTube video, eat a treat, or play a quick game.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="back-link">
+      <a href="meditation.html">← Back to Wellness Hub</a>
+    </div>
+  </div>
+
+  <script>
+    const presets = {
+      classic: { focus: 25, short: 5, long: 15, name: 'Classic' },
+      deep: { focus: 50, short: 10, long: 20, name: 'Deep Work' },
+      short: { focus: 15, short: 3, long: 10, name: 'Quick Sprint' },
+      exam: { focus: 40, short: 8, long: 15, name: 'Exam Prep' }
+    };
+
+    let currentPreset = 'classic';
+    let timeLeft = presets[currentPreset].focus * 60;
+    let totalTime = timeLeft;
+    let isRunning = false;
+    let interval;
+    let isBreak = false;
+    let sessionsCompleted = 0;
+    let currentSessionNum = 1;
+    let tasks = JSON.parse(localStorage.getItem('pomodoroTasks') || '[]');
+    let currentTaskId = null;
+
+    // Stats
+    let completedToday = parseInt(localStorage.getItem('pomodoroToday') || '0');
+    let totalCompleted = parseInt(localStorage.getItem('pomodoroTotal') || '0');
+    let totalMins = parseInt(localStorage.getItem('pomodoroTotalMins') || '0');
+
+    // Check if new day
+    const lastDate = localStorage.getItem('pomodoroLastDate');
+    const today = new Date().toDateString();
+    if (lastDate !== today) {
+      completedToday = 0;
+      localStorage.setItem('pomodoroToday', '0');
+      localStorage.setItem('pomodoroLastDate', today);
+    }
+
+    // Load stats
+    document.getElementById('completedStat').textContent = completedToday;
+    document.getElementById('totalCompleted').textContent = totalCompleted;
+    document.getElementById('totalMinutes').textContent = totalMins;
+
+    // Calculate streak
+    let streak = parseInt(localStorage.getItem('pomodoroStreak') || '0');
+    if (lastDate === today) {
+      document.getElementById('currentStreak').textContent = streak;
+    } else {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      if (lastDate === yesterday.toDateString()) {
+        document.getElementById('currentStreak').textContent = streak;
+      } else {
+        document.getElementById('currentStreak').textContent = 0;
+      }
+    }
+
+    // Initialize
+    renderTasks();
+    updateSessionIndicator();
+
+    function selectPreset(preset) {
+      if (isRunning) {
+        if (!confirm('This will reset your timer. Continue?')) return;
+        pauseTimer();
+      }
+      
+      currentPreset = preset;
+      document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('active'));
+      document.querySelector(`[data-preset="${preset}"]`).classList.add('active');
+      
+      resetTimer();
+    }
+
+    function addTask() {
+      const input = document.getElementById('taskInput');
+      const text = input.value.trim();
+      
+      if (!text) return;
+      
+      const task = {
+        id: Date.now(),
+        text: text,
+        completed: false,
+        pomodoros: 0,
+        estimatedPomodoros: 4
+      };
+      
+      tasks.push(task);
+      saveTasks();
+      renderTasks();
+      input.value = '';
+      
+      if (!currentTaskId) {
+        setCurrentTask(task.id);
+      }
+    }
+
+    function setCurrentTask(taskId) {
+      currentTaskId = taskId;
+      const task = tasks.find(t => t.id === taskId);
+      
+      if (task) {
+        document.getElementById('currentTaskText').textContent = task.text;
+        document.getElementById('currentTaskDisplay').classList.add('show');
+      }
+    }
+
+    function toggleTask(taskId) {
+      const task = tasks.find(t => t.id === taskId);
+      if (task) {
+        task.completed = !task.completed;
+        saveTasks();
+        renderTasks();
+      }
+    }
+
+    function deleteTask(taskId) {
+      if (confirm('Delete this task?')) {
+        tasks = tasks.filter(t => t.id !== taskId);
+        if (currentTaskId === taskId) {
+          currentTaskId = null;
+          document.getElementById('currentTaskDisplay').classList.remove('show');
+        }
+        saveTasks();
+        renderTasks();
+      }
+    }
+
+    function saveTasks() {
+      localStorage.setItem('pomodoroTasks', JSON.stringify(tasks));
+    }
+
+    function renderTasks() {
+      const list = document.getElementById('tasksList');
+      
+      if (tasks.length === 0) {
+        list.innerHTML = '<div style="text-align:center;padding:40px 20px;color:rgba(255,255,255,0.5);">Add your first task above to get started! 📝</div>';
+        return;
+      }
+      
+      list.innerHTML = tasks.map(task => `
+        <div class="task-item ${task.completed ? 'completed' : ''}">
+          <div class="task-content">
+            <div class="task-checkbox ${task.completed ? 'checked' : ''}" onclick="toggleTask(${task.id})">
+              ${task.completed ? '✓' : ''}
+            </div>
+            <div class="task-text">${task.text}</div>
+          </div>
+          <div class="task-pomodoros">
+            ${Array(task.estimatedPomodoros).fill(0).map((_, i) => 
+              `<div class="pomo-dot ${i < task.pomodoros ? 'filled' : ''}"></div>`
+            ).join('')}
+          </div>
+          <div class="task-actions">
+            <button class="task-btn" onclick="setCurrentTask(${task.id})">Work On</button>
+            <button class="task-btn" onclick="deleteTask(${task.id})">🗑</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function startTimer() {
+      if (isRunning) return;
+      isRunning = true;
+      document.getElementById('startBtn').style.display = 'none';
+      document.getElementById('pauseBtn').style.display = 'inline-block';
+
+      interval = setInterval(() => {
+        timeLeft--;
+        updateDisplay();
+        updateProgress();
+
+        if (timeLeft <= 0) {
+          completePhase();
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      isRunning = false;
+      clearInterval(interval);
+      document.getElementById('startBtn').style.display = 'inline-block';
+      document.getElementById('pauseBtn').style.display = 'none';
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      isBreak = false;
+      sessionsCompleted = 0;
+      currentSessionNum = 1;
+      
+      const preset = presets[currentPreset];
+      timeLeft = preset.focus * 60;
+      totalTime = timeLeft;
+      
+      document.getElementById('phaseBadge').className = 'phase-badge focus';
+      document.getElementById('phaseBadge').textContent = 'Focus Session';
+      document.getElementById('breakActivities').classList.remove('show');
+      
+      updateDisplay();
+      updateProgress();
+      updateSessionIndicator();
+    }
+
+    function skipPhase() {
+      if (!confirm('Skip to next phase?')) return;
+      completePhase();
+    }
+
+    function completePhase() {
+      pauseTimer();
+      const preset = presets[currentPreset];
+
+      if (!isBreak) {
+        // Focus session complete
+        sessionsCompleted++;
+        currentSessionNum++;
+        completedToday++;
+        totalCompleted++;
+        totalMins += preset.focus;
+        
+        // Update current task
+        if (currentTaskId) {
+          const task = tasks.find(t => t.id === currentTaskId);
+          if (task) {
+            task.pomodoros++;
+            saveTasks();
+            renderTasks();
+          }
+        }
+        
+        // Save stats
+        localStorage.setItem('pomodoroToday', completedToday);
+        localStorage.setItem('pomodoroTotal', totalCompleted);
+        localStorage.setItem('pomodoroTotalMins', totalMins);
+        document.getElementById('completedStat').textContent = completedToday;
+        document.getElementById('totalCompleted').textContent = totalCompleted;
+        document.getElementById('totalMinutes').textContent = totalMins;
+        
+        // Update streak
+        if (lastDate !== today) {
+          const yesterday = new Date();
+          yesterday.setDate(yesterday.getDate() - 1);
+          
+          if (lastDate === yesterday.toDateString()) {
+            streak++;
+          } else {
+            streak = 1;
+          }
+          
+          localStorage.setItem('pomodoroStreak', streak);
+          localStorage.setItem('pomodoroLastDate', today);
+          document.getElementById('currentStreak').textContent = streak;
+        }
+        
+        // Switch to break
+        isBreak = true;
+        if (sessionsCompleted % 4 === 0) {
+          timeLeft = preset.long * 60;
+          totalTime = timeLeft;
+          document.getElementById('phaseBadge').className = 'phase-badge long-break';
+          document.getElementById('phaseBadge').textContent = '🎉 Long Break';
+          alert('🎉 Amazing! You completed 4 focus sessions!\n\nTime for a well-deserved ' + preset.long + '-minute break.');
+        } else {
+          timeLeft = preset.short * 60;
+          totalTime = timeLeft;
+          document.getElementById('phaseBadge').className = 'phase-badge break';
+          document.getElementById('phaseBadge').textContent = '☕ Short Break';
+          alert('✅ Focus session complete!\n\nTake a ' + preset.short + '-minute break. Move, stretch, hydrate!');
+        }
+        
+        document.getElementById('breakActivities').classList.add('show');
+      } else {
+        // Break complete
+        isBreak = false;
+        timeLeft = preset.focus * 60;
+        totalTime = timeLeft;
+        document.getElementById('phaseBadge').className = 'phase-badge focus';
+        document.getElementById('phaseBadge').textContent = 'Focus Session';
+        document.getElementById('breakActivities').classList.remove('show');
+        alert('⚡ Break over! Ready to focus again?');
+      }
+
+      updateDisplay();
+      updateProgress();
+      updateSessionIndicator();
+    }
+
+    function updateDisplay() {
+      const mins = Math.floor(timeLeft / 60);
+      const secs = timeLeft % 60;
+      document.getElementById('timer').textContent = 
+        `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function updateProgress() {
+      const percent = ((totalTime - timeLeft) / totalTime) * 100;
+      document.getElementById('progress').style.width = percent + '%';
+    }
+
+    function updateSessionIndicator() {
+      const remaining = 4 - (sessionsCompleted % 4);
+      const text = remaining === 4 ? 
+        'Session 1 of 4 • Then long break' : 
+        `Session ${currentSessionNum} of 4 • ${remaining} until long break`;
+      document.getElementById('sessionIndicator').textContent = text;
+    }
+
+    function selectActivity(activity) {
+      const activities = {
+        water: 'Great choice! 💧 Drink a full glass of water to stay hydrated and alert.',
+        stretch: 'Perfect! 🤸 Stand up and do some stretches. Touch your toes, roll your shoulders.',
+        walk: 'Excellent! 🚶 Take a quick walk around. Fresh air helps your brain recharge.',
+        breathe: 'Smart! 🫁 Do 5 deep breaths: inhale for 4, hold for 4, exhale for 4.',
+        snack: 'Good idea! 🍎 Grab something healthy. Nuts, fruit, or yogurt work great.',
+        eyes: 'Nice! 👀 Look at something 20 feet away for 20 seconds. Give your eyes a rest.'
+      };
+      
+      alert(activities[activity]);
+    }
+  </script>
+</body>
+</html>

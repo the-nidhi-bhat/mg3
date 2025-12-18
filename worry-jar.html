@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Worry Jar – Calm Hub</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(236, 72, 153, 0.15)),
+                  url("image.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      padding: 20px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 32px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: floatUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes floatUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .title-block h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 4px;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .title-block h1 span.icon {
+      font-size: 26px;
+    }
+
+    .title-block p {
+      font-size: 15px;
+      color: #64748b;
+    }
+
+    .back-link a {
+      font-size: 14px;
+      color: #64748b;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .back-link a span {
+      color: #6366f1;
+      font-weight: 700;
+    }
+
+    .back-link a:hover {
+      color: #334155;
+    }
+
+    .game-area {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 28px 24px 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      border: 1px solid #f1f5f9;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 90px;
+      border-radius: 16px;
+      border: 1px solid #cbd5e1;
+      background: #f9fafb;
+      color: #0f172a;
+      padding: 10px 12px;
+      font-size: 13px;
+      outline: none;
+      resize: vertical;
+    }
+
+    textarea::placeholder {
+      color: #9ca3af;
+    }
+
+    textarea:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.7);
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0;
+      font-size: 13px;
+      color: #64748b;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .jar {
+      border-radius: 16px;
+      border: 1px dashed #cbd5e1;
+      padding: 10px;
+      min-height: 76px;
+      background: #f8fafc;
+      font-size: 12px;
+      color: #0f172a;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 130px;
+      overflow-y: auto;
+    }
+
+    .worry-item {
+      opacity: 0.92;
+    }
+
+    .worry-item small {
+      color: #6b7280;
+      font-size: 11px;
+    }
+
+    .btn-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .btn-primary {
+      border-radius: 12px;
+      border: none;
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      background: linear-gradient(135deg,#38bdf8,#22c55e);
+      color: #0f172a;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(56,189,248,0.5);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .back-btn {
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      background: #f8fafc;
+      color: #0f172a;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 6px 16px rgba(15,23,42,0.12);
+    }
+
+    @media (max-width: 480px) {
+      .shell { padding: 24px 20px; }
+      .btn-row { flex-direction: column-reverse; align-items: stretch; }
+      .back-btn, .btn-primary { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <audio id="sendSound">
+    <source src="whoosh-soft.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="shell">
+    <div class="top-row">
+      <div class="title-block">
+        <h1><span class="icon">🫙</span>Worry Jar</h1>
+        <p>Write it down, drop it in, and let your mind rest a bit.</p>
+      </div>
+      <div class="back-link">
+        <a href="games.html">← <span>Back to Games</span></a>
+      </div>
+    </div>
+
+    <div class="game-area">
+      <textarea id="worryInput" placeholder="Example: Tomorrow's exam, one awkward conversation, a what‑if thought..."></textarea>
+      <div class="controls">
+        <span id="hintText">Press “Send to jar” to release one small worry.</span>
+      </div>
+      <div class="jar" id="jar"></div>
+      <div class="btn-row">
+        <button class="back-btn" id="backBtn">← Games</button>
+        <button class="btn-primary" id="addBtn">Send to jar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function logGamePlay(gameName) {
+      const STATS_KEY = "calmGameStats";
+      function loadStats() {
+        try {
+          return JSON.parse(localStorage.getItem(STATS_KEY)) || {
+            totalPlays: 0,
+            plays: []
+          };
+        } catch {
+          return { totalPlays: 0, plays: [] };
+        }
+      }
+      const stats = loadStats();
+      const todayISO = new Date().toISOString().split("T")[0];
+      stats.totalPlays += 1;
+      stats.plays.push({ date: todayISO, game: gameName });
+      localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+    }
+
+    const sendSound = document.getElementById("sendSound");
+    function playSend() {
+      sendSound.currentTime = 0;
+      sendSound.volume = 0.5;
+      sendSound.play().catch(() => {});
+    }
+
+    const JAR_KEY = "calmWorryJarItems";
+    function loadJar() {
+      try {
+        return JSON.parse(localStorage.getItem(JAR_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+    function saveJar(list) {
+      localStorage.setItem(JAR_KEY, JSON.stringify(list));
+    }
+
+    const jarEl = document.getElementById("jar");
+    const input = document.getElementById("worryInput");
+    const addBtn = document.getElementById("addBtn");
+    const backBtn = document.getElementById("backBtn");
+    const hintText = document.getElementById("hintText");
+    let playLogged = false;
+
+    function renderJar() {
+      const items = loadJar().slice(-5).reverse();
+      jarEl.innerHTML = "";
+      if (!items.length) {
+        jarEl.textContent = "Jar is empty for now.";
+        return;
+      }
+      items.forEach(i => {
+        const div = document.createElement("div");
+        div.className = "worry-item";
+        const d = new Date(i.dateTime);
+        div.innerHTML = `<div>${i.text}</div><small>${d.toLocaleString()}</small>`;
+        jarEl.appendChild(div);
+      });
+    }
+
+    addBtn.onclick = () => {
+      const text = input.value.trim();
+      if (!text) return;
+      if (!playLogged) {
+        logGamePlay("Worry Jar");
+        playLogged = true;
+      }
+      const list = loadJar();
+      list.push({
+        text,
+        dateTime: new Date().toISOString()
+      });
+      saveJar(list);
+      input.value = "";
+      hintText.textContent = "Nice. You can leave it here and continue your day.";
+      playSend();
+      renderJar();
+    };
+
+    backBtn.onclick = () => {
+      window.location.href = "games.html";
+    };
+
+    renderJar();
+  </script>
+</body>
+</html>

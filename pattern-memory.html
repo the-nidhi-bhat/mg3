@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pattern Memory – Calm Hub</title>
+  <style>
+    /* --- Premium Reset & Typography --- */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- Luxury Animated Background --- */
+    body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(236, 72, 153, 0.15)),
+                    url("image.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        padding: 20px;
+    }
+
+    /* --- The Glass Shell --- */
+    .shell {
+        width: 100%;
+        max-width: 600px;
+        border-radius: 32px;
+        padding: 40px;
+        
+        /* High-end Frosted Glass */
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 
+            0 25px 50px rgba(0, 0, 0, 0.12),
+            0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+
+        /* Entry Animation */
+        opacity: 0;
+        transform: translateY(20px);
+        animation: floatUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes floatUp {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- Header --- */
+    .top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .title-block h1 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 4px;
+        letter-spacing: -0.5px;
+    }
+
+    .title-block p {
+        font-size: 15px;
+        color: #64748b;
+    }
+
+    .back-link a {
+        font-size: 14px;
+        color: #64748b;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .back-link a span {
+        color: #6366f1;
+        font-weight: 700;
+    }
+
+    .back-link a:hover {
+        color: #334155;
+    }
+
+    /* --- Game Area --- */
+    .game-area {
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f1f5f9;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* The Grid */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-bottom: 24px;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .tile {
+        aspect-ratio: 1;
+        border-radius: 14px;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .tile:hover {
+        transform: translateY(-2px);
+        border-color: #cbd5e1;
+        background: #f8fafc;
+    }
+
+    .tile:active {
+        transform: scale(0.95);
+    }
+
+    /* Active Flash State */
+    .tile.flash {
+        background: #60a5fa; /* Blue-400 */
+        border-color: #3b82f6;
+        box-shadow: 
+            0 0 15px rgba(96, 165, 250, 0.5),
+            inset 0 0 10px rgba(255,255,255,0.4);
+        transform: scale(1.05);
+    }
+
+    /* Info & Controls */
+    .info-row {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f8fafc;
+        padding: 16px;
+        border-radius: 16px;
+        margin-top: 8px;
+    }
+
+    .status {
+        font-size: 14px;
+        font-weight: 600;
+        color: #475569;
+    }
+
+    .status.good { color: #16a34a; }
+    .status.bad  { color: #dc2626; }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 12px;
+        border: none;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        color: #ffffff;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 14px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+    }
+
+    .note {
+        font-size: 13px;
+        color: #94a3b8;
+        margin-top: 16px;
+        text-align: center;
+        line-height: 1.5;
+    }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+        .shell { padding: 24px 20px; }
+        .grid { gap: 8px; max-width: 280px; }
+        .info-row { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    
+    <div class="top-row">
+      <div class="title-block">
+        <h1>Pattern Memory 🟦</h1>
+        <p>Watch, remember, and tap back.</p>
+      </div>
+      <div class="back-link">
+        <a href="games.html">← <span>Back to Games</span></a>
+      </div>
+    </div>
+
+    <div class="game-area">
+      <div id="grid" class="grid"></div>
+
+      <div class="info-row">
+        <span id="status" class="status">Press “Show Pattern” to start</span>
+        <button id="patternBtn" class="btn">Show Pattern</button>
+      </div>
+
+      <p class="note">
+        No timer. If you miss, the pattern will replay so you can try again without stress.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // --- Audio Context ---
+    let audioCtx;
+    function getAudioCtx() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
+
+    function playClick() {
+      const ctx = getAudioCtx();
+      if (ctx.state === "suspended") ctx.resume();
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine"; 
+      osc.frequency.setValueAtTime(600, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.1);
+      
+      gain.gain.setValueAtTime(0.05, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+      
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.15);
+    }
+
+    function playSuccess() {
+      const ctx = getAudioCtx();
+      if (ctx.state === "suspended") ctx.resume();
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      // Happy chord
+      osc.type = "triangle"; 
+      osc.frequency.setValueAtTime(440, ctx.currentTime); // A4
+      osc.frequency.linearRampToValueAtTime(554.37, ctx.currentTime + 0.1); // C#5
+      osc.frequency.linearRampToValueAtTime(659.25, ctx.currentTime + 0.2); // E5
+      
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+      
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.7);
+    }
+
+    function playError() {
+      const ctx = getAudioCtx();
+      if (ctx.state === "suspended") ctx.resume();
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(150, ctx.currentTime);
+      osc.frequency.linearRampToValueAtTime(100, ctx.currentTime + 0.2);
+      
+      gain.gain.setValueAtTime(0.05, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+      
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.25);
+    }
+
+    function playTone(freq) {
+        const ctx = getAudioCtx();
+        if (ctx.state === "suspended") ctx.resume();
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        
+        gain.gain.setValueAtTime(0.05, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+        
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.35);
+    }
+
+    // --- Game Logic ---
+    const gridEl = document.getElementById("grid");
+    const statusEl = document.getElementById("status");
+    const patternBtn = document.getElementById("patternBtn");
+
+    const GRID_SIZE = 4;
+    const TILES_COUNT = GRID_SIZE * GRID_SIZE;
+
+    let pattern = [];
+    let userIndex = 0;
+    let showingPattern = false;
+
+    function createGrid() {
+      gridEl.innerHTML = "";
+      for (let i = 0; i < TILES_COUNT; i++) {
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.dataset.index = String(i);
+        tile.addEventListener("click", () => handleTap(i, tile));
+        gridEl.appendChild(tile);
+      }
+    }
+
+    function randomPattern() {
+      const length = 4 + Math.floor(Math.random() * 2); // 4 or 5 tiles
+      const arr = [];
+      for (let i = 0; i < length; i++) {
+        arr.push(Math.floor(Math.random() * TILES_COUNT));
+      }
+      return arr;
+    }
+
+    function flashTile(index, withSound = false) {
+      const tile = gridEl.children[index];
+      tile.classList.add("flash");
+      if (withSound) {
+        // Different pitches for different rows roughly
+        const baseFreq = 300 + (Math.floor(index / 4) * 100) + (index % 4 * 50);
+        playTone(baseFreq);
+      }
+      setTimeout(() => tile.classList.remove("flash"), 300);
+    }
+
+    function showPattern() {
+      if (showingPattern) return;
+      showingPattern = true;
+      pattern = randomPattern();
+      userIndex = 0;
+      statusEl.textContent = "Watch the pattern...";
+      statusEl.className = "status";
+      patternBtn.disabled = true;
+      patternBtn.style.opacity = "0.6";
+
+      let delay = 500;
+      pattern.forEach((idx, i) => {
+        setTimeout(() => {
+          flashTile(idx, true);
+          if (i === pattern.length - 1) {
+            setTimeout(() => {
+              showingPattern = false;
+              statusEl.textContent = "Your turn.";
+              patternBtn.disabled = false;
+              patternBtn.style.opacity = "1";
+            }, 500);
+          }
+        }, delay);
+        delay += 600;
+      });
+    }
+
+    function handleTap(index, tile) {
+      if (showingPattern || !pattern.length) return;
+
+      flashTile(index, true); // Visual + Sound feedback
+
+      if (index === pattern[userIndex]) {
+        userIndex++;
+        if (userIndex === pattern.length) {
+          statusEl.textContent = "Correct! Well done.";
+          statusEl.className = "status good";
+          playSuccess();
+          // Reset after win
+          pattern = [];
+        } else {
+            // Good so far
+        }
+      } else {
+        statusEl.textContent = "Oops! Watch it again.";
+        statusEl.className = "status bad";
+        playError();
+        setTimeout(replayPattern, 1000);
+      }
+    }
+
+    function replayPattern() {
+        if (showingPattern) return;
+        showingPattern = true;
+        userIndex = 0;
+        statusEl.textContent = "Watch carefully...";
+        statusEl.className = "status";
+        
+        let delay = 500;
+        pattern.forEach((idx, i) => {
+            setTimeout(() => {
+                flashTile(idx, true);
+                if (i === pattern.length - 1) {
+                    setTimeout(() => {
+                        showingPattern = false;
+                        statusEl.textContent = "Try again.";
+                    }, 500);
+                }
+            }, delay);
+            delay += 600;
+        });
+    }
+
+    patternBtn.addEventListener("click", () => {
+      playClick();
+      showPattern();
+    });
+
+    createGrid();
+  </script>
+</body>
+</html>

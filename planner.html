@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calm Hub – Day & Study Planner</title>
+  <style>
+    :root {
+      --bg-shell: rgba(15,23,42,0.96);
+      --bg-panel: #020617;
+      --border-strong: rgba(148,163,184,0.7);
+      --border-soft: #111827;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --slot-bg: #020617;
+    }
+    body.light-mode {
+      --bg-shell: rgba(255,255,255,0.94);
+      --bg-panel: #f9fafb;
+      --border-strong: rgba(148,163,184,0.6);
+      --border-soft: #e5e7eb;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --slot-bg: #ffffff;
+    }
+
+    * {
+      margin:0; padding:0; box-sizing:border-box;
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    body {
+      min-height:100vh;
+      background:linear-gradient(135deg,rgba(79,70,229,0.15),rgba(236,72,153,0.15)),url("image.jpg");
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+      background-attachment:fixed;
+      padding:24px;
+      color:var(--text-main);
+    }
+
+    .shell {
+      max-width:1200px;
+      margin:0 auto;
+      background:var(--bg-shell);
+      backdrop-filter:blur(24px) saturate(180%);
+      -webkit-backdrop-filter:blur(24px) saturate(180%);
+      border-radius:28px;
+      border:1px solid var(--border-strong);
+      box-shadow:0 30px 80px rgba(0,0,0,0.8),0 0 0 1px rgba(15,23,42,0.9);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .header {
+      padding:14px 20px;
+      border-bottom:1px solid var(--border-soft);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .header-left { display:flex; align-items:center; gap:10px; }
+    .dot-logo { width:26px;height:26px;border-radius:50%;border:3px solid #f97373;background:#020617; }
+
+    .title-stack { display:flex;flex-direction:column;gap:2px; }
+    .app-title { font-size:16px;font-weight:600; }
+    .mode-subtitle { font-size:12px;color:var(--text-muted); }
+
+    .header-right { display:flex;gap:10px;align-items:center;flex-wrap:wrap; }
+
+    .back-btn,.theme-btn,.routine-btn,.export-btn {
+      border-radius:999px;
+      border:1px solid #4b5563;
+      background:var(--bg-panel);
+      color:var(--text-main);
+      padding:6px 14px;
+      font-size:13px;
+      cursor:pointer;
+      transition: all 0.2s;
+    }
+    .routine-btn {
+      background: linear-gradient(135deg, #f97373, #ec4899);
+      color: #fff;
+      border-color: transparent;
+      font-weight: 600;
+    }
+    .routine-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(249,115,115,0.4);
+    }
+    .export-btn { font-size:12px; }
+
+    .planner-mode-group,.view-chip-group {
+      display:inline-flex;
+      background:var(--bg-panel);
+      border-radius:999px;
+      padding:3px;
+      border:1px solid #1f2937;
+    }
+    body.light-mode .planner-mode-group,
+    body.light-mode .view-chip-group {
+      border-color:#cbd5e1;
+    }
+
+    .planner-mode,.view-chip {
+      border-radius:999px;border:none;
+      padding:5px 12px;
+      font-size:12px;
+      cursor:pointer;
+      font-weight:600;
+      color:var(--text-muted);
+      background:transparent;
+    }
+    .planner-mode.active,.view-chip.active {
+      background:#f97373;
+      color:#111827;
+    }
+
+    /* Routine Info Banner */
+    .routine-banner {
+      background: linear-gradient(135deg, rgba(249,115,115,0.15), rgba(236,72,153,0.15));
+      border-bottom: 1px solid var(--border-soft);
+      padding: 12px 20px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .routine-banner.show { display: flex; }
+    .routine-banner-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+    .routine-badge {
+      background: linear-gradient(135deg, #f97373, #ec4899);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .clear-routine {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--text-main);
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* Pomodoro bar BIG */
+    .pomodoro-bar {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-soft);
+      background: radial-gradient(circle at left, rgba(249,115,115,0.35), transparent 60%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .pomodoro-main { display:flex; align-items:center; }
+    .pomodoro-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+    .pomodoro-time {
+      font-family: "SF Mono","Menlo",monospace;
+      font-size: 26px;
+      font-weight: 700;
+    }
+    .pomodoro-status {
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.85);
+      border: 1px solid rgba(248,250,252,0.12);
+      margin-top: 2px;
+    }
+    .pomodoro-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pomodoro-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #111827;
+      background: #f97373;
+    }
+    .pomodoro-btn.secondary {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid #4b5563;
+    }
+
+    .week-bar {
+      padding:10px 20px 0;
+      display:flex;
+      justify-content:space-between;
+      font-size:13px;
+      color:var(--text-muted);
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .day-pill {display:flex;flex-direction:column;align-items:center;gap:4px;}
+    .day-pill span:first-child{font-weight:600;}
+    .day-pill .date{padding:4px 9px;border-radius:999px;border:1px solid transparent;cursor:pointer;}
+    .day-pill .date.active{background:#f97373;color:#111827;border-color:#f97373;}
+
+    .view-panel{padding:10px 16px 20px;display:none;}
+    .view-panel.active{display:block;}
+
+    .planner-grid{
+      min-width:900px;
+      display:grid;
+      grid-template-columns:60px repeat(7,1fr);
+      grid-auto-rows:40px;
+      gap:4px;
+    }
+    .time-cell{
+      font-size:10px;
+      color:var(--text-muted);
+      text-align:right;
+      padding-right:6px;
+    }
+    .slot-cell{
+      background:var(--slot-bg);
+      border-radius:8px;
+      border:1px solid var(--border-soft);
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+      transition:border-color .15s,background .15s;
+    }
+    .slot-cell:hover{border-color:#4b5563;}
+    .slot-cell.drag-over { outline:1px dashed #f97373; }
+
+    .event{
+      position:absolute;left:4px;right:4px;top:4px;
+      border-radius:6px;padding:3px 6px;
+      font-size:10px;color:#111827;
+      display:flex;justify-content:space-between;gap:4px;
+      align-items:center;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;
+    }
+    .event.study{background:#e0f2fe;border-left:3px solid #38bdf8;}
+    .event.wellness{background:#dcfce7;border-left:3px solid #22c55e;}
+    .event.other{background:#fef3c7;border-left:3px solid #fbbf24;}
+    .event.social{background:#fce7f3;border-left:3px solid #ec4899;}
+    .event.completed {
+      opacity:0.55;
+      text-decoration:line-through;
+    }
+    .event[draggable="true"] { cursor:grab; }
+
+    .event-title{flex:1;overflow:hidden;text-overflow:ellipsis;}
+    .event-left {
+      display:flex;
+      align-items:center;
+      gap:4px;
+      overflow:hidden;
+    }
+    .event-check {
+      width:11px;
+      height:11px;
+      border-radius:3px;
+      border:1px solid #6b7280;
+      background:#f9fafb;
+      flex-shrink:0;
+    }
+    .event-check.checked {
+      background:#22c55e;
+      border-color:#22c55e;
+    }
+    .event-delete{cursor:pointer;color:#4b5563;padding:0 4px;font-size:12px;}
+    .event-delete:hover{color:#f97373;}
+
+    .week-grid{
+      min-width:700px;
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:8px;
+    }
+    .week-day-box{
+      background:var(--slot-bg);
+      border-radius:10px;
+      border:1px solid var(--border-soft);
+      padding:8px 10px;
+      font-size:12px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .week-day-header{display:flex;justify-content:space-between;color:var(--text-muted);font-weight:500;}
+    .badge-row{display:flex;gap:4px;flex-wrap:wrap;}
+    .badge-dot{width:8px;height:8px;border-radius:50%;}
+    .badge-study{background:#38bdf8;}
+    .badge-wellness{background:#22c55e;}
+    .badge-other{background:#fbbf24;}
+    .badge-social{background:#ec4899;}
+
+    .month-grid{
+      min-width:700px;
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:8px;
+      font-size:12px;
+    }
+    .month-cell{
+      background:var(--slot-bg);
+      border-radius:10px;
+      border:1px solid var(--border-soft);
+      padding:6px;
+      min-height:70px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      cursor:pointer;
+    }
+    .month-cell.inactive{opacity:.3;}
+    .month-date{align-self:flex-end;color:var(--text-muted);font-weight:500;}
+    .month-dot-row{display:flex;gap:3px;margin-top:4px;flex-wrap:wrap;}
+    .month-dot{width:5px;height:5px;border-radius:50%;}
+    .month-dot.study{background:#38bdf8;}
+    .month-dot.wellness{background:#22c55e;}
+    .month-dot.other{background:#fbbf24;}
+    .month-dot.social{background:#ec4899;}
+
+    .quick-add{
+      padding:10px 20px 12px;
+      border-top:1px solid var(--border-soft);
+      display:flex;
+      gap:8px;
+      align-items:center;
+      font-size:13px;
+      background:var(--bg-panel);
+      flex-wrap:wrap;
+    }
+    .quick-add input,
+    .quick-add select{
+      background:var(--bg-panel);
+      border-radius:8px;
+      border:1px solid #374151;
+      color:var(--text-main);
+      padding:6px 10px;
+      font-size:13px;
+    }
+    body.light-mode .quick-add input,
+    body.light-mode .quick-add select{
+      border-color:#cbd5e1;
+    }
+    .quick-add button{
+      border-radius:8px;
+      border:none;
+      background:#f97373;
+      color:#111827;
+      font-weight:600;
+      padding:6px 14px;
+      cursor:pointer;
+      font-size:13px;
+    }
+
+    .selfcare-templates {
+      padding:8px 20px 10px;
+      border-top:1px solid var(--border-soft);
+      background:var(--bg-panel);
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      font-size:12px;
+    }
+    .selfcare-templates span { color:var(--text-muted); }
+    .selfcare-chip {
+      border-radius:999px;
+      border:1px solid #4b5563;
+      background:#020617;
+      color:var(--text-main);
+      padding:4px 10px;
+      font-size:11px;
+      cursor:pointer;
+    }
+
+    .footer-bar {
+      padding:6px 20px 10px;
+      border-top:1px solid var(--border-soft);
+      font-size:12px;
+      color:var(--text-muted);
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
+      background:var(--bg-panel);
+    }
+    .footer-bar strong { color:#f97373; }
+
+    @media (max-width:600px){
+      body{padding:16px;}
+      .shell{border-radius:22px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-left">
+        <div class="dot-logo"></div>
+        <div class="title-stack">
+          <div class="app-title" id="plannerTitle">Day Planner</div>
+          <div class="mode-subtitle" id="plannerSubtitle">Plan your whole day with tasks, breaks and self‑care.</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="routine-btn" onclick="window.location.href='routines.html'">📋 Routine Templates</button>
+        <button class="back-btn" onclick="window.location.href='journey.html'">← Back to Calm Hub</button>
+        <button class="theme-btn" id="themeToggle">☾ Dark</button>
+        <button class="export-btn" onclick="exportToICS()">📤 Export .ics</button>
+        <div class="planner-mode-group">
+          <button class="planner-mode active" data-mode="day">Day Planner</button>
+          <button class="planner-mode" data-mode="study">Study Planner</button>
+        </div>
+        <div class="view-chip-group">
+          <button class="view-chip active" data-view="day">Day</button>
+          <button class="view-chip" data-view="week">Week</button>
+          <button class="view-chip" data-view="month">Month</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BIG POMODORO -->
+    <div class="pomodoro-bar">
+      <div class="pomodoro-main">
+        <div>
+          <div class="pomodoro-label">Focus timer</div>
+          <div style="display:flex;align-items:baseline;gap:8px;">
+            <span class="pomodoro-time" id="pomodoroTime">25:00</span>
+            <span class="pomodoro-status" id="pomodoroStatus">Work</span>
+          </div>
+        </div>
+      </div>
+      <div class="pomodoro-actions">
+        <button class="pomodoro-btn" onclick="startPomodoro()">Start</button>
+        <button class="pomodoro-btn secondary" onclick="resetPomodoro()">Reset</button>
+      </div>
+    </div>
+
+    <!-- ROUTINE INFO BANNER -->
+    <div class="routine-banner" id="routineBanner">
+      <div class="routine-banner-text">
+        <span>📋</span>
+        <span id="routineCount">0 routine tasks</span>
+        <span class="routine-badge" id="routineName">Routine Active</span>
+      </div>
+      <button class="clear-routine" id="clearRoutine">Clear Routine Tasks</button>
+    </div>
+
+    <!-- WEEK BAR -->
+    <div class="week-bar" id="weekBar"></div>
+
+    <!-- DAY VIEW -->
+    <div class="view-panel active" id="dayView">
+      <div style="overflow:auto;">
+        <div class="planner-grid" id="plannerGrid"></div>
+      </div>
+    </div>
+
+    <!-- WEEK VIEW -->
+    <div class="view-panel" id="weekView">
+      <div style="overflow:auto;">
+        <div class="week-grid" id="weekGrid"></div>
+      </div>
+    </div>
+
+    <!-- MONTH VIEW -->
+    <div class="view-panel" id="monthView">
+      <div style="overflow:auto;">
+        <div class="month-grid" id="monthGrid"></div>
+      </div>
+    </div>
+
+    <!-- QUICK ADD -->
+    <div class="quick-add">
+      <span style="color:var(--text-muted);">Quick add:</span>
+      <input id="taskTitle" type="text" placeholder="Task / subject" />
+      <select id="taskType">
+        <option value="study">Study</option>
+        <option value="wellness">Wellness</option>
+        <option value="social">Social</option>
+        <option value="other">Other</option>
+      </select>
+      <select id="taskHour"></select>
+      <input id="taskDate" type="date" />
+      <select id="taskRepeat">
+        <option value="">One-time</option>
+        <option value="daily">Repeat daily</option>
+        <option value="weekly">Repeat weekly</option>
+      </select>
+      <button id="addBtn">Add</button>
+    </div>
+
+    <!-- PRESET SELF-CARE BLOCKS -->
+    <div class="selfcare-templates">
+      <span>Self‑care presets:</span>
+      <button class="selfcare-chip" onclick="addTemplate('Meditation',10,'wellness')">🧘 Meditation 10:00</button>
+      <button class="selfcare-chip" onclick="addTemplate('Journal',21,'wellness')">📓 Journal 21:00</button>
+      <button class="selfcare-chip" onclick="addTemplate('Walk outside',18,'wellness')">🚶 18:00 Walk</button>
+    </div>
+
+    <!-- FOOTER PRODUCTIVITY -->
+    <div class="footer-bar">
+      <div id="productivityText">Productivity: 0% (0 / 0 tasks)</div>
+      <div style="font-size:11px;">Completed tasks turn faded with a ✓</div>
+    </div>
+  </div>
+
+  <script>
+    // 24‑hour hours 0–23
+    const hours = Array.from({ length: 24 }, (_, i) => i);
+    const daysInWeek = 7;
+
+    const plannerGrid = document.getElementById('plannerGrid');
+    const weekGrid = document.getElementById('weekGrid');
+    const monthGrid = document.getElementById('monthGrid');
+    const weekBar = document.getElementById('weekBar');
+    const routineBanner = document.getElementById('routineBanner');
+
+    let currentDate = new Date();
+    let selectedDateISO = toISO(new Date());
+
+    // events stored as { [isoDate]: [ {id,hour,title,type,completed,repeat} ] }
+    let dayEvents   = JSON.parse(localStorage.getItem('calmDayEventsByDate')   || '{}');
+    let studyEvents = JSON.parse(localStorage.getItem('calmStudyEventsByDate') || '{}');
+
+    let currentMode = 'day';
+
+    function eventsMap() {
+      return currentMode === 'day' ? dayEvents : studyEvents;
+    }
+
+    function saveEvents() {
+      localStorage.setItem('calmDayEventsByDate',   JSON.stringify(dayEvents));
+      localStorage.setItem('calmStudyEventsByDate', JSON.stringify(studyEvents));
+      updateRoutineBanner();
+      updateProductivity();
+    }
+
+    function toISO(d) {
+      return d.toISOString().split('T')[0];
+    }
+
+    function formatHour(h) {
+      return `${h.toString().padStart(2,'0')}:00`;
+    }
+
+    // Detect routine tasks
+    function getRoutineTasks(date) {
+      const map = eventsMap();
+      const tasks = map[date] || [];
+      const routineEmojis = ['💔', '😰', '🌧️', '🧘', '⚡', '🤝', '😴', '📋'];
+      return tasks.filter(task =>
+        routineEmojis.some(emoji => task.title.startsWith(emoji))
+      );
+    }
+
+    function updateRoutineBanner() {
+      const todayISO = toISO(new Date());
+      const routineTasks = getRoutineTasks(todayISO);
+      if (routineTasks.length > 0) {
+        routineBanner.classList.add('show');
+        document.getElementById('routineCount').textContent =
+          `${routineTasks.length} routine task${routineTasks.length > 1 ? 's' : ''} scheduled today`;
+        const firstTask = routineTasks[0].title;
+        let routineType = 'Routine';
+        if (firstTask.startsWith('💔')) routineType = 'Heartbreak Healing';
+        else if (firstTask.startsWith('😰')) routineType = 'Anxiety Reset';
+        else if (firstTask.startsWith('🌧️')) routineType = 'Small Steps Forward';
+        else if (firstTask.startsWith('🧘')) routineType = 'Calm the System';
+        else if (firstTask.startsWith('⚡')) routineType = 'Start with Energy';
+        else if (firstTask.startsWith('🤝')) routineType = 'Find Support';
+        else if (firstTask.startsWith('😴')) routineType = 'Wind Down Early';
+        document.getElementById('routineName').textContent = routineType;
+      } else {
+        routineBanner.classList.remove('show');
+      }
+    }
+
+    document.getElementById('clearRoutine').addEventListener('click', function() {
+      const todayISO = toISO(new Date());
+      const map = eventsMap();
+      if (map[todayISO]) {
+        const routineEmojis = ['💔', '😰', '🌧️', '🧘', '⚡', '🤝', '😴', '📋'];
+        map[todayISO] = map[todayISO].filter(task =>
+          !routineEmojis.some(emoji => task.title.startsWith(emoji))
+        );
+        if (map[todayISO].length === 0) {
+          delete map[todayISO];
+        }
+        saveEvents();
+        buildDayGrid();
+        buildWeekView();
+        buildMonthView();
+      }
+    });
+
+    // Populate hour select
+    const hourSelect = document.getElementById('taskHour');
+    hours.forEach(h => {
+      const opt = document.createElement('option');
+      opt.value = h;
+      opt.textContent = formatHour(h);
+      hourSelect.appendChild(opt);
+    });
+
+    // Default date
+    document.getElementById('taskDate').valueAsDate = new Date();
+
+    // Week bar
+    function buildWeekBar() {
+      weekBar.innerHTML = '';
+      const startOfWeek = new Date(currentDate);
+      const dayOfWeek = startOfWeek.getDay();
+      startOfWeek.setDate(startOfWeek.getDate() - dayOfWeek);
+      const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+      for (let i = 0; i < daysInWeek; i++) {
+        const d = new Date(startOfWeek);
+        d.setDate(startOfWeek.getDate() + i);
+        const iso = toISO(d);
+
+        const wrap = document.createElement('div');
+        wrap.className = 'day-pill';
+
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = dayNames[i];
+
+        const dateSpan = document.createElement('span');
+        dateSpan.className = 'date' + (iso === selectedDateISO ? ' active' : '');
+        dateSpan.textContent = d.getDate();
+        dateSpan.onclick = () => {
+          selectedDateISO = iso;
+          buildWeekBar();
+          buildDayGrid();
+        };
+
+        wrap.appendChild(nameSpan);
+        wrap.appendChild(dateSpan);
+        weekBar.appendChild(wrap);
+      }
+    }
+
+    // DAY GRID
+    function buildDayGrid() {
+      plannerGrid.innerHTML = '';
+      hours.forEach(h => {
+        const label = document.createElement('div');
+        label.className = 'time-cell';
+        label.textContent = formatHour(h);
+        plannerGrid.appendChild(label);
+
+        for (let d = 0; d < daysInWeek; d++) {
+          const cell = document.createElement('div');
+          cell.className = 'slot-cell';
+          cell.dataset.hour = h;
+          cell.dataset.day = d;
+          cell.addEventListener('dragover', onCellDragOver);
+          cell.addEventListener('dragleave', onCellDragLeave);
+          cell.addEventListener('drop', onCellDrop);
+          plannerGrid.appendChild(cell);
+        }
+      });
+      renderDayEvents();
+    }
+
+    function renderDayEvents() {
+      plannerGrid.querySelectorAll('.slot-cell').forEach(c => c.innerHTML = '');
+      const map = eventsMap();
+      const list = map[selectedDateISO] || [];
+      list.forEach(e => {
+        const sel = `.slot-cell[data-hour="${e.hour}"][data-day="0"]`;
+        const cell = plannerGrid.querySelector(sel);
+        if (!cell) return;
+
+        const div = document.createElement('div');
+        div.className = 'event ' + e.type + (e.completed ? ' completed' : '');
+        div.draggable = true;
+        div.dataset.id = e.id;
+        div.addEventListener('dragstart', onEventDragStart);
+
+        const left = document.createElement('div');
+        left.className = 'event-left';
+
+        const check = document.createElement('div');
+        check.className = 'event-check' + (e.completed ? ' checked' : '');
+        check.onclick = (ev) => {
+          ev.stopPropagation();
+          toggleComplete(selectedDateISO, e.id);
+        };
+
+        const titleSpan = document.createElement('span');
+        titleSpan.className = 'event-title';
+        const repeatTag = e.repeat ? ` (${e.repeat})` : '';
+        titleSpan.textContent = `${formatHour(e.hour)} – ${e.title}${repeatTag}`;
+
+        left.appendChild(check);
+        left.appendChild(titleSpan);
+
+        const del = document.createElement('span');
+        del.className = 'event-delete';
+        del.textContent = '×';
+        del.onclick = (ev) => {
+          ev.stopPropagation();
+          deleteEvent(selectedDateISO, e.id);
+        };
+
+        div.appendChild(left);
+        div.appendChild(del);
+        cell.appendChild(div);
+      });
+    }
+
+    // WEEK VIEW
+    function buildWeekView() {
+      weekGrid.innerHTML = '';
+      const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const startOfWeek = new Date(currentDate);
+      const dayOfWeek = startOfWeek.getDay();
+      startOfWeek.setDate(startOfWeek.getDate() - dayOfWeek);
+
+      const map = eventsMap();
+      for (let i = 0; i < daysInWeek; i++) {
+        const d = new Date(startOfWeek);
+        d.setDate(startOfWeek.getDate() + i);
+        const iso = toISO(d);
+
+        const box = document.createElement('div');
+        box.className = 'week-day-box';
+
+        const header = document.createElement('div');
+        header.className = 'week-day-header';
+        header.innerHTML = `<span>${dayNames[i]}</span><span>${d.getDate()}</span>`;
+        box.appendChild(header);
+
+        const badges = document.createElement('div');
+        badges.className = 'badge-row';
+        const todays = map[iso] || [];
+        todays.forEach(e => {
+          const dot = document.createElement('div');
+          let cls = 'badge-other';
+          if (e.type === 'study') cls = 'badge-study';
+          else if (e.type === 'wellness') cls = 'badge-wellness';
+          else if (e.type === 'social') cls = 'badge-social';
+          dot.className = 'badge-dot ' + cls;
+          badges.appendChild(dot);
+        });
+        if (todays.length === 0) {
+          const span = document.createElement('span');
+          span.style.color = '#4b5563';
+          span.textContent = currentMode === 'day' ? 'No tasks' : 'No study';
+          badges.appendChild(span);
+        }
+        box.appendChild(badges);
+        weekGrid.appendChild(box);
+      }
+    }
+
+    // MONTH VIEW
+    function buildMonthView() {
+      monthGrid.innerHTML = '';
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const firstWeekday = firstDay.getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const totalCells = Math.ceil((firstWeekday + daysInMonth) / 7) * 7;
+
+      const map = eventsMap();
+
+      for (let cell = 0; cell < totalCells; cell++) {
+        const div = document.createElement('div');
+        div.className = 'month-cell';
+        const dateNum = cell - firstWeekday + 1;
+        let thisDate = null;
+
+        if (dateNum < 1 || dateNum > daysInMonth) {
+          div.classList.add('inactive');
+        } else {
+          thisDate = new Date(year, month, dateNum);
+        }
+
+        const dateEl = document.createElement('div');
+        dateEl.className = 'month-date';
+        dateEl.textContent = thisDate ? thisDate.getDate() : '';
+        div.appendChild(dateEl);
+
+        const row = document.createElement('div');
+        row.className = 'month-dot-row';
+
+        if (thisDate) {
+          const iso = toISO(thisDate);
+          const todays = map[iso] || [];
+          todays.forEach(e => {
+            const dot = document.createElement('div');
+            let cls = 'other';
+            if (e.type === 'study') cls = 'study';
+            else if (e.type === 'wellness') cls = 'wellness';
+            else if (e.type === 'social') cls = 'social';
+            dot.className = 'month-dot ' + cls;
+            row.appendChild(dot);
+          });
+          div.onclick = () => {
+            selectedDateISO = iso;
+            buildWeekBar();
+            buildDayGrid();
+          };
+        }
+
+        div.appendChild(row);
+        monthGrid.appendChild(div);
+      }
+    }
+
+    function addEvent() {
+      const title = document.getElementById('taskTitle').value.trim();
+      if (!title) return;
+
+      const hour = parseInt(document.getElementById('taskHour').value, 10);
+      const dateInput = document.getElementById('taskDate').value;
+      const iso = dateInput || toISO(currentDate);
+
+      const type = currentMode === 'study'
+        ? 'study'
+        : document.getElementById('taskType').value;
+
+      const repeat = document.getElementById('taskRepeat').value || '';
+
+      const map = eventsMap();
+      if (!map[iso]) map[iso] = [];
+      map[iso].push({
+        id: Date.now() + Math.floor(Math.random() * 1000),
+        hour,
+        title,
+        type,
+        completed:false,
+        repeat
+      });
+
+      document.getElementById('taskTitle').value = '';
+      saveEvents();
+      buildWeekBar();
+      buildDayGrid();
+      buildWeekView();
+      buildMonthView();
+    }
+    document.getElementById('addBtn').onclick = addEvent;
+
+    function deleteEvent(iso, id) {
+      const map = eventsMap();
+      if (!map[iso]) return;
+      map[iso] = map[iso].filter(e => e.id !== id);
+      if (map[iso].length === 0) delete map[iso];
+      saveEvents();
+      buildDayGrid();
+      buildWeekView();
+      buildMonthView();
+    }
+    window.deleteEvent = deleteEvent;
+
+    function toggleComplete(iso, id) {
+      const map = eventsMap();
+      const list = map[iso] || [];
+      const item = list.find(e => e.id === id);
+      if (!item) return;
+      item.completed = !item.completed;
+      saveEvents();
+      renderDayEvents();
+    }
+
+    function addTemplate(label, hour, type) {
+      document.getElementById('taskTitle').value = label;
+      document.getElementById('taskHour').value = hour;
+      document.getElementById('taskType').value = type;
+      document.getElementById('taskDate').valueAsDate = new Date();
+      document.getElementById('taskRepeat').value = '';
+      addEvent();
+    }
+
+    // VIEW SWITCH
+    document.querySelectorAll('.view-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.view-chip').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const view = btn.dataset.view;
+        document.getElementById('dayView').classList.toggle('active', view === 'day');
+        document.getElementById('weekView').classList.toggle('active', view === 'week');
+        document.getElementById('monthView').classList.toggle('active', view === 'month');
+      });
+    });
+
+    // MODE SWITCH
+    document.querySelectorAll('.planner-mode').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.planner-mode').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentMode = btn.dataset.mode;
+
+        const titleEl = document.getElementById('plannerTitle');
+        const subEl = document.getElementById('plannerSubtitle');
+        const typeSel = document.getElementById('taskType');
+
+        if (currentMode === 'day') {
+          titleEl.textContent = 'Day Planner';
+          subEl.textContent = 'Plan your whole day with tasks, breaks and self‑care.';
+          typeSel.disabled = false;
+        } else {
+          titleEl.textContent = 'Study Planner';
+          subEl.textContent = 'Only subjects, chapters and revision – nothing else.';
+          typeSel.value = 'study';
+          typeSel.disabled = true;
+        }
+
+        buildWeekBar();
+        buildDayGrid();
+        buildWeekView();
+        buildMonthView();
+        updateRoutineBanner();
+      });
+    });
+
+    // THEME TOGGLE
+    const themeBtn = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('calmPlannerTheme');
+    if (savedTheme === 'light') {
+      document.body.classList.add('light-mode');
+      themeBtn.textContent = '☀ Light';
+    }
+    themeBtn.addEventListener('click', () => {
+      const isLight = document.body.classList.toggle('light-mode');
+      themeBtn.textContent = isLight ? '☀ Light' : '☾ Dark';
+      localStorage.setItem('calmPlannerTheme', isLight ? 'light' : 'dark');
+    });
+
+    // DRAG & DROP
+    let draggingEventId = null;
+
+    function onEventDragStart(e) {
+      draggingEventId = e.currentTarget.dataset.id;
+      e.dataTransfer.effectAllowed = 'move';
+    }
+
+    function onCellDragOver(e) {
+      e.preventDefault();
+      e.currentTarget.classList.add('drag-over');
+    }
+
+    function onCellDragLeave(e) {
+      e.currentTarget.classList.remove('drag-over');
+    }
+
+    function onCellDrop(e) {
+      e.preventDefault();
+      e.currentTarget.classList.remove('drag-over');
+      if (!draggingEventId) return;
+      const newHour = parseInt(e.currentTarget.dataset.hour,10);
+      const map = eventsMap();
+      const list = map[selectedDateISO] || [];
+      const item = list.find(ev => ev.id == draggingEventId);
+      if (!item) return;
+      item.hour = newHour;
+      saveEvents();
+      renderDayEvents();
+      draggingEventId = null;
+    }
+
+    // PRODUCTIVITY
+    function updateProductivity() {
+      const map = eventsMap();
+      const todayISO = toISO(new Date());
+      const list = map[todayISO] || [];
+      const total = list.length;
+      const completed = list.filter(e => e.completed).length;
+      const percent = total ? Math.round((completed / total) * 100) : 0;
+      const el = document.getElementById('productivityText');
+      el.innerHTML = `Productivity: <strong>${percent}%</strong> (${completed} / ${total} tasks today)`;
+    }
+
+    // POMODORO 25/5
+    let pomoSeconds = 25 * 60;
+    let pomoMode = 'work';
+    let pomoTimerId = null;
+
+    function formatMMSS(total) {
+      const m = Math.floor(total / 60);
+      const s = total % 60;
+      return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    }
+
+    function updatePomoUI() {
+      document.getElementById('pomodoroTime').textContent = formatMMSS(pomoSeconds);
+      document.getElementById('pomodoroStatus').textContent = pomoMode === 'work' ? 'Work' : 'Break';
+    }
+
+    function tickPomodoro() {
+      pomoSeconds--;
+      if (pomoSeconds <= 0) {
+        if (pomoMode === 'work') {
+          alert('Nice work. Time for a 5‑minute reset. 🌱');
+          pomoMode = 'break';
+          pomoSeconds = 5 * 60;
+        } else {
+          alert('Ready for another focus block? 💪');
+          pomoMode = 'work';
+          pomoSeconds = 25 * 60;
+        }
+      }
+      updatePomoUI();
+    }
+
+    function startPomodoro() {
+      if (pomoTimerId) return;
+      pomoTimerId = setInterval(tickPomodoro, 1000);
+    }
+
+    function resetPomodoro() {
+      if (pomoTimerId) {
+        clearInterval(pomoTimerId);
+        pomoTimerId = null;
+      }
+      pomoMode = 'work';
+      pomoSeconds = 25 * 60;
+      updatePomoUI();
+    }
+
+    // EXPORT TO .ICS
+    function exportToICS() {
+      const allEvents = [];
+      const maps = [dayEvents, studyEvents];
+      maps.forEach(map => {
+        Object.keys(map).forEach(dateISO => {
+          map[dateISO].forEach(ev => {
+            allEvents.push({ dateISO, ev });
+          });
+        });
+      });
+      if (!allEvents.length) {
+        alert('No events to export.');
+        return;
+      }
+
+      let ics = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//CalmHub//Planner//EN\r\n';
+      allEvents.forEach(({dateISO, ev}) => {
+        const start = new Date(dateISO + 'T' + ev.hour.toString().padStart(2,'0') + ':00:00');
+        const end = new Date(start.getTime() + 60*60*1000);
+        function fmt(d) {
+          return d.toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+        }
+        ics += 'BEGIN:VEVENT\r\n';
+        ics += 'SUMMARY:' + (ev.title.replace(/\r?\n/g,' ') || 'Task') + '\r\n';
+        ics += 'DTSTART:' + fmt(start) + '\r\n';
+        ics += 'DTEND:' + fmt(end) + '\r\n';
+        ics += 'END:VEVENT\r\n';
+      });
+      ics += 'END:VCALENDAR\r\n';
+
+      const blob = new Blob([ics], {type:'text/calendar;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'calm-planner.ics';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // INIT
+    buildWeekBar();
+    buildDayGrid();
+    buildWeekView();
+    buildMonthView();
+    updateRoutineBanner();
+    updateProductivity();
+    updatePomoUI();
+  </script>
+</body>
+</html>
