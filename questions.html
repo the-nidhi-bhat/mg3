@@ -481,7 +481,7 @@
     function renderQuestion() {
       questionText.textContent = questions[currentIndex];
       stepLabel.textContent = `Step 2 of 3 • Question ${currentIndex + 1} of ${questions.length}`;
-      progress.textContent = "Scale: 0 = Not at all  →  4 = Very often";
+      progress.textContent = "";
 
       optionsBox.innerHTML = "";
       OPTIONS.forEach((opt, idx) => {
