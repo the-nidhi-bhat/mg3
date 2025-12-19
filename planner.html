@@ -32,7 +32,7 @@
 
     body {
       min-height:100vh;
-      background:linear-gradient(135deg,rgba(79,70,229,0.15),rgba(236,72,153,0.15)),url("image.jpg");
+      background:linear-gradient(135deg,rgba(79,70,229,0.15),rgba(236,72,153,0.15)),#0f172a;
       background-size:cover;
       background-position:center;
       background-repeat:no-repeat;
@@ -122,7 +122,6 @@
       color:#111827;
     }
 
-    /* Routine Info Banner */
     .routine-banner {
       background: linear-gradient(135deg, rgba(249,115,115,0.15), rgba(236,72,153,0.15));
       border-bottom: 1px solid var(--border-soft);
@@ -161,7 +160,6 @@
       font-weight: 600;
     }
 
-    /* Pomodoro bar BIG */
     .pomodoro-bar {
       padding: 14px 20px;
       border-bottom: 1px solid var(--border-soft);
@@ -233,17 +231,20 @@
     .view-panel.active{display:block;}
 
     .planner-grid{
-      min-width:900px;
+      min-width:400px;
       display:grid;
-      grid-template-columns:60px repeat(7,1fr);
-      grid-auto-rows:40px;
+      grid-template-columns:60px 1fr;
+      grid-auto-rows:50px;
       gap:4px;
     }
     .time-cell{
-      font-size:10px;
+      font-size:11px;
       color:var(--text-muted);
       text-align:right;
-      padding-right:6px;
+      padding-right:8px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
     }
     .slot-cell{
       background:var(--slot-bg);
@@ -253,14 +254,15 @@
       overflow:hidden;
       cursor:pointer;
       transition:border-color .15s,background .15s;
+      min-height:50px;
     }
     .slot-cell:hover{border-color:#4b5563;}
-    .slot-cell.drag-over { outline:1px dashed #f97373; }
+    .slot-cell.drag-over { outline:2px dashed #f97373; }
 
     .event{
       position:absolute;left:4px;right:4px;top:4px;
-      border-radius:6px;padding:3px 6px;
-      font-size:10px;color:#111827;
+      border-radius:6px;padding:6px 8px;
+      font-size:11px;color:#111827;
       display:flex;justify-content:space-between;gap:4px;
       align-items:center;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;
     }
@@ -273,6 +275,7 @@
       text-decoration:line-through;
     }
     .event[draggable="true"] { cursor:grab; }
+    .event.recurring { border-right:3px solid rgba(0,0,0,0.2); }
 
     .event-title{flex:1;overflow:hidden;text-overflow:ellipsis;}
     .event-left {
@@ -282,8 +285,8 @@
       overflow:hidden;
     }
     .event-check {
-      width:11px;
-      height:11px;
+      width:13px;
+      height:13px;
       border-radius:3px;
       border:1px solid #6b7280;
       background:#f9fafb;
@@ -293,7 +296,7 @@
       background:#22c55e;
       border-color:#22c55e;
     }
-    .event-delete{cursor:pointer;color:#4b5563;padding:0 4px;font-size:12px;}
+    .event-delete{cursor:pointer;color:#4b5563;padding:0 4px;font-size:14px;}
     .event-delete:hover{color:#f97373;}
 
     .week-grid{
@@ -422,7 +425,6 @@
 </head>
 <body>
   <div class="shell">
-    <!-- HEADER -->
     <div class="header">
       <div class="header-left">
         <div class="dot-logo"></div>
@@ -448,7 +450,6 @@
       </div>
     </div>
 
-    <!-- BIG POMODORO -->
     <div class="pomodoro-bar">
       <div class="pomodoro-main">
         <div>
@@ -465,7 +466,6 @@
       </div>
     </div>
 
-    <!-- ROUTINE INFO BANNER -->
     <div class="routine-banner" id="routineBanner">
       <div class="routine-banner-text">
         <span>📋</span>
@@ -475,31 +475,26 @@
       <button class="clear-routine" id="clearRoutine">Clear Routine Tasks</button>
     </div>
 
-    <!-- WEEK BAR -->
     <div class="week-bar" id="weekBar"></div>
 
-    <!-- DAY VIEW -->
     <div class="view-panel active" id="dayView">
       <div style="overflow:auto;">
         <div class="planner-grid" id="plannerGrid"></div>
       </div>
     </div>
 
-    <!-- WEEK VIEW -->
     <div class="view-panel" id="weekView">
       <div style="overflow:auto;">
         <div class="week-grid" id="weekGrid"></div>
       </div>
     </div>
 
-    <!-- MONTH VIEW -->
     <div class="view-panel" id="monthView">
       <div style="overflow:auto;">
         <div class="month-grid" id="monthGrid"></div>
       </div>
     </div>
 
-    <!-- QUICK ADD -->
     <div class="quick-add">
       <span style="color:var(--text-muted);">Quick add:</span>
       <input id="taskTitle" type="text" placeholder="Task / subject" />
@@ -519,7 +514,6 @@
       <button id="addBtn">Add</button>
     </div>
 
-    <!-- PRESET SELF-CARE BLOCKS -->
     <div class="selfcare-templates">
       <span>Self‑care presets:</span>
       <button class="selfcare-chip" onclick="addTemplate('Meditation',10,'wellness')">🧘 Meditation 10:00</button>
@@ -527,7 +521,6 @@
       <button class="selfcare-chip" onclick="addTemplate('Walk outside',18,'wellness')">🚶 18:00 Walk</button>
     </div>
 
-    <!-- FOOTER PRODUCTIVITY -->
     <div class="footer-bar">
       <div id="productivityText">Productivity: 0% (0 / 0 tasks)</div>
       <div style="font-size:11px;">Completed tasks turn faded with a ✓</div>
@@ -535,7 +528,6 @@
   </div>
 
   <script>
-    // 24‑hour hours 0–23
     const hours = Array.from({ length: 24 }, (_, i) => i);
     const daysInWeek = 7;
 
@@ -548,7 +540,10 @@
     let currentDate = new Date();
     let selectedDateISO = toISO(new Date());
 
-    // events stored as { [isoDate]: [ {id,hour,title,type,completed,repeat} ] }
+    // Store base recurring events separately
+    let recurringEvents = JSON.parse(localStorage.getItem('calmRecurringEvents') || '[]');
+    
+    // Events stored as { [isoDate]: [ {id,hour,title,type,completed,repeat,parentId} ] }
     let dayEvents   = JSON.parse(localStorage.getItem('calmDayEventsByDate')   || '{}');
     let studyEvents = JSON.parse(localStorage.getItem('calmStudyEventsByDate') || '{}');
 
@@ -561,22 +556,100 @@
     function saveEvents() {
       localStorage.setItem('calmDayEventsByDate',   JSON.stringify(dayEvents));
       localStorage.setItem('calmStudyEventsByDate', JSON.stringify(studyEvents));
+      localStorage.setItem('calmRecurringEvents', JSON.stringify(recurringEvents));
       updateRoutineBanner();
       updateProductivity();
     }
 
     function toISO(d) {
-      return d.toISOString().split('T')[0];
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function parseISO(isoString) {
+      const [year, month, day] = isoString.split('-').map(Number);
+      return new Date(year, month - 1, day);
     }
 
     function formatHour(h) {
       return `${h.toString().padStart(2,'0')}:00`;
     }
 
-    // Detect routine tasks
-    function getRoutineTasks(date) {
+    function getDayOfWeek(isoString) {
+      const date = parseISO(isoString);
+      return date.getDay();
+    }
+
+    // Generate recurring event instances for a date range
+    function generateRecurringInstances(startDate, endDate) {
+      const start = parseISO(startDate);
+      const end = parseISO(endDate);
+      
+      recurringEvents.forEach(baseEvent => {
+        const baseDate = parseISO(baseEvent.startDate);
+        const baseDay = baseDate.getDay();
+        
+        // Generate instances from base date to end date
+        let currentDate = new Date(Math.max(baseDate, start));
+        
+        while (currentDate <= end) {
+          const iso = toISO(currentDate);
+          
+          let shouldCreate = false;
+          
+          if (baseEvent.repeat === 'daily') {
+            shouldCreate = true;
+          } else if (baseEvent.repeat === 'weekly') {
+            // Check if same day of week as base date
+            if (currentDate.getDay() === baseDay) {
+              shouldCreate = true;
+            }
+          }
+          
+          if (shouldCreate) {
+            const map = baseEvent.mode === 'day' ? dayEvents : studyEvents;
+            if (!map[iso]) map[iso] = [];
+            
+            // Check if instance already exists for this date
+            const exists = map[iso].some(e => e.parentId === baseEvent.id);
+            if (!exists) {
+              map[iso].push({
+                id: Date.now() + Math.floor(Math.random() * 100000),
+                hour: baseEvent.hour,
+                title: baseEvent.title,
+                type: baseEvent.type,
+                completed: false,
+                repeat: baseEvent.repeat,
+                parentId: baseEvent.id
+              });
+            }
+          }
+          
+          // Move to next day
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
+      });
+    }
+
+    // Get events for a specific date (including recurring instances)
+    function getEventsForDate(dateISO) {
+      // Generate instances for a range around this date
+      const date = parseISO(dateISO);
+      const startRange = new Date(date);
+      startRange.setDate(date.getDate() - 7);
+      const endRange = new Date(date);
+      endRange.setDate(date.getDate() + 60); // Generate 60 days ahead
+      
+      generateRecurringInstances(toISO(startRange), toISO(endRange));
+      
       const map = eventsMap();
-      const tasks = map[date] || [];
+      return map[dateISO] || [];
+    }
+
+    function getRoutineTasks(date) {
+      const tasks = getEventsForDate(date);
       const routineEmojis = ['💔', '😰', '🌧️', '🧘', '⚡', '🤝', '😴', '📋'];
       return tasks.filter(task =>
         routineEmojis.some(emoji => task.title.startsWith(emoji))
@@ -623,7 +696,6 @@
       }
     });
 
-    // Populate hour select
     const hourSelect = document.getElementById('taskHour');
     hours.forEach(h => {
       const opt = document.createElement('option');
@@ -632,10 +704,8 @@
       hourSelect.appendChild(opt);
     });
 
-    // Default date
     document.getElementById('taskDate').valueAsDate = new Date();
 
-    // Week bar
     function buildWeekBar() {
       weekBar.innerHTML = '';
       const startOfWeek = new Date(currentDate);
@@ -669,7 +739,6 @@
       }
     }
 
-    // DAY GRID
     function buildDayGrid() {
       plannerGrid.innerHTML = '';
       hours.forEach(h => {
@@ -678,31 +747,28 @@
         label.textContent = formatHour(h);
         plannerGrid.appendChild(label);
 
-        for (let d = 0; d < daysInWeek; d++) {
-          const cell = document.createElement('div');
-          cell.className = 'slot-cell';
-          cell.dataset.hour = h;
-          cell.dataset.day = d;
-          cell.addEventListener('dragover', onCellDragOver);
-          cell.addEventListener('dragleave', onCellDragLeave);
-          cell.addEventListener('drop', onCellDrop);
-          plannerGrid.appendChild(cell);
-        }
+        const cell = document.createElement('div');
+        cell.className = 'slot-cell';
+        cell.dataset.hour = h;
+        cell.addEventListener('dragover', onCellDragOver);
+        cell.addEventListener('dragleave', onCellDragLeave);
+        cell.addEventListener('drop', onCellDrop);
+        plannerGrid.appendChild(cell);
       });
       renderDayEvents();
     }
 
     function renderDayEvents() {
       plannerGrid.querySelectorAll('.slot-cell').forEach(c => c.innerHTML = '');
-      const map = eventsMap();
-      const list = map[selectedDateISO] || [];
+      
+      const list = getEventsForDate(selectedDateISO);
+      
       list.forEach(e => {
-        const sel = `.slot-cell[data-hour="${e.hour}"][data-day="0"]`;
-        const cell = plannerGrid.querySelector(sel);
+        const cell = plannerGrid.querySelector(`.slot-cell[data-hour="${e.hour}"]`);
         if (!cell) return;
 
         const div = document.createElement('div');
-        div.className = 'event ' + e.type + (e.completed ? ' completed' : '');
+        div.className = 'event ' + e.type + (e.completed ? ' completed' : '') + (e.repeat ? ' recurring' : '');
         div.draggable = true;
         div.dataset.id = e.id;
         div.addEventListener('dragstart', onEventDragStart);
@@ -719,7 +785,7 @@
 
         const titleSpan = document.createElement('span');
         titleSpan.className = 'event-title';
-        const repeatTag = e.repeat ? ` (${e.repeat})` : '';
+        const repeatTag = e.repeat ? ` 🔁` : '';
         titleSpan.textContent = `${formatHour(e.hour)} – ${e.title}${repeatTag}`;
 
         left.appendChild(check);
@@ -739,7 +805,6 @@
       });
     }
 
-    // WEEK VIEW
     function buildWeekView() {
       weekGrid.innerHTML = '';
       const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -747,7 +812,6 @@
       const dayOfWeek = startOfWeek.getDay();
       startOfWeek.setDate(startOfWeek.getDate() - dayOfWeek);
 
-      const map = eventsMap();
       for (let i = 0; i < daysInWeek; i++) {
         const d = new Date(startOfWeek);
         d.setDate(startOfWeek.getDate() + i);
@@ -763,7 +827,7 @@
 
         const badges = document.createElement('div');
         badges.className = 'badge-row';
-        const todays = map[iso] || [];
+        const todays = getEventsForDate(iso);
         todays.forEach(e => {
           const dot = document.createElement('div');
           let cls = 'badge-other';
@@ -784,7 +848,6 @@
       }
     }
 
-    // MONTH VIEW
     function buildMonthView() {
       monthGrid.innerHTML = '';
       const year = currentDate.getFullYear();
@@ -793,8 +856,6 @@
       const firstWeekday = firstDay.getDay();
       const daysInMonth = new Date(year, month + 1, 0).getDate();
       const totalCells = Math.ceil((firstWeekday + daysInMonth) / 7) * 7;
-
-      const map = eventsMap();
 
       for (let cell = 0; cell < totalCells; cell++) {
         const div = document.createElement('div');
@@ -818,7 +879,7 @@
 
         if (thisDate) {
           const iso = toISO(thisDate);
-          const todays = map[iso] || [];
+          const todays = getEventsForDate(iso);
           todays.forEach(e => {
             const dot = document.createElement('div');
             let cls = 'other';
@@ -832,6 +893,11 @@
             selectedDateISO = iso;
             buildWeekBar();
             buildDayGrid();
+            document.querySelectorAll('.view-chip').forEach(b => b.classList.remove('active'));
+            document.querySelector('.view-chip[data-view="day"]').classList.add('active');
+            document.getElementById('dayView').classList.add('active');
+            document.getElementById('weekView').classList.remove('active');
+            document.getElementById('monthView').classList.remove('active');
           };
         }
 
@@ -854,18 +920,34 @@
 
       const repeat = document.getElementById('taskRepeat').value || '';
 
-      const map = eventsMap();
-      if (!map[iso]) map[iso] = [];
-      map[iso].push({
-        id: Date.now() + Math.floor(Math.random() * 1000),
-        hour,
-        title,
-        type,
-        completed:false,
-        repeat
-      });
+      if (repeat) {
+        // Create recurring base event
+        const baseEvent = {
+          id: Date.now() + Math.floor(Math.random() * 100000),
+          startDate: iso,
+          hour,
+          title,
+          type,
+          repeat,
+          mode: currentMode
+        };
+        recurringEvents.push(baseEvent);
+      } else {
+        // Create one-time event
+        const map = eventsMap();
+        if (!map[iso]) map[iso] = [];
+        map[iso].push({
+          id: Date.now() + Math.floor(Math.random() * 1000),
+          hour,
+          title,
+          type,
+          completed: false,
+          repeat: ''
+        });
+      }
 
       document.getElementById('taskTitle').value = '';
+      document.getElementById('taskRepeat').value = '';
       saveEvents();
       buildWeekBar();
       buildDayGrid();
@@ -877,8 +959,25 @@
     function deleteEvent(iso, id) {
       const map = eventsMap();
       if (!map[iso]) return;
-      map[iso] = map[iso].filter(e => e.id !== id);
-      if (map[iso].length === 0) delete map[iso];
+      
+      const event = map[iso].find(e => e.id === id);
+      
+      // If it's a recurring event instance, remove the parent
+      if (event && event.parentId) {
+        recurringEvents = recurringEvents.filter(e => e.id !== event.parentId);
+        // Clear all generated instances from both maps
+        [dayEvents, studyEvents].forEach(eventMap => {
+          Object.keys(eventMap).forEach(dateKey => {
+            eventMap[dateKey] = eventMap[dateKey].filter(e => e.parentId !== event.parentId);
+            if (eventMap[dateKey].length === 0) delete eventMap[dateKey];
+          });
+        });
+      } else {
+        // Remove single instance
+        map[iso] = map[iso].filter(e => e.id !== id);
+        if (map[iso].length === 0) delete map[iso];
+      }
+      
       saveEvents();
       buildDayGrid();
       buildWeekView();
@@ -904,8 +1003,8 @@
       document.getElementById('taskRepeat').value = '';
       addEvent();
     }
+    window.addTemplate = addTemplate;
 
-    // VIEW SWITCH
     document.querySelectorAll('.view-chip').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.view-chip').forEach(b => b.classList.remove('active'));
@@ -917,7 +1016,6 @@
       });
     });
 
-    // MODE SWITCH
     document.querySelectorAll('.planner-mode').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.planner-mode').forEach(b => b.classList.remove('active'));
@@ -947,7 +1045,6 @@
       });
     });
 
-    // THEME TOGGLE
     const themeBtn = document.getElementById('themeToggle');
     const savedTheme = localStorage.getItem('calmPlannerTheme');
     if (savedTheme === 'light') {
@@ -960,7 +1057,6 @@
       localStorage.setItem('calmPlannerTheme', isLight ? 'light' : 'dark');
     });
 
-    // DRAG & DROP
     let draggingEventId = null;
 
     function onEventDragStart(e) {
@@ -992,11 +1088,9 @@
       draggingEventId = null;
     }
 
-    // PRODUCTIVITY
     function updateProductivity() {
-      const map = eventsMap();
       const todayISO = toISO(new Date());
-      const list = map[todayISO] || [];
+      const list = getEventsForDate(todayISO);
       const total = list.length;
       const completed = list.filter(e => e.completed).length;
       const percent = total ? Math.round((completed / total) * 100) : 0;
@@ -1004,7 +1098,6 @@
       el.innerHTML = `Productivity: <strong>${percent}%</strong> (${completed} / ${total} tasks today)`;
     }
 
-    // POMODORO 25/5
     let pomoSeconds = 25 * 60;
     let pomoMode = 'work';
     let pomoTimerId = null;
@@ -1040,6 +1133,7 @@
       if (pomoTimerId) return;
       pomoTimerId = setInterval(tickPomodoro, 1000);
     }
+    window.startPomodoro = startPomodoro;
 
     function resetPomodoro() {
       if (pomoTimerId) {
@@ -1050,18 +1144,45 @@
       pomoSeconds = 25 * 60;
       updatePomoUI();
     }
+    window.resetPomodoro = resetPomodoro;
 
-    // EXPORT TO .ICS
     function exportToICS() {
       const allEvents = [];
-      const maps = [dayEvents, studyEvents];
-      maps.forEach(map => {
+      
+      // Export one-time events
+      [dayEvents, studyEvents].forEach(map => {
         Object.keys(map).forEach(dateISO => {
           map[dateISO].forEach(ev => {
-            allEvents.push({ dateISO, ev });
+            if (!ev.parentId) {
+              allEvents.push({ dateISO, ev });
+            }
           });
         });
       });
+      
+      // Export recurring events (30 days worth)
+      recurringEvents.forEach(baseEvent => {
+        const endDate = new Date(parseISO(baseEvent.startDate));
+        endDate.setDate(endDate.getDate() + 30);
+        let currentDate = new Date(parseISO(baseEvent.startDate));
+        const baseDay = currentDate.getDay();
+        
+        while (currentDate <= endDate) {
+          if (baseEvent.repeat === 'daily') {
+            allEvents.push({ 
+              dateISO: toISO(currentDate), 
+              ev: { ...baseEvent, hour: baseEvent.hour } 
+            });
+          } else if (baseEvent.repeat === 'weekly' && currentDate.getDay() === baseDay) {
+            allEvents.push({ 
+              dateISO: toISO(currentDate), 
+              ev: { ...baseEvent, hour: baseEvent.hour } 
+            });
+          }
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
+      });
+      
       if (!allEvents.length) {
         alert('No events to export.');
         return;
@@ -1090,8 +1211,8 @@
       a.click();
       URL.revokeObjectURL(url);
     }
+    window.exportToICS = exportToICS;
 
-    // INIT
     buildWeekBar();
     buildDayGrid();
     buildWeekView();
